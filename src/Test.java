@@ -60,7 +60,7 @@ class Test
 		testHeap();
 		testGraph();
 		
-		int[][] fin = SeamCarving.readpgm("test.pgm");		
+		int[][] fin = SeamCarving.readpgm("ex1.pgm");		
 		SeamCarving.writepgm(fin, "tamere_kif_les_bites");
 		int[][] outTAb = SeamCarving.interest(fin);
 		
@@ -74,5 +74,9 @@ class Test
 				
 			}
 		}
+		
+		Graph g = SeamCarving.toGraph(outTAb);
+		
+		g.writeFile("graph.dot");
 	 }
 }

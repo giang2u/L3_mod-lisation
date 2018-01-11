@@ -73,8 +73,6 @@ public class SeamCarving
 	public static int[][] interest(int[][] image){
 		int largeur = image[0].length;
 		int hauteur = image.length;
-		System.out.println("hauteur" + hauteur);
-		System.out.println("largeur" + largeur);
 		int [][] outTab = new int [hauteur][largeur];
 		
 		for(int i = 0; i < hauteur; i++){
@@ -89,6 +87,53 @@ public class SeamCarving
 		}
 		return outTab;
 	}
+	
+	
+	public static Graph toGraph(int [][] itr) {
+		   
+		   int largeur = itr[0].length;
+		   int hauteur = itr.length;
+
+			System.out.println("hauteur" + itr[hauteur -1][largeur -1]);
+		   Graph a = new Graph(largeur*hauteur +2);
+		   int compteur = 0;
+		   
+		   for (int i =0 ; i < largeur; i++) {
+			   a.addEdge( new Edge(compteur, i + 1, 0) ); 
+		   }
+		   
+		   compteur = 1;
+		   for (int i = 1; i < hauteur; i++) {
+			   for (int j = 0; j < largeur; j++) {
+				   if (j == 0) {
+					   a.addEdge( new Edge(compteur, compteur + largeur, itr[i-1][j] ) );
+					   a.addEdge( new Edge(compteur, compteur + largeur + 1, itr[i-1][j] ) );
+						  
+				   }
+				   else if (j == largeur -1) {
+					   a.addEdge( new Edge(compteur, compteur + largeur - 1 , itr[i-1][j] ) );
+					   a.addEdge( new Edge(compteur, compteur + largeur , itr[i-1][j] ) );
+						  
+				   } 
+				   
+				   else {
+					   a.addEdge( new Edge(compteur, compteur + largeur - 1 , itr[i-1][j] ) );
+					   a.addEdge( new Edge(compteur, compteur + largeur , itr[i-1][j] ) );
+					   a.addEdge( new Edge(compteur, compteur + largeur + 1 , itr[i-1][j] ) );
+				   }
+				   compteur++;
+			   }
+		   }
+		   
+		   for (int i = 0; i < largeur; i++ ) {
+			   a.addEdge( new Edge(compteur + i, largeur * hauteur + 1 , itr[hauteur-1][i]) );
+		   }
+		   
+		   
+		   
+		   
+		   return a;
+	   }
 
 
 }
