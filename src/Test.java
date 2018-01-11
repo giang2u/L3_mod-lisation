@@ -59,5 +59,20 @@ class Test
 	 {
 		testHeap();
 		testGraph();
+		
+		int[][] fin = SeamCarving.readpgm("test.pgm");		
+		SeamCarving.writepgm(fin, "tamere_kif_les_bites");
+		int[][] outTAb = SeamCarving.interest(fin);
+		
+
+		int largeur = outTAb[0].length;
+		int hauteur = outTAb.length;
+		for(int i = 0 ; i < hauteur; i ++){
+			for(int j = 0 ; j < largeur; j++ ){
+				if (j < largeur - 1 ) System.out.print(outTAb[i][j]+ " ");
+				else System.out.println(outTAb[i][j]);
+				
+			}
+		}
 	 }
 }
