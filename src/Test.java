@@ -86,6 +86,6 @@ class Test
 		g.writeFile("graph.dot");
 		
 		
-		SeamCarving.supprimerPixel("feep", 1);
+		SeamCarving.supprimerPixel("test", 2);
 	 }
 }
