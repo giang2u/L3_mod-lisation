@@ -2,6 +2,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.io.*;
 import java.util.*;
+
+import sun.invoke.empty.Empty;
 public class SeamCarving
 {
 
@@ -130,9 +132,6 @@ public class SeamCarving
 			   a.addEdge( new Edge(compteur + i, largeur * hauteur + 1 , itr[hauteur-1][i]) );
 		   }
 		   
-		   
-		   
-		   
 		   return a;
 	   }
 	
@@ -168,5 +167,35 @@ public class SeamCarving
 	}
 	*/
 
+	
+	public static ArrayList<Integer> Dijkstra(Graph graph, int s , int  t){
+		
+		Heap heap = new Heap(graph.vertices());
+		ArrayList<Integer> list = new ArrayList<>();
+		int[] precedent = new int[graph.vertices()];
+		heap.decreaseKey(s, 0);
+		while(!heap.isEmpty()){
+			int elem = heap.pop();
 
+			for(Edge edge: graph.adj(elem)){
+				
+				if(heap.priority(elem) + edge.cout() < heap.priority(edge.arrive())){
+					int costtemp = heap.priority(elem) + edge.cout();
+					heap.decreaseKey(edge.arrive(),costtemp);
+					precedent[edge.arrive()] = elem;  
+				}
+				
+			}
+		}
+
+		//t = arrive
+
+		while( s != t){
+			list.add(0, t);
+			t = precedent[t];
+		}
+
+		list.add(0,t);
+		return list ;
+	}
 }

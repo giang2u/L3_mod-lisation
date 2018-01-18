@@ -35,6 +35,7 @@ class Heap
    void decreaseKey(int x, int p)
 	 {
 		int pos = cor[x];
+		//System.out.println(pos +"azearzarzarar"+  size);
 		if (pos > size)
 		  {
 			 

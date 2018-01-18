@@ -11,5 +11,16 @@ class Edge
 	 }
    
    
+   public int depart(){
+	   return from;
+   }
+   
+   public int arrive(){
+	   return to;
+   }
+   
+   public int cout(){
+	   return cost;
+   }
    
 }
