@@ -97,7 +97,7 @@ public class SeamCarving
 		   int largeur = itr[0].length;
 		   int hauteur = itr.length;
 
-			System.out.println("hauteur" + itr[hauteur -1][largeur -1]);
+			//System.out.println("hauteur" + itr[hauteur -1][largeur -1]);
 		   Graph a = new Graph(largeur*hauteur +2);
 		   int compteur = 0;
 		   
@@ -203,33 +203,83 @@ public class SeamCarving
 	
 	public static void supprimerPixel(String filename, int iteration) {
 		
-		
+		//filename += "2";
 		
 		int[][] fin = SeamCarving.readpgm(filename+".pgm");		
+		int[][] outTAb = SeamCarving.interest(fin);
+		Graph g = SeamCarving.toGraph(outTAb);
+		ArrayList<Integer> list = SeamCarving.Dijkstra(g, 0, fin.length*fin[0].length + 1);
 		
-		filename += "2";
-		SeamCarving.writepgm(fin, filename);
+		
+		int  width = outTAb[0].length;
+		int height = outTAb.length;
+		
+		int[][] tab = new int[fin.length][fin[0].length-1] ;
+		
+		int indicePixelASuppr = 1;
 		
 		
-		for (int i = 0; i < iteration; i++) {
-			
-			// recupere nouvelle image
-			fin = SeamCarving.readpgm(filename+".pgm");
-			
-			// calcul de la taille
-			int[][] outTAb = SeamCarving.interest(fin);
-			
-			// determination des pixel a enlever
-			Graph g = SeamCarving.toGraph(outTAb);
-			ArrayList<Integer> list = SeamCarving.Dijkstra(g, 0, fin.length*fin[0].length);
+		System.out.println("TAILE " + width);
 		
-			// reecriture de l'image sans les pixel a enelver
-			SeamCarving.writepgm2(fin, filename, list);
-			
+		for (int lk : list) {
+			System.out.println(lk);
 		}
 		
+		
+		for(int i = 0 ; i<tab.length;i++) {
+			int z = 0;
+			for(int j = 0 ; j<tab[0].length ;j++) {
+				
+				
+				int longu = j+1;
+				
+				if (list.get(indicePixelASuppr) == (  (i* outTAb[0].length )  + longu)  )  {
+					indicePixelASuppr++;
+					z++; tab[i][j] = fin[i][z]; 
+				} 
+				else tab[i][j] = fin[i][z];
+				
+				z++;
+			}
+		}
+		
+		
+		for (int k = 0; k < iteration - 1; k++) {
+			indicePixelASuppr = 1;
+			
+			fin = tab;
+			outTAb = SeamCarving.interest(fin);
+			g = SeamCarving.toGraph(outTAb);
+			list = SeamCarving.Dijkstra(g, 0, fin.length*fin[0].length + 1);
+			 
+			tab = new int[fin.length][fin[0].length-1] ;
+
+			for(int i = 0 ; i<tab.length;i++) {
+				int z = 0;
+				for(int j = 0 ; j<tab[0].length ;j++) {
+					
+					
+					int longu = j+1;
+					
+					if (list.get(indicePixelASuppr) == (  (i* outTAb[0].length )  + longu)  )  {
+						indicePixelASuppr++;
+						 z++; tab[i][j] = fin[i][z]; 
+					} 
+					else tab[i][j] = fin[i][z];
+					
+					z++;
+				}
+			}
+			
+			
+			
+			
+		}
+		filename += "2";
+		SeamCarving.writepgm(tab, filename);
+		
 	}
-	
+	/*
 	public static void writepgm2(int [][] image, String filename, ArrayList<Integer> list) {
 
 
@@ -267,7 +317,7 @@ public class SeamCarving
 			System.err.println("Error : " + e.getMessage());
 		}
 
-	}
+	}*/
 	
 	
 	
