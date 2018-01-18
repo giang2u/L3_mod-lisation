@@ -10,4 +10,6 @@ class Edge
 		this.cost = cost;
 	 }
    
+   
+   
 }

@@ -71,7 +71,15 @@ public class Graph
 		  {
 		  }						
 	 }
-   
+
+public ArrayList<Edge>[] getAdj() {
+	return adj;
+}
+
+public void setAdj(ArrayList<Edge>[] adj) {
+	this.adj = adj;
+}
+
    
    
    

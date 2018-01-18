@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 class Test
 {
    static boolean visite[];
@@ -67,13 +69,13 @@ class Test
 
 		int largeur = outTAb[0].length;
 		int hauteur = outTAb.length;
-		for(int i = 0 ; i < hauteur; i ++){
+		/*for(int i = 0 ; i < hauteur; i ++){
 			for(int j = 0 ; j < largeur; j++ ){
 				if (j < largeur - 1 ) System.out.print(outTAb[i][j]+ " ");
 				else System.out.println(outTAb[i][j]);
 				
 			}
-		}
+		}*/
 		
 		Graph g = SeamCarving.toGraph(outTAb);
 		

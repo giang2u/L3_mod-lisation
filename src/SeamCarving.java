@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.io.*;
 import java.util.*;
 public class SeamCarving
@@ -134,6 +135,38 @@ public class SeamCarving
 		   
 		   return a;
 	   }
+	
+	
+	/*
+	public static ArrayList<Integer> Dijkstra(Graph g, int s, int t) {
+		
+		ArrayList<Integer> tab = new ArrayList<Integer>();
+		 ArrayList<Edge>[] test = g.getAdj();
+		Iterable<Edge> ite = g.next(t);
+		
+		int i = 0;
+		boolean start = false;
+		
+		for (Edge e : ite) {
+			
+			Edge ed = test.get(e.to);
+			
+			if ( ed.cost > e.cost) ed.cost += e.cost;
+			
+			if ( start &&  !tab.contains(ed.to) )  tab.add(ed.to);
+			
+			else if ( ed.cost < tab.get(tab.size()-1) ) {
+				int last = tab.size() - 1; 
+				tab.set(last, ed.to);
+			}
+			
+			if ( e.from == s) tab.add(e.from); start = true;
+			
+		}
+		
+		return tab;
+	}
+	*/
 
 
 }
