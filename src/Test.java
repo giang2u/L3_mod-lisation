@@ -62,7 +62,7 @@ class Test
 		testHeap();
 		testGraph();
 		
-		int[][] fin = SeamCarving.readpgm("ex1.pgm");		
+		int[][] fin = SeamCarving.readpgm("feep.pgm");		
 		SeamCarving.writepgm(fin, "tamere_kif_les_bites");
 		int[][] outTAb = SeamCarving.interest(fin);
 		
@@ -78,11 +78,14 @@ class Test
 		}*/
 		
 		Graph g = SeamCarving.toGraph(outTAb);
-		ArrayList<Integer> list = SeamCarving.Dijkstra(g, 0, 477);
+		/*ArrayList<Integer> list = SeamCarving.Dijkstra(g, 0, 477);
 		for(int i = 0 ; i < list.size(); ++i){
 			System.out.println(list.get(i));
-		}
+		}*/
 		
 		g.writeFile("graph.dot");
+		
+		
+		SeamCarving.supprimerPixel("feep", 1);
 	 }
 }

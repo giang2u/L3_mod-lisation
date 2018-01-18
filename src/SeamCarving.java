@@ -52,9 +52,9 @@ public class SeamCarving
 
 			int  width = image.length;
 			int height = image[0].length;
-			FileWriter fstream = new FileWriter(filename+".pgm");
+			FileWriter fstream = new FileWriter("./img/"+filename+".pgm");
 			BufferedWriter out = new BufferedWriter(fstream);
-			out.write("P2\n# CREATOR: MOI XV Version 3.10a  Rev: 12/29/94\n"+height+ " "+ width +"\n255\n");
+			out.write("P2\n# CREATOR: MOI \n"+height+ " "+ width +"\n255\n");
 
 			int sauti = 0, sautj =0;
 
@@ -198,4 +198,80 @@ public class SeamCarving
 		list.add(0,t);
 		return list ;
 	}
+	
+	
+	
+	public static void supprimerPixel(String filename, int iteration) {
+		
+		
+		
+		int[][] fin = SeamCarving.readpgm(filename+".pgm");		
+		
+		filename += "2";
+		SeamCarving.writepgm(fin, filename);
+		
+		
+		for (int i = 0; i < iteration; i++) {
+			
+			// recupere nouvelle image
+			fin = SeamCarving.readpgm(filename+".pgm");
+			
+			// calcul de la taille
+			int[][] outTAb = SeamCarving.interest(fin);
+			
+			// determination des pixel a enlever
+			Graph g = SeamCarving.toGraph(outTAb);
+			ArrayList<Integer> list = SeamCarving.Dijkstra(g, 0, fin.length*fin[0].length);
+		
+			// reecriture de l'image sans les pixel a enelver
+			SeamCarving.writepgm2(fin, filename, list);
+			
+		}
+		
+	}
+	
+	public static void writepgm2(int [][] image, String filename, ArrayList<Integer> list) {
+
+
+		try{
+			
+			int indicePixelASuppr = 1;
+			int  width = image[0].length;
+			int height = image.length;
+			int largeur = width -1;
+			FileWriter fstream = new FileWriter("./img/"+filename+".pgm");
+			BufferedWriter out = new BufferedWriter(fstream);
+			out.write("P2\n# CREATOR: MOI \n"+ largeur + " "+ height +"\n255\n");
+
+			
+			for(int i = 0 ; i<height;i++) {
+				for(int j = 0 ; j<width;j++) {
+					
+					
+					int longu = j+1;
+					
+					if (list.get(indicePixelASuppr) == (  (i* width )  + longu)  )  {
+						int test = (i* width )  + longu;
+						System.out.println( " PIXEL A SUPPR  " + list.get(indicePixelASuppr) + "\n" +  test);
+						if (j == width -1)  out.write("\n");
+						indicePixelASuppr++;
+					} 
+					else if ( j < width-1 ) out.write(image[i][j]+" ");  
+					else out.write(image[i][j]+"\n");
+					
+				}
+			}
+			out.close();
+		}
+		catch (Exception e){
+			System.err.println("Error : " + e.getMessage());
+		}
+
+	}
+	
+	
+	
+	
+	
+	
 }
