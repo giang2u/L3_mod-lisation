@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 class Test
 {
    static boolean visite[];
@@ -69,13 +71,17 @@ class Test
 		int hauteur = outTAb.length;
 		for(int i = 0 ; i < hauteur; i ++){
 			for(int j = 0 ; j < largeur; j++ ){
-				if (j < largeur - 1 ) System.out.print(outTAb[i][j]+ " ");
-				else System.out.println(outTAb[i][j]);
+				//if (j < largeur - 1 ) System.out.print(outTAb[i][j]+ " ");
+				//else System.out.println(outTAb[i][j]);
 				
 			}
 		}
 		
 		Graph g = SeamCarving.toGraph(outTAb);
+		ArrayList<Integer> list = SeamCarving.Dijkstra(g, 0, 477);
+		for(int i = 0 ; i < list.size(); ++i){
+			System.out.println(list.get(i));
+		}
 		
 		g.writeFile("graph.dot");
 	 }
