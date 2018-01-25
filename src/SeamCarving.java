@@ -52,11 +52,10 @@ public class SeamCarving
 
 			int  width = image.length;
 			int height = image[0].length;
-			FileWriter fstream = new FileWriter("./img/"+filename+".pgm");
+			FileWriter fstream = new FileWriter("img/"+filename+".pgm");
+			//FileWriter fstream = new FileWriter(filename);
 			BufferedWriter out = new BufferedWriter(fstream);
 			out.write("P2\n# CREATOR: MOI \n"+height+ " "+ width +"\n255\n");
-
-			int sauti = 0, sautj =0;
 
 			for(int i = 0 ; i<width;i++) {
 				for(int j = 0 ; j<height;j++) {
@@ -205,7 +204,8 @@ public class SeamCarving
 		
 		//filename += "2";
 		
-		int[][] fin = SeamCarving.readpgm(filename+".pgm");		
+		int[][] fin = SeamCarving.readpgm(filename+".pgm");	
+		//int[][] fin = SeamCarving.readpgm(filename);	
 		int[][] outTAb = SeamCarving.interest(fin);
 		Graph g = SeamCarving.toGraph(outTAb);
 		ArrayList<Integer> list = SeamCarving.Dijkstra(g, 0, fin.length*fin[0].length + 1);
@@ -219,11 +219,11 @@ public class SeamCarving
 		int indicePixelASuppr = 1;
 		
 		
-		System.out.println("TAILE " + width);
-		
+		//System.out.println("TAILE " + width);
+		/*
 		for (int lk : list) {
 			System.out.println(lk);
-		}
+		}*/
 		
 		
 		for(int i = 0 ; i<tab.length;i++) {
@@ -277,6 +277,7 @@ public class SeamCarving
 		}
 		filename += "2";
 		SeamCarving.writepgm(tab, filename);
+		System.out.println("DONE!!!!");
 		
 	}
 	/*

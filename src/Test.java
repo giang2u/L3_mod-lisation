@@ -59,11 +59,11 @@ class Test
    
    public static void main(String[] args)
 	 {
-		testHeap();
-		testGraph();
+		//testHeap();
+		//testGraph();
 		/*
 		int[][] fin = SeamCarving.readpgm("feep.pgm");		
-		SeamCarving.writepgm(fin, "tamere_kif_les_bites");
+		SeamCarving.writepgm(fin, "test1");
 		int[][] outTAb = SeamCarving.interest(fin);
 		
 
@@ -86,14 +86,14 @@ class Test
 		//g.writeFile("graph.dot");
 		
 		/*int[][] fin = SeamCarving.readpgm("test.pgm");		
-		//SeamCarving.writepgm(fin, "tamere_kif_les_bites");
+		//SeamCarving.writepgm(fin, "test1");
 		int[][] outTAb = SeamCarving.interest(fin);
 		Graph g = SeamCarving.toGraph(outTAb);
 		ArrayList<Integer> list = SeamCarving.Dijkstra(g, 0, outTAb.length*outTAb[0].length);
 		for(int i = 0 ; i < list.size(); ++i){
 			System.out.println(list.get(i));
 		}*/
-		
-		SeamCarving.supprimerPixel("ex1", 200);
+	   int nb_pixel_del = Integer.valueOf(args[1]); // nb de fois on on veut supprimer le pixel
+		SeamCarving.supprimerPixel(args[0], nb_pixel_del);
 	 }
 }
