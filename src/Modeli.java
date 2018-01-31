@@ -128,7 +128,7 @@ public class Modeli extends JFrame{
 			System.out.println(list.get(i));
 		}*/
 	   
-	   Modeli model = new Modeli();
+	   new Modeli();
 	   //int nb_pixel_del = Integer.valueOf(args[1]); // nb de fois on on veut supprimer le pixel
 		//SeamCarving.supprimerPixel(args[0],args[0],  50);
 	 }
