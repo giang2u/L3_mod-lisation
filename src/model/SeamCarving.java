@@ -12,10 +12,10 @@ public class SeamCarving
 	{		
 		try {
 			System.out.println("NOM FICHIER " + fn);
-			//InputStream f = ClassLoader.getSystemClassLoader().getResourceAsStream(fn);
-			//BufferedReader d = new BufferedReader(new InputStreamReader(f));
-			FileReader flot = new FileReader(fn);
-			BufferedReader d = new BufferedReader(flot);
+			InputStream f = ClassLoader.getSystemClassLoader().getResourceAsStream(fn);
+			BufferedReader d = new BufferedReader(new InputStreamReader(f));
+			//FileReader flot = new FileReader(fn);
+			//BufferedReader d = new BufferedReader(flot);
 			String magic = d.readLine();
 			String line = d.readLine();
 			while (line.startsWith("#")) {
@@ -104,10 +104,14 @@ public class SeamCarving
 		   Graph a = new Graph(largeur*hauteur +2);
 		   int compteur = 0;
 		   
+		   
+		   // relie le sommet initial 0 a la premiere ligne
 		   for (int i =0 ; i < largeur; i++) {
 			   a.addEdge( new Edge(compteur, i + 1, 0) ); 
 		   }
 		   
+		   
+		   // parcours du tableau entre la premiere et derniere ligne
 		   compteur = 1;
 		   for (int i = 1; i < hauteur; i++) {
 			   for (int j = 0; j < largeur; j++) {
@@ -131,6 +135,7 @@ public class SeamCarving
 			   }
 		   }
 		   
+		   // derniere ligne qui rejoint le sommet fin
 		   for (int i = 0; i < largeur; i++ ) {
 			   a.addEdge( new Edge(compteur + i, largeur * hauteur + 1 , itr[hauteur-1][i]) );
 		   }
@@ -146,15 +151,19 @@ public class SeamCarving
 		   int hauteur = itr.length;
 
 			//System.out.println("hauteur" + itr[hauteur -1][largeur -1]);
-		   Graph a = new Graph(largeur*hauteur +2);
+		   Graph a = new Graph(largeur*2 + largeur*2 +2);
 		   int compteur = 0;
 		   
+		   
+		   // relie le sommet initial 0 a la premiere ligne
 		   for (int i =0 ; i < largeur; i++) {
 			   a.addEdge( new Edge(compteur, i + 1, 0) ); 
 		   }
 		   
+		   
+		   // creation des 2 ligne de sommets reliés par une arete de poids nul
 		   compteur = 1;
-		   for (int i = 1; i < hauteur; i++) {
+		   for (int i = 1; i < 2; i++) {
 			   for (int j = 0; j < largeur; j++) {
 				   if (j == 0) {
 					   a.addEdge( new Edge(compteur, compteur + largeur, itr[i-1][j] ) );
@@ -176,8 +185,52 @@ public class SeamCarving
 			   }
 		   }
 		   
+		   
+		   for (int i = 0; i < 1; i++) {
+			   for (int j = 0; j < largeur; j++) {
+				   if (j == 0) {
+					   a.addEdge( new Edge(compteur, compteur + largeur, 0 ) );
+						  
+				   }
+				   else if (j == largeur -1) {
+					   a.addEdge( new Edge(compteur, compteur + largeur , 0 ) );
+						  
+				   } 
+				   
+				   else {
+					   a.addEdge( new Edge(compteur, compteur + largeur , 0 ) );
+				   }
+				   compteur++;
+			   }
+		   }
+		   //---------------------------
+		   
+		   for (int i = hauteur - 1; i <  hauteur; i++) {
+			   for (int j = 0; j < largeur; j++) {
+				   if (j == 0) {
+					   a.addEdge( new Edge(compteur, compteur + largeur, itr[i-1][j] ) );
+					   a.addEdge( new Edge(compteur, compteur + largeur + 1, itr[i-1][j] ) );
+						  
+				   }
+				   else if (j == largeur -1) {
+					   a.addEdge( new Edge(compteur, compteur + largeur - 1 , itr[i-1][j] ) );
+					   a.addEdge( new Edge(compteur, compteur + largeur , itr[i-1][j] ) );
+						  
+				   } 
+				   
+				   else {
+					   a.addEdge( new Edge(compteur, compteur + largeur - 1 , itr[i-1][j] ) );
+					   a.addEdge( new Edge(compteur, compteur + largeur , itr[i-1][j] ) );
+					   a.addEdge( new Edge(compteur, compteur + largeur + 1 , itr[i-1][j] ) );
+				   }
+				   compteur++;
+			   }
+		   }
+		   
+		   
+		   // derniere ligne qui rejoint le sommet fin
 		   for (int i = 0; i < largeur; i++ ) {
-			   a.addEdge( new Edge(compteur + i, largeur * hauteur + 1 , itr[hauteur-1][i]) );
+			   a.addEdge( new Edge(compteur + i, largeur*2 + largeur*2 +1 , itr[hauteur-1][i]) );
 		   }
 		   
 		   return a;
@@ -298,46 +351,6 @@ public class SeamCarving
 		System.out.println("DONE!!!!");
 		
 	}
-	/*
-	public static void writepgm2(int [][] image, String filename, ArrayList<Integer> list) {
-
-
-		try{
-			
-			int indicePixelASuppr = 1;
-			int  width = image[0].length;
-			int height = image.length;
-			int largeur = width -1;
-			FileWriter fstream = new FileWriter("./img/"+filename+".pgm");
-			BufferedWriter out = new BufferedWriter(fstream);
-			out.write("P2\n# CREATOR: MOI \n"+ largeur + " "+ height +"\n255\n");
-
-			
-			for(int i = 0 ; i<height;i++) {
-				for(int j = 0 ; j<width;j++) {
-					
-					
-					int longu = j+1;
-					
-					if (list.get(indicePixelASuppr) == (  (i* width )  + longu)  )  {
-						int test = (i* width )  + longu;
-						System.out.println( " PIXEL A SUPPR  " + list.get(indicePixelASuppr) + "\n" +  test);
-						if (j == width -1)  out.write("\n");
-						indicePixelASuppr++;
-					} 
-					else if ( j < width-1 ) out.write(image[i][j]+" ");  
-					else out.write(image[i][j]+"\n");
-					
-				}
-			}
-			out.close();
-		}
-		catch (Exception e){
-			System.err.println("Error : " + e.getMessage());
-		}
-
-	}*/
-	
 	
 	
 	
