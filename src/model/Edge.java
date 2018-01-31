@@ -1,12 +1,13 @@
-class Edge
+package model;
+public class Edge
 {
    int from;
-   int to;
+   private int to;
    int cost;
-   Edge(int x, int y, int cost)
+   public Edge(int x, int y, int cost)
 	 {
 		this.from = x;
-		this.to = y;
+		this.setTo(y);
 		this.cost = cost;
 	 }
    
@@ -16,11 +17,21 @@ class Edge
    }
    
    public int arrive(){
-	   return to;
+	   return getTo();
    }
    
    public int cout(){
 	   return cost;
    }
+
+
+public int getTo() {
+	return to;
+}
+
+
+public void setTo(int to) {
+	this.to = to;
+}
    
 }

@@ -1,3 +1,4 @@
+package model;
 import java.util.ArrayList;
 import java.io.*;
 
@@ -25,7 +26,7 @@ public class Graph
    public void addEdge(Edge e)
 	 {
 		int v = e.from;
-		int w = e.to;
+		int w = e.getTo();
 		adj[v].add(e);
 		adj[w].add(e);
 	 }
@@ -39,7 +40,7 @@ public class Graph
 	 {
 		ArrayList<Edge> n = new ArrayList<Edge>();
 		for (Edge e: adj(v))
-		  if (e.to != v)
+		  if (e.getTo() != v)
 			n.add(e);
 		return n;
 	 }      
@@ -49,7 +50,7 @@ public class Graph
 		ArrayList<Edge> list = new ArrayList<Edge>();
         for (int v = 0; v < V; v++)
             for (Edge e : adj(v)) {
-                if (e.to != v)
+                if (e.getTo() != v)
                     list.add(e);
             }
         return list;
@@ -63,7 +64,7 @@ public class Graph
 			 PrintWriter writer = new PrintWriter(s, "UTF-8");
 			 writer.println("digraph G{");
 			 for (Edge e: edges())
-			   writer.println(e.from + "->" + e.to + "[label=\"" + e.cost + "\"];");
+			   writer.println(e.from + "->" + e.getTo() + "[label=\"" + e.cost + "\"];");
 			 writer.println("}");
 			 writer.close();
 		  }

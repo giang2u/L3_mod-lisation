@@ -1,11 +1,12 @@
-class Heap
+package model;
+public class Heap
 {
    int cor[];
    int item[];
    int heap[];
    int size;
    
-    Heap(int N)
+    public Heap(int N)
 	 {
 		cor = new int[N+1];
 		heap = new int[N+1];
@@ -17,7 +18,7 @@ class Heap
 		for (i = 1; i < N+1; i++) heap[i] = Integer.MAX_VALUE;
 	 }
 
-   int priority(int x)
+   public int priority(int x)
 	 {
 		return heap[cor[x]];
 	 }
@@ -32,7 +33,7 @@ class Heap
 		return size;
 	 }
    
-   void decreaseKey(int x, int p)
+   public void decreaseKey(int x, int p)
 	 {
 		int pos = cor[x];
 		//System.out.println(pos +"azearzarzarar"+  size);
@@ -55,14 +56,14 @@ class Heap
 		cor[x] = pos;
 	 }
 
-   void affiche()
+   public void affiche()
 	 {
 		for (int i = 1; i <= size; i++)
 		  System.out.print("(" + item[i] + " " + heap[i] + ")");
 		System.out.println();
 	 }
    
-   int pop()
+   public int pop()
 	 {
 		int ret = item[1];
 		int min = heap[1];

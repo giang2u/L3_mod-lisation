@@ -1,15 +1,49 @@
-import java.util.ArrayList;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 
-class Test
-{
-   static boolean visite[];
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+import view.GestionImageLink;
+import view.GestionVue;
+
+import model.Edge;
+import model.Graph;
+import model.Heap;
+import model.Modele;
+import model.SeamCarving;
+
+
+
+public class Modeli extends JFrame{
+	static boolean visite[];
+	public Modeli(){
+		super("Projet Modelisation - Gestion Image PMG");
+		this.setPreferredSize(new Dimension(750, 500)) ;
+		this.setLayout(new BorderLayout());
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		JPanel jp = new JPanel();
+		SeamCarving sc = new SeamCarving();
+		Modele m = new Modele(sc);
+		GestionImageLink fi = new GestionImageLink(m);
+		GestionVue fo = new GestionVue(m);
+		jp.add(fi,BorderLayout.WEST);
+		jp.add(fo,BorderLayout.EAST);
+		
+		this.add(jp,BorderLayout.NORTH);
+		pack() ;
+		setVisible(true);
+	}
+   
+   
    public static void dfs(Graph g, int u)
 	 {
 		visite[u] = true;
 		System.out.println("Je visite " + u);
 		for (Edge e: g.next(u))
-		  if (!visite[e.to])
-			dfs(g,e.to);
+		  if (!visite[e.getTo()])
+			dfs(g,e.getTo());
 	 }
 
    public static void testHeap()
@@ -59,11 +93,11 @@ class Test
    
    public static void main(String[] args)
 	 {
-		testHeap();
-		testGraph();
+		//testHeap();
+		//testGraph();
 		/*
 		int[][] fin = SeamCarving.readpgm("feep.pgm");		
-		SeamCarving.writepgm(fin, "tamere_kif_les_bites");
+		SeamCarving.writepgm(fin, "test1");
 		int[][] outTAb = SeamCarving.interest(fin);
 		
 
@@ -86,14 +120,16 @@ class Test
 		//g.writeFile("graph.dot");
 		
 		/*int[][] fin = SeamCarving.readpgm("test.pgm");		
-		//SeamCarving.writepgm(fin, "tamere_kif_les_bites");
+		//SeamCarving.writepgm(fin, "test1");
 		int[][] outTAb = SeamCarving.interest(fin);
 		Graph g = SeamCarving.toGraph(outTAb);
 		ArrayList<Integer> list = SeamCarving.Dijkstra(g, 0, outTAb.length*outTAb[0].length);
 		for(int i = 0 ; i < list.size(); ++i){
 			System.out.println(list.get(i));
 		}*/
-		
-		SeamCarving.supprimerPixel(args[0], 100);
+	   
+	   Modeli model = new Modeli();
+	   //int nb_pixel_del = Integer.valueOf(args[1]); // nb de fois on on veut supprimer le pixel
+		//SeamCarving.supprimerPixel(args[0],args[0],  50);
 	 }
 }
