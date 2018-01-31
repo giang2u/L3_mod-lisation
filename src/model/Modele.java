@@ -21,6 +21,9 @@ public class Modele extends Observable {
 	public Modele(SeamCarving sc){
 		this.sc = sc ;
 		this.vues = new ArrayList<>();
+		inFileName = "";
+		inFilePath="";
+		outFilePath="";
 	}
 
 	public void ajouterVue(Vue v){
@@ -42,11 +45,11 @@ public class Modele extends Observable {
 		String[] parts = s.split(".pgm");
 		String part1 = parts[0]+ "_remove.pgm" ;
 		this.inFileName = part1;
+		majVue();
 	}
 	
 	public void setInFilePath(String s){
 		this.inFilePath = s;
-		majVue();
 	}
 	
 	public String getInFilePath(){
