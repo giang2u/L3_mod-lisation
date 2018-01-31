@@ -94,6 +94,6 @@ class Test
 			System.out.println(list.get(i));
 		}*/
 		
-		SeamCarving.supprimerPixel("ex1", 200);
+		SeamCarving.supprimerPixel(args[0], 100);
 	 }
 }
