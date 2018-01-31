@@ -39,8 +39,9 @@ public class Modele extends Observable {
 	}
 	
 	public void setInFileName(String s){
-		this.inFileName = s;
-		majVue();
+		String[] parts = s.split(".pgm");
+		String part1 = parts[0]+ "_remove.pgm" ;
+		this.inFileName = part1;
 	}
 	
 	public void setInFilePath(String s){
