@@ -1,6 +1,7 @@
 package model;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.io.*;
 import java.util.*;
 
@@ -149,12 +150,11 @@ public class SeamCarving
 		   
 		   int largeur = itr[0].length;
 		   int hauteur = itr.length;
-
 			//System.out.println("hauteur" + itr[hauteur -1][largeur -1]);
 		   Graph a = new Graph(largeur*2 + largeur*2 +2);
 		   int compteur = 0;
 		   
-		   
+		  
 		   // relie le sommet initial 0 a la premiere ligne
 		   for (int i =0 ; i < largeur; i++) {
 			   a.addEdge( new Edge(compteur, i + 1, 0) ); 
@@ -236,7 +236,139 @@ public class SeamCarving
 		   return a;
 	   }
 	
+	
+	
+	// SUUUUUUUUUUUUUUUUUUUUUUUUURRRRRRRRRRRRRRRRRRRRRRRBBBBBBBBBBBBBBBAAAAAAAAAAAAAAALLLLLLLLLLLLLLEEEEE
+	public static Graph suurballe(int [][] itr){
+		Graph g = SeamCarving.toGraph2(itr);
+		int sb[][] = new int [4][itr[0].length];
+		int tab[] = new int [4*itr[0].length + 2];
+		int compt = 1;
+		
+		
+		
+		// Calcul de la somme des sommets avec leur chemin le plus court
+		
+		for (int i = 1; i < 5; i++) {
+			int somme = 0;
+			for (int j = 0; j < itr[0].length ; j++) {
+				somme = SeamCarving.coutDijkstra(g, 0, compt);
+				sb[i-1][j] = somme;
+				tab[compt] = somme;
+				compt++;
+			}
+		}
+		
+		// ajout de la derniere ligne vers le dernier point fictif
+		
+		for (int i = 0; i < itr[0].length; i++ ) 
+		{
+			int somme = SeamCarving.coutDijkstra(g, 0, compt);
+			tab[compt] = somme;
+		}
+		
+		
+		// 1er chemin le plus court
+		ArrayList<Integer> suurb = SeamCarving.Dijkstra(g, 0, 4*itr[0].length + 1 );
+		compt = 0;
+		
+		// Inversion du chemin le plus court
+		
+		for (Edge e : g.edges()) {
+			e.setCout(e.cout() + ( tab[e.depart()] - tab[e.getTo()]  ) );
+			if (compt < suurb.size()-1 && e.depart() == suurb.get(compt) && e.getTo() == suurb.get(compt+1) ) {
+				int dep = e.depart();
+				e.setDepart(e.getTo());
+				e.setTo(dep);
+				compt++;
+			}
+		}
+		
+		// Dijsktra pour chercher le 2eme chemin le plus court
+		
+		ArrayList<Integer>  suurb2 = SeamCarving.Dijkstra(g, 0, 4*itr[0].length + 1 );
 
+
+		// taille du chemin des" courts
+		int i = 0;
+		if (suurb.size() > 0) i = 1;
+
+
+
+		// Suppression des aretes jaunes
+
+		ArrayList<Integer>  areteJaune = new ArrayList<Integer>();
+		ArrayList<Integer>  saut = new ArrayList<Integer>();
+
+		while(i < suurb.size() - 1)  {
+			if (suurb2.contains(suurb.get(i) )   ) {
+
+				// recuperation de la position dans suurb2
+
+				int index = suurb2.indexOf(suurb.get(i));
+				
+				// On regarde si l'une des aretes du djikstra2 et aussi dans djisktra1
+				if ( suurb2.get(index +1) == suurb.get(i + 1 ) ){
+					areteJaune.add( suurb.get(i) );
+					areteJaune.add( suurb.get(i+1) );
+				}
+				if ( suurb2.get(index - 1) == suurb.get(i + 1 ) ){
+					areteJaune.add( suurb.get(i) );
+					areteJaune.add( suurb.get(i+1) );
+					
+				}
+
+			}
+			i++;
+		}
+		
+		// enlevage arete jaune
+		
+		for (i= 0; i < areteJaune.size() - 1 ; i+=2){
+			g.removeEdge(areteJaune.get(i), areteJaune.get(i+1));
+			g.removeEdge(areteJaune.get(i+1), areteJaune.get(i));
+			
+			for (int j = 0; j < suurb.size() ; j++) {
+				
+				if (suurb.get(j) == areteJaune.get(i) && suurb.get(j+1) == areteJaune.get(i+1)) {
+					
+					// ajout des sommets à ne pas inverser avec leur precedent sommet
+					saut.add(j);
+					//System.out.println(" TEST SUURBATIOOn " + suurb.get(j) + "  " +  areteJaune.get(i)   +"     " + suurb.get(j+1)  + "   " + areteJaune.get(i+1) );
+				/*	
+					suurb.remove(j+1); 
+					suurb.remove(j);*/
+				}
+			}
+		}
+		
+		
+		// re inversion des aretes
+		
+		// deplacement dans le djikstra du 1er chemin
+		compt = 1;
+		
+		// deplacement dans la liste de sommet a ne pas inverser car supprimer
+		i = 0;
+		
+		for (Edge e : g.edges()) {
+			
+			
+			if (compt < suurb.size() && e.depart() == suurb.get(compt) && e.getTo() == suurb.get(compt-1) ) {
+				
+				if (i < saut.size() && compt == saut.get(i)) {
+					compt++; 
+					i++; 
+				}
+				int dep = e.depart();
+				e.setDepart(e.getTo());
+				e.setTo(dep);
+				compt++;
+				
+			}
+		}
+		return g;
+	}
 	
 	public static ArrayList<Integer> Dijkstra(Graph graph, int s , int  t){
 		
@@ -264,9 +396,49 @@ public class SeamCarving
 			list.add(0, t);
 			t = precedent[t];
 		}
+		
 
 		list.add(0,t);
 		return list ;
+	}
+	
+	public static int coutDijkstra(Graph graph, int s , int  t){
+		
+		int cout =  0;
+		
+		Heap heap = new Heap(graph.vertices());
+		ArrayList<Integer> list = new ArrayList<>();
+		int[] precedent = new int[graph.vertices()];
+		int [] p = new int[graph.vertices()];
+		heap.decreaseKey(s, 0);
+		while(!heap.isEmpty()){
+			int elem = heap.pop();
+
+			for(Edge edge: graph.adj(elem)){
+				
+				if(heap.priority(elem) + edge.cout() < heap.priority(edge.arrive())){
+					int costtemp = heap.priority(elem) + edge.cout();
+					heap.decreaseKey(edge.arrive(),costtemp);
+					precedent[edge.arrive()] = elem;  
+					p[edge.arrive()] = edge.cout();
+				}
+				
+			}
+		}
+		//t = arrive
+		int s1 = 0;
+		while( s != t){
+			s1 = p[t];
+			list.add(0, s1);
+			t = precedent[t];
+		}
+		
+		for(Integer k : list) {
+			cout += k;
+			
+		}
+		
+		return cout;
 	}
 	
 	

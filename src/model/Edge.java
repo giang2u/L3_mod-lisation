@@ -33,5 +33,13 @@ public int getTo() {
 public void setTo(int to) {
 	this.to = to;
 }
+
+public void setCout(int cout) {
+	this.cost = cout;
+}
+
+public void setDepart(int depart) {
+	this.from = depart;
+}
    
 }
