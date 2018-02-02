@@ -35,6 +35,13 @@ public class Graph
 	 {
 		return adj[v];
 	 }      
+   
+   public void removeEdge(int from, int to) {
+	   
+	   for (int i = 0; i < adj[from].size(); i++) {
+		  if ( adj[from].get(i).getTo() == to) adj[from].remove(i);
+	   }
+   }
 
    public Iterable<Edge> next(int v)
 	 {

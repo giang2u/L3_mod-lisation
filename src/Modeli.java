@@ -1,5 +1,6 @@
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -127,10 +128,10 @@ public class Modeli extends JFrame{
 			System.out.println(list.get(i));
 		}*/
 	   
-	   	int[][][] fin = SeamCarving.readppm("testColor.ppm");		
+	   	//int[][][] fin = SeamCarving.readppm("testColor.ppm");		
 		//SeamCarving.writepgm(fin, "test1Color");
-		int largeurinit = fin[0].length;
-		int hauteurinit = fin.length;
+		//int largeurinit = fin[0].length;
+		//int hauteurinit = fin.length;
 		/*for(int i = 0 ; i < hauteurinit; i ++){
 			for(int j = 0 ; j < largeurinit; j++ ){
 				for(int k = 0 ; k < 3; k++ ){
@@ -143,9 +144,12 @@ public class Modeli extends JFrame{
 		}*/
 		
 		
-		int[][] outTAb = SeamCarving.interestPPM(fin);
-		int largeur = outTAb[0].length;
-		int hauteur = outTAb.length;
+		//int[][] outTAb = SeamCarving.interestPPM(fin);
+	   //	int[][] fin = SeamCarving.readpgm("test.pgm");		
+		//SeamCarving.writepgm(fin, "test1");
+		//int[][] outTAb = SeamCarving.interest(fin);
+		//int largeur = outTAb[0].length;
+		//int hauteur = outTAb.length;
 		/*for(int i = 0 ; i < hauteur; i ++){
 			for(int j = 0 ; j < largeur; j++ ){
 				System.out.print(outTAb[i][j] +" ");
@@ -155,6 +159,19 @@ public class Modeli extends JFrame{
 		
 		//Graph g = SeamCarving.toGraph(outTAb);
 		//g.writeFile("graph.dot");
+		//}
+		
+		//Graph g = SeamCarving.toGraph2(outTAb);
+		//g.writeFile("graph.dot");
+		/*int[] cout = SeamCarving.coutDijkstra(g, 0, outTAb.length * 4 + 2);
+		for(int i = 0 ; i < cout.length; ++i){
+			System.out.println(cout[i]);
+		}*/
+		
+		//Graph gg= SeamCarving.suurballe(outTAb);
+		/*for (Integer j :SeamCarving.twopath(gg, 0, 4*outTAb[0].length + 1) ) {
+			System.out.println("   " + j);
+		}*/
 		
 	   //Modeli model = new Modeli();
 	   //int nb_pixel_del = Integer.valueOf(args[1]); // nb de fois on on veut supprimer le pixel
