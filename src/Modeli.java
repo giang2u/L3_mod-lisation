@@ -127,24 +127,37 @@ public class Modeli extends JFrame{
 			System.out.println(list.get(i));
 		}*/
 	   
-	   	int[][] fin = SeamCarving.readpgm("feep.pgm");		
-		SeamCarving.writepgm(fin, "test1");
-		int[][] outTAb = SeamCarving.interest(fin);
-		int largeur = outTAb[0].length;
-		int hauteur = outTAb.length;
-		for(int i = 0 ; i < hauteur; i ++){
-			for(int j = 0 ; j < largeur; j++ ){
-				if (j < largeur - 1 ) System.out.print(outTAb[i][j]+ " ");
-				else System.out.println(outTAb[i][j]);
+	   	int[][][] fin = SeamCarving.readppm("testColor.ppm");		
+		//SeamCarving.writepgm(fin, "test1Color");
+		int largeurinit = fin[0].length;
+		int hauteurinit = fin.length;
+		/*for(int i = 0 ; i < hauteurinit; i ++){
+			for(int j = 0 ; j < largeurinit; j++ ){
+				for(int k = 0 ; k < 3; k++ ){
+					System.out.print(fin[i][j][k] +" ");
+				}
+				System.out.print(" | ");
 				
 			}
-		}
+			System.out.print(" \n ");
+		}*/
 		
-		Graph g = SeamCarving.toGraph2(outTAb);
-		g.writeFile("graph.dot");
+		
+		int[][] outTAb = SeamCarving.interestPPM(fin);
+		int largeur = outTAb[0].length;
+		int hauteur = outTAb.length;
+		/*for(int i = 0 ; i < hauteur; i ++){
+			for(int j = 0 ; j < largeur; j++ ){
+				System.out.print(outTAb[i][j] +" ");
+			}
+			System.out.print("\n");
+		}*/
+		
+		//Graph g = SeamCarving.toGraph(outTAb);
+		//g.writeFile("graph.dot");
 		
 	   //Modeli model = new Modeli();
 	   //int nb_pixel_del = Integer.valueOf(args[1]); // nb de fois on on veut supprimer le pixel
-		//SeamCarving.supprimerPixel(args[0],args[0],  50);
+		SeamCarving.supprimerPixel(args[0],args[0],  50);
 	 }
 }
