@@ -149,6 +149,9 @@ public class Modeli extends JFrame{
 		}*/
 		
 		Graph gg= SeamCarving.suurballe(outTAb);
+		/*for (Integer j :SeamCarving.twopath(gg, 0, 4*outTAb[0].length + 1) ) {
+			System.out.println("   " + j);
+		}*/
 		gg.writeFile("graph.dot");
 		
 		

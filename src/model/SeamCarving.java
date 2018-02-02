@@ -328,18 +328,25 @@ public class SeamCarving
 			g.removeEdge(areteJaune.get(i), areteJaune.get(i+1));
 			g.removeEdge(areteJaune.get(i+1), areteJaune.get(i));
 			
-			for (int j = 0; j < suurb.size() ; j++) {
+			for (int j = 0; j < suurb.size() - 1 ; j++) {
 				
 				if (suurb.get(j) == areteJaune.get(i) && suurb.get(j+1) == areteJaune.get(i+1)) {
-					
 					// ajout des sommets à ne pas inverser avec leur precedent sommet
 					saut.add(j);
-					//System.out.println(" TEST SUURBATIOOn " + suurb.get(j) + "  " +  areteJaune.get(i)   +"     " + suurb.get(j+1)  + "   " + areteJaune.get(i+1) );
-				/*	
-					suurb.remove(j+1); 
-					suurb.remove(j);*/
 				}
 			}
+			
+			
+			for (int j = 0; j < suurb2.size() - 1; j++) {
+			
+				if (suurb2.get(j) == areteJaune.get(i+1) && suurb2.get(j+1) == areteJaune.get(i)) {
+					//System.out.println(" TEST SUURBATIOOn " + suurb2.get(j) + "  " +  areteJaune.get(i+1)   +"     " + suurb2.get(j+1)  + "   " + areteJaune.get(i) );
+					
+					suurb2.remove(j+1); 
+					suurb2.remove(j);
+				}
+			}
+			
 		}
 		
 		
@@ -367,8 +374,36 @@ public class SeamCarving
 				
 			}
 		}
+		
+		// transfert des bonnes aretes
+		for (int j = 1; j < suurb.size(); j++) {
+			int diff = Math.abs( suurb2.get(j-1) - suurb2.get(j) ) ;
+			boolean verif = diff > itr[0].length && suurb.get(j)% itr[0].length == 0 ;
+			boolean verif2 = diff > itr[0].length + 1 && suurb.get(j)% itr[0].length != 0 ;
+			if (verif || verif2 ) {
+				int echange = suurb.get(j);
+				suurb.set(j, suurb2.get(j));
+				suurb2.set(j, echange);
+			}
+		}
+		for (Integer p : suurb) System.out.println(" Suurb 1 " + p);
+		for (Integer p : suurb2) System.out.println(" YEYTTUEVZE " + p);
+		
 		return g;
 	}
+	
+	
+	public static ArrayList<Integer> twopath(Graph g, int s, int t) {
+		
+		int[][] tab= null;
+		
+		
+		
+		
+		
+		return SeamCarving.Dijkstra(g, s, t);
+	}
+	
 	
 	public static ArrayList<Integer> Dijkstra(Graph graph, int s , int  t){
 		
