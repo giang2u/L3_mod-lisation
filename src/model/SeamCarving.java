@@ -151,7 +151,10 @@ public class SeamCarving
 		   int largeur = itr[0].length;
 		   int hauteur = itr.length;
 			//System.out.println("hauteur" + itr[hauteur -1][largeur -1]);
-		   Graph a = new Graph(largeur*2 + largeur*2 +2);
+		   Graph a = new Graph(hauteur * largeur +2 + (  (hauteur - 2) * largeur ));
+		   
+		   int newhauteur =hauteur + hauteur - 2;
+		   
 		   int compteur = 0;
 		   
 		  
@@ -186,23 +189,15 @@ public class SeamCarving
 		   }
 		   
 		   
-		   for (int i = 0; i < 1; i++) {
+		   
+		   for (int i = 2; i < newhauteur - 1 ; i++) {
 			   for (int j = 0; j < largeur; j++) {
-				   if (j == 0) {
-					   a.addEdge( new Edge(compteur, compteur + largeur, 0 ) );
-						  
-				   }
-				   else if (j == largeur -1) {
 					   a.addEdge( new Edge(compteur, compteur + largeur , 0 ) );
-						  
-				   } 
-				   
-				   else {
-					   a.addEdge( new Edge(compteur, compteur + largeur , 0 ) );
-				   }
-				   compteur++;
+					   compteur++;
 			   }
+				 
 		   }
+		   
 		   //---------------------------
 		   
 		   for (int i = hauteur - 1; i <  hauteur; i++) {
@@ -230,9 +225,10 @@ public class SeamCarving
 		   
 		   // derniere ligne qui rejoint le sommet fin
 		   for (int i = 0; i < largeur; i++ ) {
-			   a.addEdge( new Edge(compteur + i, largeur*2 + largeur*2 +1 , itr[hauteur-1][i]) );
+			   
+			   a.addEdge( new Edge(compteur + i, newhauteur * largeur + 1 , itr[hauteur-1][i]) );
 		   }
-		   
+		   System.out.println(" hauteur " + hauteur + " largeur  " + largeur);
 		   return a;
 	   }
 	
@@ -241,27 +237,35 @@ public class SeamCarving
 	// SUUUUUUUUUUUUUUUUUUUUUUUUURRRRRRRRRRRRRRRRRRRRRRRBBBBBBBBBBBBBBBAAAAAAAAAAAAAAALLLLLLLLLLLLLLEEEEE
 	public static Graph suurballe(int [][] itr){
 		Graph g = SeamCarving.toGraph2(itr);
-		int sb[][] = new int [4][itr[0].length];
-		int tab[] = new int [4*itr[0].length + 2];
+		
+		  int largeur = itr[0].length;
+		  int hauteur = itr.length;
+		  hauteur += hauteur -2;
+		
+		
+		int sb[][] = new int [hauteur][largeur];
+		int tab[] = new int [hauteur*largeur + 2];
 		int compt = 1;
 		
 		
 		
 		// Calcul de la somme des sommets avec leur chemin le plus court
 		
-		for (int i = 1; i < 5; i++) {
+		for (int i = 1; i < hauteur+1; i++) {
 			int somme = 0;
-			for (int j = 0; j < itr[0].length ; j++) {
+			for (int j = 0; j < largeur ; j++) {
 				somme = SeamCarving.coutDijkstra(g, 0, compt);
 				sb[i-1][j] = somme;
 				tab[compt] = somme;
+				
+				
 				compt++;
 			}
 		}
 		
 		// ajout de la derniere ligne vers le dernier point fictif
 		
-		for (int i = 0; i < itr[0].length; i++ ) 
+		for (int i = 0; i < largeur; i++ ) 
 		{
 			int somme = SeamCarving.coutDijkstra(g, 0, compt);
 			tab[compt] = somme;
@@ -269,7 +273,7 @@ public class SeamCarving
 		
 		
 		// 1er chemin le plus court
-		ArrayList<Integer> suurb = SeamCarving.Dijkstra(g, 0, 4*itr[0].length + 1 );
+		ArrayList<Integer> suurb = SeamCarving.Dijkstra(g, 0, hauteur * largeur + 1 );
 		compt = 0;
 		
 		// Inversion du chemin le plus court
@@ -286,7 +290,7 @@ public class SeamCarving
 		
 		// Dijsktra pour chercher le 2eme chemin le plus court
 		
-		ArrayList<Integer>  suurb2 = SeamCarving.Dijkstra(g, 0, 4*itr[0].length + 1 );
+		ArrayList<Integer>  suurb2 = SeamCarving.Dijkstra(g, 0,  hauteur * largeur + 1 );
 
 
 		// taille du chemin des" courts
@@ -386,8 +390,6 @@ public class SeamCarving
 				suurb2.set(j, echange);
 			}
 		}
-		for (Integer p : suurb) System.out.println(" Suurb 1 " + p);
-		for (Integer p : suurb2) System.out.println(" YEYTTUEVZE " + p);
 		
 		return g;
 	}
@@ -443,8 +445,8 @@ public class SeamCarving
 		
 		Heap heap = new Heap(graph.vertices());
 		ArrayList<Integer> list = new ArrayList<>();
-		int[] precedent = new int[graph.vertices()];
-		int [] p = new int[graph.vertices()];
+		int[] precedent = new int[graph.vertices()+1];
+		int [] p = new int[graph.vertices()+1];
 		heap.decreaseKey(s, 0);
 		while(!heap.isEmpty()){
 			int elem = heap.pop();

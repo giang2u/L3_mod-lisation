@@ -141,17 +141,12 @@ public class Modeli extends JFrame{
 			}
 		}*/
 		
+		
+		
 		Graph g = SeamCarving.toGraph2(outTAb);
 		//g.writeFile("graph.dot");
-		/*int[] cout = SeamCarving.coutDijkstra(g, 0, outTAb.length * 4 + 2);
-		for(int i = 0 ; i < cout.length; ++i){
-			System.out.println(cout[i]);
-		}*/
 		
 		Graph gg= SeamCarving.suurballe(outTAb);
-		/*for (Integer j :SeamCarving.twopath(gg, 0, 4*outTAb[0].length + 1) ) {
-			System.out.println("   " + j);
-		}*/
 		gg.writeFile("graph.dot");
 		
 		
