@@ -43,10 +43,10 @@ public class GestionImageLink extends JPanel implements Vue {
 				Thread t = new Thread(new Runnable(){
 					public void run(){
 						if (reponse == JFileChooser.APPROVE_OPTION){
-							//imageName = jf.getSelectedFile().getName();
+							imageName = jf.getSelectedFile().getName();
 							pathImage = jf.getSelectedFile().getAbsolutePath();
-							//m.setInFileName(imageName);
 							m.setInFilePath(pathImage);
+							m.setInFileName(imageName);
 						}
 					}
 				});
@@ -78,8 +78,10 @@ public class GestionImageLink extends JPanel implements Vue {
 	public void maj() {
 		if(this.m.getInFilePath().contains("pgm")){
 			this.m.setoutFilePath(this.m.getInFilePath());
-			inPathName.setText("In File Path: "+this.pathImage);
-			outPathName.setText("Out File Path: "+this.m.getoutFilePath());
+			//inPathName.setText("In File Path: "+this.pathImage);
+			//outPathName.setText("Out File Path: "+this.m.getoutFilePath());
+			inPathName.setText("In File Name: "+this.imageName);
+			outPathName.setText("Out File Name: "+this.m.getInFileName());
 		}
 		else{
 			JOptionPane.showMessageDialog(null,"Selection un fichier .pgm","Erreur select",JOptionPane.ERROR_MESSAGE);

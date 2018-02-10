@@ -1,5 +1,6 @@
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -99,10 +100,9 @@ public class Modeli extends JFrame{
 		int[][] fin = SeamCarving.readpgm("feep.pgm");		
 		SeamCarving.writepgm(fin, "test1");
 		int[][] outTAb = SeamCarving.interest(fin);
-		
+		*/
 
-		int largeur = outTAb[0].length;
-		int hauteur = outTAb.length;
+		
 		/*for(int i = 0 ; i < hauteur; i ++){
 			for(int j = 0 ; j < largeur; j++ ){
 				//if (j < largeur - 1 ) System.out.print(outTAb[i][j]+ " ");
@@ -128,7 +128,29 @@ public class Modeli extends JFrame{
 			System.out.println(list.get(i));
 		}*/
 	   
-	   Modeli model = new Modeli();
+	   	int[][] fin = SeamCarving.readpgm("test.pgm");		
+		SeamCarving.writepgm(fin, "test1");
+		int[][] outTAb = SeamCarving.interest(fin);
+		int largeur = outTAb[0].length;
+		int hauteur = outTAb.length;
+		/*for(int i = 0 ; i < hauteur; i ++){
+			for(int j = 0 ; j < largeur; j++ ){
+				if (j < largeur - 1 ) System.out.print(outTAb[i][j]+ " ");
+				else System.out.println(outTAb[i][j]);
+				
+			}
+		}*/
+		
+		
+		
+		Graph g = SeamCarving.toGraph2(outTAb);
+		//g.writeFile("graph.dot");
+		
+		Graph gg= SeamCarving.suurballe(outTAb);
+		gg.writeFile("graph.dot");
+		
+		
+	   //Modeli model = new Modeli();
 	   //int nb_pixel_del = Integer.valueOf(args[1]); // nb de fois on on veut supprimer le pixel
 		//SeamCarving.supprimerPixel(args[0],args[0],  50);
 	 }
