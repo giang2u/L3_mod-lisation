@@ -6,7 +6,7 @@ import java.io.*;
 import java.util.*;
 
 import sun.invoke.empty.Empty;
-import sun.org.mozilla.javascript.ast.WithStatement;
+//import sun.org.mozilla.javascript.ast.WithStatement;
 public class SeamCarving
 {
 
