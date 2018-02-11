@@ -141,8 +141,8 @@ public class Modeli extends JFrame{
 			}
 		}*/
 		
-		
-		
+
+
 		Graph g = SeamCarving.toGraph2(outTAb);
 		//g.writeFile("graph.dot");
 		
@@ -153,5 +153,7 @@ public class Modeli extends JFrame{
 	   //Modeli model = new Modeli();
 	   //int nb_pixel_del = Integer.valueOf(args[1]); // nb de fois on on veut supprimer le pixel
 		//SeamCarving.supprimerPixel(args[0],args[0],  50);
+		//SeamCarving.supprimerPixelPPM("poivron.ppm","poivronOut.ppm", 100);
+		SeamCarving.supprimerPixelPPM("pbmlib.ppm","pbmlibout.ppm", 50);
 	 }
 }

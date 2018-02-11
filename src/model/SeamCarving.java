@@ -101,15 +101,54 @@ public class SeamCarving
 			FileWriter fstream = new FileWriter(filename);
 			//FileWriter fstream = new FileWriter("img/"+filename);
 			BufferedWriter out = new BufferedWriter(fstream);
-			//out.write("P2\n# CREATOR: MOI \n"+height+ " "+ width +"\n255\n");
+			out.write("P2\n# CREATOR: MOI \n"+height+ " "+ width +"\n255\n");
 			
 			/*------------------GESTIOB COLOR-------------------------*/
-			out.write("P3\n# CREATOR: MOI \n"+height+ " "+ width +"\n 255  #net en RGB\n");
+			//out.write("P3\n# CREATOR: MOI \n"+height+ " "+ width +"\n 255  #net en RGB\n");
 
 			for(int i = 0 ; i<width;i++) {
 				for(int j = 0 ; j<height;j++) {
 					if ( j < height-1 ) out.write(image[i][j]+" ");
 					else out.write(image[i][j]+"\n");
+					
+				}
+			}
+			out.close();
+		}
+		catch (Exception e){
+			System.err.println("Error : " + e.getMessage());
+		}
+
+	}
+	
+	public static void writeppm(int [][][] image, String filename) {
+
+
+		try{
+
+			int  width = image.length;
+			int height = image[0].length ;
+			//FileWriter fstream = new FileWriter("img/"+filename+".pgm");
+			FileWriter fstream = new FileWriter(filename);
+			//FileWriter fstream = new FileWriter("img/"+filename);
+			BufferedWriter out = new BufferedWriter(fstream);
+			//out.write("P2\n# CREATOR: MOI \n"+height+ " "+ width +"\n255\n");
+			
+			/*------------------GESTIOB COLOR-------------------------*/
+			out.write("P3\n# CREATOR: MOI \n"+height+ " "+ width +"\n255  #net en RGB\n");
+
+			for(int i = 0 ; i<width;i++) {
+				for(int j = 0 ; j<height;j++) {
+					if( j < height-1 ){
+						out.write(image[i][j][0]+" ");
+						out.write(image[i][j][1]+" ");
+						out.write(image[i][j][2]+" ");
+					}
+					else{
+						out.write(image[i][j][0]+" ");
+						out.write(image[i][j][1]+" ");
+						out.write(image[i][j][2]+"\n");
+					}
 					
 				}
 			}
@@ -752,6 +791,90 @@ public class SeamCarving
 		}
 		//outfile = "reduction_"+outfile;
 		SeamCarving.writepgm(tab, outfile);
+		System.out.println("DONE!!!!");
+		
+	}
+	
+	
+public static void supprimerPixelPPM(String filename,String outfile, int iteration) {
+		
+		//filename += "2";
+		
+		//int[][] fin = SeamCarving.readpgm(filename+".pgm");	
+		int[][][] fin = SeamCarving.readppm(filename);	
+		int[][] outTAb = SeamCarving.interestPPM(fin);
+		Graph g = SeamCarving.toGraph(outTAb);
+		ArrayList<Integer> list = SeamCarving.Dijkstra(g, 0, fin.length*fin[0].length + 1);
+		
+		
+		int  width = outTAb[0].length;
+		int height = outTAb.length;
+		
+		int[][][] tab = new int[fin.length][fin[0].length-1][3] ;
+		
+		int indicePixelASuppr = 1;
+			
+		for(int i = 0 ; i<tab.length;i++) {
+			int z = 0;
+			for(int j = 0 ; j<tab[0].length ;j++) {
+				
+				
+				int longu = j+1;
+				
+				if (list.get(indicePixelASuppr) == (  (i* outTAb[0].length )  + longu)  )  {
+					indicePixelASuppr++;
+					z++; 
+					 tab[i][j][0] = fin[i][z][0]; 
+					 tab[i][j][1] = fin[i][z][1]; 
+					 tab[i][j][2] = fin[i][z][2]; 
+				} 
+				else {
+					 tab[i][j][0] = fin[i][z][0]; 
+					 tab[i][j][1] = fin[i][z][1]; 
+					 tab[i][j][2] = fin[i][z][2];
+					 
+				}
+				System.out.println(tab[i][j][0] + 
+					 tab[i][j][1]+
+					 tab[i][j][2] + "\n" );
+				z++;
+			}
+		}
+		
+		
+		for (int k = 0; k < iteration - 1; k++) {
+			indicePixelASuppr = 1;
+			
+			fin = tab;
+			outTAb = SeamCarving.interestPPM(fin);
+			g = SeamCarving.toGraph(outTAb);
+			list = SeamCarving.Dijkstra(g, 0, fin.length*fin[0].length + 1);
+			 
+			tab = new int[fin.length][fin[0].length-1][3] ;
+
+			for(int i = 0 ; i<tab.length;i++) {
+				int z = 0;
+				for(int j = 0 ; j<tab[0].length ;j++) {
+					int longu = j+1;
+					if (list.get(indicePixelASuppr)==((i*outTAb[0].length)+longu)){
+						indicePixelASuppr++;
+						 z++; 
+						 tab[i][j][0] = fin[i][z][0]; 
+						 tab[i][j][1] = fin[i][z][1]; 
+						 tab[i][j][2] = fin[i][z][2]; 
+					} 
+					else {
+						 tab[i][j][0] = fin[i][z][0]; 
+						 tab[i][j][1] = fin[i][z][1]; 
+						 tab[i][j][2] = fin[i][z][2]; 
+					}
+					z++;
+				}
+			}
+			
+		}
+		//outfile = "reduction_"+outfile;
+		SeamCarving.writeppm(tab, outfile);
 		System.out.println("DONE!!!!");
 		
 	}
