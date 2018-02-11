@@ -42,6 +42,17 @@ public class Graph
 		  if ( adj[from].get(i).getTo() == to) adj[from].remove(i);
 	   }
    }
+   
+   public Edge getEdge(int from, int to) {
+	   
+	   Edge e = null;
+	   for (int i = 0; i < adj[from].size(); i++) {
+		  if ( adj[from].get(i).getTo() == to)  e = adj[from].get(i);
+	   }
+	   
+	   return e;
+   }
+   
 
    public Iterable<Edge> next(int v)
 	 {
