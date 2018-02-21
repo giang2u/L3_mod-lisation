@@ -38,10 +38,10 @@ public class Heap
 		int pos = cor[x];
 		if (pos > size)
 		  {
+			System.out.println( pos + " heap " + size + "   " + x +  " cout " + p);
 			 System.out.println("erreur");
 			 System.exit(1);
 		  }
-		
 		for (; pos > 1 && p < heap[pos/2]; pos = pos/2)
 		  {
 			 //System.out.println("hop");
