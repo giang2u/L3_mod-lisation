@@ -9,7 +9,8 @@ import sun.invoke.empty.Empty;
 //import sun.org.mozilla.javascript.ast.WithStatement;
 public class SeamCarving
 {
-
+	public static int[][] im;
+	
 	public static int[][] readpgm(String fn)
 	{		
 		try {
@@ -30,7 +31,7 @@ public class SeamCarving
 			line = d.readLine();
 			s = new Scanner(line);
 			int maxVal = s.nextInt();
-			int[][] im = new int[height][width];
+			im = new int[height][width];
 			s = new Scanner(d);
 			int count = 0;
 			while (count < height*width) {
