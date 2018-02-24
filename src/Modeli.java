@@ -10,9 +10,12 @@ import view.GestionVue;
 
 import model.Edge;
 import model.Graph;
+import model.GraphTraitement;
 import model.Heap;
+import model.Interest;
 import model.Modele;
 import model.SeamCarving;
+import model.Supprimer;
 
 
 
@@ -130,7 +133,7 @@ public class Modeli extends JFrame{
 	   
 	   	int[][] fin = SeamCarving.readpgm("test.pgm");		
 		SeamCarving.writepgm(fin, "test1");
-		int[][] outTAb = SeamCarving.interest(fin);
+		int[][] outTAb = Interest.interest(fin);
 		int largeur = outTAb[0].length;
 		int hauteur = outTAb.length;
 		/*for(int i = 0 ; i < hauteur; i ++){
@@ -143,11 +146,11 @@ public class Modeli extends JFrame{
 		
 
 
-		Graph g = SeamCarving.toGraph2(outTAb);
+		Graph g = GraphTraitement.toGraph2(outTAb);
 		//g.writeFile("graph.dot");
 		
 		
-		Graph gg= SeamCarving.suurballe(outTAb);
+		Graph gg= GraphTraitement.suurballe(outTAb);
 		
 		
 		/*for (int i = 0; i < tab.length; i++) {
@@ -165,13 +168,13 @@ public class Modeli extends JFrame{
 
 		//SeamCarving.supprimerPixel(args[0],args[0],  50);
 		//SeamCarving.supprimerPixelPPM("poivron.ppm","poivronOut.ppm", 100);
-		SeamCarving.supprimerPixelPPM("pbmlib.ppm","pbmlibout.ppm", 50);
+		Supprimer.supprimerPixelPPM("pbmlib.ppm","pbmlibout.ppm", 50);
 
-		SeamCarving.supprimerPixel2("test.pgm","test22.pgm",  1);
+		Supprimer.supprimerPixel2("test.pgm","test22.pgm",  1);
 
 		
 		//int [][] tab = SeamCarving.twopath(gg, 0, gg.vertices() - 1);
-		SeamCarving.supprimerPixel("test.pgm","feep23.pgm",  2);
-		SeamCarving.supprimerPixel2("test.pgm","feep22.pgm", 2);
+		Supprimer.supprimerPixel("test.pgm","feep23.pgm",  2);
+		Supprimer.supprimerPixel2("test.pgm","feep22.pgm", 2);
 	 }
 }
