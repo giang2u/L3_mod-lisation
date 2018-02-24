@@ -99,35 +99,8 @@ public class Modeli extends JFrame{
    public static void main(String[] args)
 	 {
 	   
-	   	int[][] fin = SeamCarving.readpgm("test.pgm");		
-		SeamCarving.writepgm(fin, "test1");
-		int[][] outTAb = Interest.interest(fin);
-		
-		TraitementLine l = new TraitementLine();
-		l.inverseTab();
-		
-		/*int largeur = outTAb[0].length;
-		int hauteur = outTAb.length;
-
-		
-
-
-		Graph g = GraphTraitement.toGraph2(outTAb);
-		
-		
-		Graph gg= GraphTraitement.suurballe(outTAb);
-		
-		
-		
-		gg.writeFile("graph.dot");
-		
-		
-		Supprimer.supprimerPixelPPM("pbmlib.ppm","pbmlibout.ppm", 50);
-
-		Supprimer.supprimerPixel2("test.pgm","test22.pgm",  1);
-
-		
-		Supprimer.supprimerPixel("test.pgm","feep23.pgm",  2);
-		Supprimer.supprimerPixel2("test.pgm","feep22.pgm", 2);*/
+		Supprimer.supprimerPixelLine("ex1.pgm","ex1ligne.pgm",  100);
+		Supprimer.supprimerPixel("ex1.pgm","ex1colone.pgm",  100);
+		//Supprimer.supprimerPixel2("ex1.pgm","feep22.pgm", 100);
 	 }
 }
