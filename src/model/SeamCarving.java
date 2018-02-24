@@ -462,7 +462,6 @@ public class SeamCarving
 			   
 			   a.addEdge( new Edge(compteur + i, newhauteur * largeur + 1 , itr[hauteur-1][i]) );
 		   }
-		   System.out.println(" hauteur " + hauteur + " largeur  " + largeur);
 		   return a;
 	   }
 	
@@ -472,6 +471,7 @@ public class SeamCarving
 	public static Graph suurballe(int [][] itr){
 		  Graph g = SeamCarving.toGraph2(itr);
 		
+		  boolean bool = true;
 		  int largeur = itr[0].length;
 		  int hauteur = itr.length;
 		  // taille du graphe
@@ -499,8 +499,6 @@ public class SeamCarving
 		
 
 		
-		
-		System.out.println(compt + " devrait  " + 5);
 		
 		// parcours de la 1ere ligne a celle dapres ou on garde encore les liaisons
 		for (int i = 1; i < 2 ; i++) {
@@ -531,7 +529,7 @@ public class SeamCarving
 					  //System.out.println(" precedent " + itr[hauteur - 1][j ]  +  " actuel " + compt );
 					   somme =  tab[compt - largeur] + g.getEdge(compt - largeur, compt).cout() ;
 					   if  ( tab[compt - largeur - 1] + g.getEdge(compt - largeur - 1, compt).cout() < somme) somme =  tab[compt - largeur - 1] + g.getEdge(compt - largeur - 1, compt).cout(); 
-					   else if  ( tab[compt - largeur + 1] + g.getEdge(compt - largeur + 1, compt).cout() < somme) somme =  tab[compt - largeur + 1] + g.getEdge(compt - largeur + 1, compt).cout(); 
+					   if  ( tab[compt - largeur + 1] + g.getEdge(compt - largeur + 1, compt).cout() < somme) somme =  tab[compt - largeur + 1] + g.getEdge(compt - largeur + 1, compt).cout(); 
 				   }
 				tab[compt] = somme;
 				
@@ -544,8 +542,6 @@ public class SeamCarving
 		
 	
 		
-		
-		System.out.println(compt + "  devrait  " + 9);
 		
 		// parcours du milieu ou tout est a 0
 		for (int i = 2; i <= newhauteur - 2 ; i++) {
@@ -562,8 +558,6 @@ public class SeamCarving
 		}
 		
 		
-		System.out.println(compt + "  devrait  " + 13);
-		
 		// parcours de lavant derniere ligne  vers la derniere ligne 
 		for (int i = newhauteur - 1; i < newhauteur; i++) {
 			
@@ -573,23 +567,38 @@ public class SeamCarving
 					  //somme =  itr[hauteur - 2][j] + g.getEdge(compt - largeur, compt).cout() ;
 					  somme = tab[compt - largeur] + g.getEdge(compt - largeur, compt).cout() ;
 					  
-					   if  ( tab[compt - largeur +1]  + g.getEdge(compt - largeur + 1, compt).cout()  < somme) somme =  tab[compt - largeur + 1] +
-							   g.getEdge(compt - largeur + 1, compt).cout() ;
+					   if  ( tab[compt - largeur +1]  + g.getEdge(compt - largeur + 1, compt).cout()  < somme) {
+						   somme =  tab[compt - largeur + 1] +g.getEdge(compt - largeur + 1, compt).cout() ;
+					   }
 				   }
-				   else if (j == largeur -1 ) {
+				 	else if (j == largeur -1 ) {
 					   
 					   somme =  tab[compt - largeur] + g.getEdge(compt - largeur, compt).cout() ;
-					   if  ( tab[compt - largeur - 1] + g.getEdge(compt - largeur - 1, compt).cout()< somme) somme =  tab[compt - largeur - 1] + g.getEdge(compt - largeur - 1, compt).cout(); 
+					   if  ( tab[compt - largeur - 1] + g.getEdge(compt - largeur - 1, compt).cout()< somme) {
+						   somme =  tab[compt - largeur - 1] + g.getEdge(compt - largeur - 1, compt).cout(); 
+					   }
 					  
-						  
 				   } 
 				   
 				   else {
 					  // int ml = compt - largeur;
-					  //System.out.println(" precedent " + itr[hauteur - 1][j ]  +  " actuel " + compt );
+					  
 					   somme =  tab[compt - largeur] + g.getEdge(compt - largeur, compt).cout() ;
-					   if  ( tab[compt - largeur - 1] + g.getEdge(compt - largeur - 1, compt).cout() < somme) somme =  tab[compt - largeur - 1] + g.getEdge(compt - largeur - 1, compt).cout(); 
-					   else if  ( tab[compt - largeur + 1] + g.getEdge(compt - largeur + 1, compt).cout() < somme) somme =  tab[compt - largeur + 1] + g.getEdge(compt - largeur + 1, compt).cout(); 
+					   
+					   if  ( (tab[compt - largeur - 1] + g.getEdge(compt - largeur - 1, compt).cout() )< somme) {
+						   somme =  tab[compt - largeur - 1] + g.getEdge(compt - largeur - 1, compt).cout(); 
+
+						  /*  
+						   if (compt == 272) {
+							   System.out.println( " aaaaaaaaaaaaaaaha "  + somme + "     " + compt) ;
+							   System.out.println(" precedent " + (compt - largeur + 1)  +  " somme  " + (tab[compt - largeur + 1] + g.getEdge(compt - largeur + 1, compt).cout() ) + " actuel " + compt );
+						   }*/
+					   }
+					   if  ( (tab[compt - largeur + 1] + g.getEdge(compt - largeur + 1, compt).cout() ) < somme) {
+						   somme =  tab[compt - largeur + 1] + g.getEdge(compt - largeur + 1, compt).cout(); 
+
+						   //System.out.println( " aaaaaaaaaaaaaaaha "  + somme + "     " + compt) ;
+						 }
 				   }
 				//sb[i][j] = somme;
 				tab[compt] = somme;
@@ -601,7 +610,6 @@ public class SeamCarving
 		
 	
 		
-		System.out.println(compt + "  devrait   " + 17);
 
 		// derniere ligne vers le dernier point fictif
 		
@@ -609,17 +617,13 @@ public class SeamCarving
 		
 		for (int i = 0; i < largeur; i++ ) 
 		{
-			int haut = hauteur * largeur + i + 1;
+			//int haut = hauteur * largeur + i + 1;
 			int add = tab[compt - largeur + i] + g.getEdge(compt - largeur + i, compt).cout();
-			if (    somme > add  ) { 
+			if (somme > add) { 
 				tab[compt] = add; 
-				System.out.println("   " +add );
+				//System.out.println("   " +add );
+				somme = add;
 			}
-			somme = add;
-		}
-		
-		for (int i = 0; i < largeur ; i++) {
-			System.out.println(  tab[compt - largeur + i]);
 		}
 		
 		// 1er chemin le plus court
@@ -630,16 +634,15 @@ public class SeamCarving
 		// Inversion du chemin le plus court
 		
 		for (Edge e : g.edges()) {
-			//if ( e.arrive() == 17)System.out.println(" cout " + tab[e.depart()] + " depart " + e.depart() + " arrive " + e.arrive() + "  cout " + tab[e.arrive()]);
 			e.setCout(  e.cout() + tab[e.depart()] - tab[e.arrive()]);
 			
-			
+			if ( e.cout() == -2)System.out.println(" cout " + tab[e.depart()] + " depart " + e.depart() + " arrive " + e.arrive() + "  cout " + tab[e.arrive()] + "   length " + tab.length);
+				
 			if (compt < suurb.size()-1 && e.depart() == suurb.get(compt) && e.getTo() == suurb.get(compt+1) ) {
 				int dep = e.depart();
 				e.setDepart(e.getTo());
 				e.setTo(dep);
 				compt++;
-				
 			}
 		}
 		//for (Edge e : g.edges()) System.out.println("  " + e.cout() + "  " + e.depart() + "  " + e.arrive());
@@ -648,8 +651,7 @@ public class SeamCarving
 		
 		System.out.println(" ALED ");
 		
-		ArrayList<Integer> suurb2 = SeamCarving.Dijkstra(g, 0,  newhauteur * largeur + 1 );
-		
+		ArrayList<Integer> suurb2 = SeamCarving.Dijkstra(g, 0,  newhauteur * largeur + 1);
 		
 		// *************stop here ************************
 		
@@ -750,19 +752,19 @@ public class SeamCarving
 				suurb2.set(j, echange);
 			}
 		}
-		
-		 System.out.print("CHEMIN 1");
+		/*
+		System.out.print("\nCHEMIN 1 fefskedf :");
 		for (Integer p: suurb)  System.out.print("   " + p);
 		
-		 System.out.print("\nCHEMIN 2");
+		 System.out.print("\nCHEMIN 2 dsiyfsfkudsf :");
 		for (Integer p: suurb2)  System.out.print("   " + p);
+		*/
 		
 		return g;
 	}
 	
 	
 	public static int[][] twopath(Graph g, int s, int t) {
-		
 		
 		
 		ArrayList<Integer> dij1 = SeamCarving.Dijkstra(g, s, t);
@@ -774,7 +776,7 @@ public class SeamCarving
 			/*g.removeEdge(dij1.get(i), dij1.get(i+1));
 			System.out.println(" COUPLE EDGE : " + dij1.get(i)  +"    " + dij1.get(i+1));*/
 			
-			// modification du cout du 1er chemin le plus court à une tres grande valeur
+			// modification du cout du 1er chemin le plus court ï¿½ une tres grande valeur
 			cout.add(g.getEdge(dij1.get(i),  dij1.get(i+1)).cout() ) ;
 			g.getEdge(dij1.get(i),  dij1.get(i+1)).setCout(500);
 		}
@@ -782,10 +784,9 @@ public class SeamCarving
 		// calcul du 2eme chemin le plus court
 		ArrayList<Integer> dij2 = SeamCarving.Dijkstra(g, s, t);
 		
-		
 		int[][] tab = new int[2][dij1.size()];
 		
-		// stocke les chemins des 2 dijkstra dans un tableau à 2 dimensions
+		// stocke les chemins des 2 dijkstra dans un tableau ï¿½ 2 dimensions
 		for (int i = 0; i < 2; i++) {
 			for (int j =0; j < dij1.size(); j++)  {
 				if ( i == 0) tab[i][j] = dij1.get(j);
@@ -795,10 +796,14 @@ public class SeamCarving
 		
 		for (int i= 0; i < cout.size(); i++){
 			
-			// remet les couts du 1er chemin à la normale
+			// remet les couts du 1er chemin ï¿½ la normale
 			g.getEdge(dij1.get(i),  dij1.get(i+1)).setCout(cout.get(i));
 		}
+		/*
+		System.out.print("\nCHEMIN  1 twopath:");for (Integer p: dij1)  System.out.print("   " + p);
 		
+		System.out.print("\nCHEMIN 2 twopath:");for (Integer p: dij2)  System.out.print("   " + p);
+		*/
 		return tab;
 	}
 	
@@ -811,20 +816,20 @@ public class SeamCarving
 		heap.decreaseKey(s, 0);
 		while(!heap.isEmpty()){
 			int elem = heap.pop();
+			
 			for(Edge edge: graph.adj(elem)){
-
+				
 				if(heap.priority(elem) + edge.cout() < heap.priority(edge.arrive())){
 					int costtemp = heap.priority(elem) + edge.cout();
+					if ( costtemp == -2) System.out.println(" couuuut " + edge.cout());
 					heap.decreaseKey(edge.arrive(),costtemp);
 					precedent[edge.arrive()] = elem;  
 				}
 				
 			}
+			
 		}
-
 		//t = arrive
-
-
 		while( s != t){
 			list.add(0, t);
 			t = precedent[t];
@@ -884,7 +889,10 @@ public class SeamCarving
 		int[][] fin = SeamCarving.readpgm(filename);	
 		int[][] outTAb = SeamCarving.interest(fin);
 		Graph g = SeamCarving.suurballe(outTAb);
-		int [][] test = SeamCarving.twopath(g, 0, fin.length*fin[0].length + 1);
+		
+		int newhau = outTAb.length*2 - 2;
+		int largeur = outTAb[0].length;
+		int [][] test = SeamCarving.twopath(g, 0, newhau*largeur + 1);
 		ArrayList<Integer> list = new ArrayList<>(), list2 = new ArrayList<>();
 		
 		for (int i = 0; i < test.length; i++) {
@@ -894,6 +902,10 @@ public class SeamCarving
 			}
 		}
 		
+		
+		System.out.print("\nCHEMIN  1 :");for (Integer p: list)  System.out.print("   " + p);
+		
+		System.out.print("\nCHEMIN 2 :");for (Integer p: list2)  System.out.print("   " + p);
 		
 		int  width = outTAb[0].length;
 		int height = outTAb.length;
@@ -910,7 +922,6 @@ public class SeamCarving
 		for(int i = 0 ; i<tab.length;i++) {
 			int z = 0;
 			for(int j = 0 ; j<tab[0].length ;j++) {
-				System.out.println(" JE BLOQUE ");
 				
 				int longu = j+1;
 				
@@ -930,20 +941,23 @@ public class SeamCarving
 		
 		// reste des iterations
 		
-		for (int k = 0; k < (iteration/2  - 1) ; k++) {
-			System.out.println(" JE FAIS LA " + k + " eme * 2 iteration");
+		for (int k = 0; k < (iteration/2 - 1) ; k++) {
 			indicePixelASuppr = 1;
 
 			indicePixelASuppr2 = 1;
 			
+			System.out.println("ite" +  k);
 			
 			fin = tab;
 			outTAb = SeamCarving.interest(fin);
+			newhau = outTAb.length*2 - 2;
+			largeur = outTAb[0].length;
 			//g = SeamCarving.toGraph(outTAb);
 			
-			
+			list.clear();
+			list2.clear();
 			g = SeamCarving.suurballe(outTAb);
-			test = SeamCarving.twopath(g, 0, fin.length*fin[0].length + 1);
+			test = SeamCarving.twopath(g, 0, newhau*largeur + 1);
 			
 			for (int i = 0; i < test.length; i++) {
 				for (int j = 0; j < test[0].length; j++) {
@@ -951,6 +965,10 @@ public class SeamCarving
 					else list2.add(test[i][j]);
 				}
 			}
+			
+			System.out.print("\nCHEMIN  1 :");for (Integer p: list)  System.out.print("   " + p);
+			
+			System.out.print("\nCHEMIN 2 :");for (Integer p: list2)  System.out.print("   " + p);
 			
 			tab = new int[fin.length][fin[0].length-2] ;
 
@@ -969,12 +987,9 @@ public class SeamCarving
 						z++; tab[i][j] = fin[i][z]; 
 					}
 					else tab[i][j] = fin[i][z];
-					
 					z++;
 				}
 			}
-			
-			
 			
 			
 		}
@@ -993,6 +1008,8 @@ public static void supprimerPixel(String filename,String outfile, int iteration)
 		int[][] outTAb = SeamCarving.interest(fin);
 		Graph g = SeamCarving.toGraph(outTAb);
 		ArrayList<Integer> list = SeamCarving.Dijkstra(g, 0, fin.length*fin[0].length + 1);
+		
+		 System.out.print("\nCHEMIN :");	for (Integer p: list)  System.out.print("   " + p);
 		
 		
 		int  width = outTAb[0].length;
@@ -1029,6 +1046,8 @@ public static void supprimerPixel(String filename,String outfile, int iteration)
 			outTAb = SeamCarving.interest(fin);
 			g = SeamCarving.toGraph(outTAb);
 			list = SeamCarving.Dijkstra(g, 0, fin.length*fin[0].length + 1);
+			
+			 System.out.print("\nCHEMIN :"); for (Integer p: list)  System.out.print("   " + p);
 			 
 			tab = new int[fin.length][fin[0].length-1] ;
 

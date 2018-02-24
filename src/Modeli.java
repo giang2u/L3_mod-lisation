@@ -128,7 +128,7 @@ public class Modeli extends JFrame{
 			System.out.println(list.get(i));
 		}*/
 	   
-	   	int[][] fin = SeamCarving.readpgm("feep.pgm");		
+	   	int[][] fin = SeamCarving.readpgm("test.pgm");		
 		SeamCarving.writepgm(fin, "test1");
 		int[][] outTAb = SeamCarving.interest(fin);
 		int largeur = outTAb[0].length;
@@ -147,13 +147,7 @@ public class Modeli extends JFrame{
 		//g.writeFile("graph.dot");
 		
 		
-		
-		
 		Graph gg= SeamCarving.suurballe(outTAb);
-		
-		
-		int [][] tab = SeamCarving.twopath(gg, 0, gg.vertices() - 1);
-		
 		
 		
 		/*for (int i = 0; i < tab.length; i++) {
@@ -163,16 +157,21 @@ public class Modeli extends JFrame{
 			}
 		}*/
 		
-		
 		gg.writeFile("graph.dot");
 		
 		
 	   //Modeli model = new Modeli();
 	   //int nb_pixel_del = Integer.valueOf(args[1]); // nb de fois on on veut supprimer le pixel
+
 		//SeamCarving.supprimerPixel(args[0],args[0],  50);
 		//SeamCarving.supprimerPixelPPM("poivron.ppm","poivronOut.ppm", 100);
 		SeamCarving.supprimerPixelPPM("pbmlib.ppm","pbmlibout.ppm", 50);
 
 		SeamCarving.supprimerPixel2("test.pgm","test22.pgm",  1);
+
+		
+		//int [][] tab = SeamCarving.twopath(gg, 0, gg.vertices() - 1);
+		SeamCarving.supprimerPixel("test.pgm","feep23.pgm",  2);
+		SeamCarving.supprimerPixel2("test.pgm","feep22.pgm", 2);
 	 }
 }
