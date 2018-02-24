@@ -159,8 +159,7 @@ public class SeamCarving
 	
 	
 	
-	public static int[][] twopath(Graph g, int s, int t) {
-		
+public static int[][] twopath(Graph g, int s, int t) {
 		
 		
 		ArrayList<Integer> dij1 = SeamCarving.Dijkstra(g, s, t);
@@ -172,7 +171,7 @@ public class SeamCarving
 			/*g.removeEdge(dij1.get(i), dij1.get(i+1));
 			System.out.println(" COUPLE EDGE : " + dij1.get(i)  +"    " + dij1.get(i+1));*/
 			
-			// modification du cout du 1er chemin le plus court à une tres grande valeur
+			// modification du cout du 1er chemin le plus court a une tres grande valeur
 			cout.add(g.getEdge(dij1.get(i),  dij1.get(i+1)).cout() ) ;
 			g.getEdge(dij1.get(i),  dij1.get(i+1)).setCout(500);
 		}
@@ -180,10 +179,9 @@ public class SeamCarving
 		// calcul du 2eme chemin le plus court
 		ArrayList<Integer> dij2 = SeamCarving.Dijkstra(g, s, t);
 		
-		
 		int[][] tab = new int[2][dij1.size()];
 		
-		// stocke les chemins des 2 dijkstra dans un tableau à 2 dimensions
+		// stocke les chemins des 2 dijkstra dans un tableau a 2 dimensions
 		for (int i = 0; i < 2; i++) {
 			for (int j =0; j < dij1.size(); j++)  {
 				if ( i == 0) tab[i][j] = dij1.get(j);
@@ -193,10 +191,14 @@ public class SeamCarving
 		
 		for (int i= 0; i < cout.size(); i++){
 			
-			// remet les couts du 1er chemin à la normale
+			// remet les couts du 1er chemin a la normale
 			g.getEdge(dij1.get(i),  dij1.get(i+1)).setCout(cout.get(i));
 		}
+		/*
+		System.out.print("\nCHEMIN  1 twopath:");for (Integer p: dij1)  System.out.print("   " + p);
 		
+		System.out.print("\nCHEMIN 2 twopath:");for (Integer p: dij2)  System.out.print("   " + p);
+		*/
 		return tab;
 	}
 	

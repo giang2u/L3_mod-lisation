@@ -174,7 +174,7 @@ public class Modeli extends JFrame{
 
 		
 		//int [][] tab = SeamCarving.twopath(gg, 0, gg.vertices() - 1);
-		Supprimer.supprimerPixel("test.pgm","feep23.pgm",  2);
-		Supprimer.supprimerPixel2("test.pgm","feep22.pgm", 2);
+		Supprimer.supprimerPixel("ex1.pgm","feep23.pgm",  100);
+		Supprimer.supprimerPixel2("ex1.pgm","feep22.pgm", 100);
 	 }
 }
