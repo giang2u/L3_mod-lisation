@@ -128,7 +128,7 @@ public class Modeli extends JFrame{
 			System.out.println(list.get(i));
 		}*/
 	   
-	   	int[][] fin = SeamCarving.readpgm("test.pgm");		
+	   	int[][] fin = SeamCarving.readpgm("feep.pgm");		
 		SeamCarving.writepgm(fin, "test1");
 		int[][] outTAb = SeamCarving.interest(fin);
 		int largeur = outTAb[0].length;
@@ -146,7 +146,24 @@ public class Modeli extends JFrame{
 		Graph g = SeamCarving.toGraph2(outTAb);
 		//g.writeFile("graph.dot");
 		
+		
+		
+		
 		Graph gg= SeamCarving.suurballe(outTAb);
+		
+		
+		int [][] tab = SeamCarving.twopath(gg, 0, gg.vertices() - 1);
+		
+		
+		
+		/*for (int i = 0; i < tab.length; i++) {
+			System.out.println("");
+			for (int j =0; j < tab[0].length; j++)  {
+				System.out.print("   QUESTION 2    " + tab[i][j] ) ;
+			}
+		}*/
+		
+		
 		gg.writeFile("graph.dot");
 		
 		
@@ -155,5 +172,7 @@ public class Modeli extends JFrame{
 		//SeamCarving.supprimerPixel(args[0],args[0],  50);
 		//SeamCarving.supprimerPixelPPM("poivron.ppm","poivronOut.ppm", 100);
 		SeamCarving.supprimerPixelPPM("pbmlib.ppm","pbmlibout.ppm", 50);
+
+		SeamCarving.supprimerPixel2("test.pgm","test22.pgm",  1);
 	 }
 }
