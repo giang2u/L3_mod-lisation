@@ -13,6 +13,7 @@ import view.Vue;
 public class Modele extends Observable {
 	
 	protected SeamCarving sc;
+	protected Supprimer sp;
 	protected ArrayList<Vue> vues;
 	protected String inFileName,inFilePath, outFilePath;
 	protected int nb_pixel = 50;
@@ -80,6 +81,6 @@ public class Modele extends Observable {
 	}
 	
 	public void start(String pathFile, String fileOutName, int nombre_pixel){
-		this.sc.supprimerPixel(pathFile, fileOutName, nombre_pixel);
+		this.sp.supprimerPixel(pathFile, fileOutName, nombre_pixel);
 	}
 }
