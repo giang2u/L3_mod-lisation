@@ -159,7 +159,7 @@ public class SeamCarving
 	
 	
 	
-public static int[][] twopath(Graph g, int s, int t) {
+ public static int[][] twopath(Graph g, int s, int t) {
 		
 		
 		ArrayList<Integer> dij1 = SeamCarving.Dijkstra(g, s, t);
@@ -173,11 +173,58 @@ public static int[][] twopath(Graph g, int s, int t) {
 			
 			// modification du cout du 1er chemin le plus court a une tres grande valeur
 			cout.add(g.getEdge(dij1.get(i),  dij1.get(i+1)).cout() ) ;
-			g.getEdge(dij1.get(i),  dij1.get(i+1)).setCout(500);
-		}
+			g.getEdge(dij1.get(i),  dij1.get(i+1)).setCout(50000);
+			}
+
 		
 		// calcul du 2eme chemin le plus court
 		ArrayList<Integer> dij2 = SeamCarving.Dijkstra(g, s, t);
+		
+
+		
+		for (int i= 0; i < cout.size(); i++){
+			
+			// remet les couts du 1er chemin a la normale
+			g.getEdge(dij1.get(i),  dij1.get(i+1)).setCout(cout.get(i));
+		}
+		
+		
+		
+		System.out.print("\nCHEMIN  1 twopath AVANT:");
+		for (Integer p: dij1) {
+			System.out.print("   " + p);
+		}
+		
+		System.out.print("\nCHEMIN 2 :");
+		for (Integer p: dij2) {
+			System.out.print("   " + p);
+		}
+		
+		
+		// transfert des bonnes aretes
+					for (int j = 1; j < dij2.size(); j++) {
+						int diff = Math.abs( dij2.get(j-1) - dij2.get(j) ) ;
+						
+						boolean verif = diff > g.getLargeur() && dij1.get(j)% g.getLargeur() == 0 ;
+						boolean verif2 = diff > g.getLargeur() + 1 && dij1.get(j)%g.getLargeur() != 0 ;
+
+						if (verif || verif2 ) {
+							int echange = dij1.get(j);
+							dij1.set(j, dij2.get(j));
+							dij2.set(j, echange);
+						}
+					}
+					
+					
+					System.out.print("\nCHEMIN  1 Twopath APRES:");
+					for (Integer p: dij1) {
+						System.out.print("   " + p);
+					}
+					
+					System.out.print("\nCHEMIN 2 :");
+					for (Integer p: dij2) {
+						System.out.print("   " + p);
+					}
 		
 		int[][] tab = new int[2][dij1.size()];
 		
@@ -185,20 +232,28 @@ public static int[][] twopath(Graph g, int s, int t) {
 		for (int i = 0; i < 2; i++) {
 			for (int j =0; j < dij1.size(); j++)  {
 				if ( i == 0) tab[i][j] = dij1.get(j);
-				else tab[i][j] = dij2.get(j);
+				else {
+					System.out.print("\n VALEUR POS " +  dij2.get(j) + " VALEUR QUOTIENT " + (dij2.get(j) / g.getLargeur()) + " TEST " + ( dij2.get(j) - dij2.get(j)/ g.getLargeur() ) );
+					int diff = dij2.get(j)/g.getLargeur();
+					if (  dij2.get(j) != 0) {
+						 diff = dij2.get(j)/g.getLargeur() ;
+					}
+					System.out.println("\n RES "+ diff +  " res " + dij2.get(j));
+					tab[i][j] = dij2.get(j) - diff ;
+				}
 			}
 		}
 		
-		for (int i= 0; i < cout.size(); i++){
-			
-			// remet les couts du 1er chemin a la normale
-			g.getEdge(dij1.get(i),  dij1.get(i+1)).setCout(cout.get(i));
+		System.out.print("\ntest " );
+		for (int i = 0; i < 2; i++) {
+			for (int j =0; j < dij1.size(); j++)  {
+				System.out.print(" " + tab[i][j] );
+				}
 		}
-		/*
-		System.out.print("\nCHEMIN  1 twopath:");for (Integer p: dij1)  System.out.print("   " + p);
 		
-		System.out.print("\nCHEMIN 2 twopath:");for (Integer p: dij2)  System.out.print("   " + p);
-		*/
+		
+		
+		
 		return tab;
 	}
 	

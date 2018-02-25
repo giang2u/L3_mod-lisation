@@ -146,11 +146,11 @@ public class Modeli extends JFrame{
 		
 
 
-		Graph g = GraphTraitement.toGraph2(outTAb);
+		Graph g = GraphTraitement.toGraph(outTAb);
 		//g.writeFile("graph.dot");
 		
 		
-		Graph gg= GraphTraitement.suurballe(outTAb);
+		//Graph gg= GraphTraitement.suurballe(outTAb);
 		
 		
 		/*for (int i = 0; i < tab.length; i++) {
@@ -160,7 +160,8 @@ public class Modeli extends JFrame{
 			}
 		}*/
 		
-		gg.writeFile("graph.dot");
+		g.writeFile("graph2.dot");
+		//gg.writeFile("graph.dot");
 		
 		
 	   //Modeli model = new Modeli();
@@ -170,11 +171,9 @@ public class Modeli extends JFrame{
 		//SeamCarving.supprimerPixelPPM("poivron.ppm","poivronOut.ppm", 100);
 		Supprimer.supprimerPixelPPM("pbmlib.ppm","pbmlibout.ppm", 50);
 
-		Supprimer.supprimerPixel2("test.pgm","test22.pgm",  1);
-
 		
 		//int [][] tab = SeamCarving.twopath(gg, 0, gg.vertices() - 1);
-		Supprimer.supprimerPixel("ex1.pgm","feep23.pgm",  100);
+		//Supprimer.supprimerPixel("ex1.pgm","feep23.pgm",  200);
 		Supprimer.supprimerPixel2("ex1.pgm","feep22.pgm", 100);
 	 }
 }

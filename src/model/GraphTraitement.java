@@ -136,14 +136,14 @@ public class GraphTraitement {
 			   
 			   a.addEdge( new Edge(compteur + i, newhauteur * largeur + 1 , itr[hauteur-1][i]) );
 		   }
-		   System.out.println(" hauteur " + hauteur + " largeur  " + largeur);
+		  // System.out.println(" hauteur " + hauteur + " largeur  " + largeur);
 		   return a;
 	   }
 	
 	
 	
 	// SUUUUUUUUUUUUUUUUUUUUUUUUURRRRRRRRRRRRRRRRRRRRRRRBBBBBBBBBBBBBBBAAAAAAAAAAAAAAALLLLLLLLLLLLLLEEEEE
-		public static Graph suurballe(int [][] itr){
+		public static int[][] suurballe(int [][] itr){
 			  Graph g = GraphTraitement.toGraph2(itr);
 			
 			  boolean bool = true;
@@ -288,7 +288,7 @@ public class GraphTraitement {
 
 			// derniere ligne vers le dernier point fictif
 			
-			somme = 500;
+			somme = 500000;
 			
 			for (int i = 0; i < largeur; i++ ) 
 			{
@@ -311,7 +311,7 @@ public class GraphTraitement {
 			for (Edge e : g.edges()) {
 				e.setCout(  e.cout() + tab[e.depart()] - tab[e.arrive()]);
 				
-				if ( e.cout() == -2)System.out.println(" cout " + tab[e.depart()] + " depart " + e.depart() + " arrive " + e.arrive() + "  cout " + tab[e.arrive()] + "   length " + tab.length);
+			//	if ( e.cout() == -2)System.out.println(" cout " + tab[e.depart()] + " depart " + e.depart() + " arrive " + e.arrive() + "  cout " + tab[e.arrive()] + "   length " + tab.length);
 					
 				if (compt < suurb.size()-1 && e.depart() == suurb.get(compt) && e.getTo() == suurb.get(compt+1) ) {
 					int dep = e.depart();
@@ -324,11 +324,12 @@ public class GraphTraitement {
 			
 			// Dijsktra pour chercher le 2eme chemin le plus court
 			
-			System.out.println(" ALED ");
+			//System.out.println(" ALED ");
 			
 			ArrayList<Integer> suurb2 = SeamCarving.Dijkstra(g, 0,  newhauteur * largeur + 1);
 			
-
+			//System.out.println(" ALED 2");
+			
 			// taille du chemin des" courts
 			int i = 0;
 			if (suurb.size() > 0) i = 1;
@@ -413,12 +414,20 @@ public class GraphTraitement {
 					
 				}
 			}
+			/*
+			System.out.print("\nCHEMIN 1 SUrb AV fefskedf :");
+			for (Integer p: suurb)  System.out.print("   " + p);
 			
+			 System.out.print("\nCHEMIN 2 dsiyfsfkudsf :");
+			for (Integer p: suurb2)  System.out.print("   " + p);
+			*/
 			// transfert des bonnes aretes
 			for (int j = 1; j < suurb.size(); j++) {
 				int diff = Math.abs( suurb2.get(j-1) - suurb2.get(j) ) ;
+				
 				boolean verif = diff > itr[0].length && suurb.get(j)% itr[0].length == 0 ;
 				boolean verif2 = diff > itr[0].length + 1 && suurb.get(j)% itr[0].length != 0 ;
+				//System.out.print("\n" +verif +  " VERIF  " + verif2 + "    veriff " + ( verif || verif2 ) );
 				if (verif || verif2 ) {
 					int echange = suurb.get(j);
 					suurb.set(j, suurb2.get(j));
@@ -426,14 +435,39 @@ public class GraphTraitement {
 				}
 			}
 			/*
-			System.out.print("\nCHEMIN 1 fefskedf :");
+			System.out.print("\nCHEMIN 1 SUrb AP fefskedf :");
 			for (Integer p: suurb)  System.out.print("   " + p);
 			
 			 System.out.print("\nCHEMIN 2 dsiyfsfkudsf :");
 			for (Integer p: suurb2)  System.out.print("   " + p);
 			*/
 			
-			return g;
+			
+			int[][] tabi = new int[2][suurb.size()];
+			
+			// stocke les chemins des 2 dijkstra dans un tableau a 2 dimensions
+			for (i = 0; i < 2; i++) {
+				for (int j =0; j < suurb.size(); j++)  {
+					if ( i == 0) tabi[i][j] = suurb.get(j);
+					else {
+						//System.out.print("\n VALEUR POS " +  suurb2.get(j) + " VALEUR QUOTIENT " + (suurb2.get(j) / largeur) + " TEST " + ( suurb2.get(j) - suurb2.get(j)/ largeur ) );
+						int diff = 0;
+						if (suurb2.get(j) == 0) {
+						}else if (  suurb2.get(j) < largeur) {
+							 diff = 1;
+						} else if (suurb2.get(j)%largeur == 1) {
+							diff = suurb2.get(j)/largeur-1;
+						}else if (suurb2.get(j)%largeur == 2) {
+							diff = suurb2.get(j)/largeur;
+						} else {
+							diff = suurb2.get(j)/largeur+1;
+						}
+						//System.out.println("\n RES "+ diff +  " res " + suurb2.get(j));
+						tabi[i][j] = suurb2.get(j) - diff ;
+					}
+				}
+			}
+			return tabi;
 		}
 	
 }
