@@ -10,9 +10,13 @@ import view.GestionVue;
 
 import model.Edge;
 import model.Graph;
+import model.GraphTraitement;
 import model.Heap;
+import model.Interest;
 import model.Modele;
 import model.SeamCarving;
+import model.Supprimer;
+import model.TraitementLine;
 
 
 
@@ -94,43 +98,10 @@ public class Modeli extends JFrame{
    
    public static void main(String[] args)
 	 {
-		//testHeap();
-		//testGraph();
-		/*
-		int[][] fin = SeamCarving.readpgm("feep.pgm");		
-		SeamCarving.writepgm(fin, "test1");
-		int[][] outTAb = SeamCarving.interest(fin);
-		*/
-
-		
-		/*for(int i = 0 ; i < hauteur; i ++){
-			for(int j = 0 ; j < largeur; j++ ){
-				//if (j < largeur - 1 ) System.out.print(outTAb[i][j]+ " ");
-				//else System.out.println(outTAb[i][j]);
-				
-			}
-		}*/
-		
-		//Graph g = SeamCarving.toGraph(outTAb);
-		/*ArrayList<Integer> list = SeamCarving.Dijkstra(g, 0, 477);
-		for(int i = 0 ; i < list.size(); ++i){
-			System.out.println(list.get(i));
-		}*/
-		
-		//g.writeFile("graph.dot");
-		
-		/*int[][] fin = SeamCarving.readpgm("test.pgm");		
-		//SeamCarving.writepgm(fin, "test1");
-		int[][] outTAb = SeamCarving.interest(fin);
-		Graph g = SeamCarving.toGraph(outTAb);
-		ArrayList<Integer> list = SeamCarving.Dijkstra(g, 0, outTAb.length*outTAb[0].length);
-		for(int i = 0 ; i < list.size(); ++i){
-			System.out.println(list.get(i));
-		}*/
 	   
 	   	int[][] fin = SeamCarving.readpgm("test.pgm");		
 		SeamCarving.writepgm(fin, "test1");
-		int[][] outTAb = SeamCarving.interest(fin);
+		int[][] outTAb = Interest.interest(fin);
 		int largeur = outTAb[0].length;
 		int hauteur = outTAb.length;
 		/*for(int i = 0 ; i < hauteur; i ++){
@@ -141,12 +112,13 @@ public class Modeli extends JFrame{
 			}
 		}*/
 		
-		
-		Graph g = SeamCarving.toGraph(outTAb);
+
+
+		Graph g = GraphTraitement.toGraph(outTAb);
 		//g.writeFile("graph.dot");
 		
 		
-		Graph gg= SeamCarving.suurballe(outTAb);
+		//Graph gg= GraphTraitement.suurballe(outTAb);
 		
 		
 		/*for (int i = 0; i < tab.length; i++) {
@@ -156,14 +128,22 @@ public class Modeli extends JFrame{
 			}
 		}*/
 		
-		gg.writeFile("graph.dot");
+		g.writeFile("graph2.dot");
+		//gg.writeFile("graph.dot");
 		
 		
 	   //Modeli model = new Modeli();
 	   //int nb_pixel_del = Integer.valueOf(args[1]); // nb de fois on on veut supprimer le pixel
+
+		//SeamCarving.supprimerPixel(args[0],args[0],  50);
+		//SeamCarving.supprimerPixelPPM("poivron.ppm","poivronOut.ppm", 100);
+		Supprimer.supprimerPixelPPM("pbmlib.ppm","pbmlibout.ppm", 50);
+
 		
 		//int [][] tab = SeamCarving.twopath(gg, 0, gg.vertices() - 1);
-		SeamCarving.supprimerPixel("test.pgm","feep23.pgm",  2);
-		SeamCarving.supprimerPixel2("test.pgm","feep22.pgm", 2);
+		//Supprimer.supprimerPixel("ex1.pgm","feep23.pgm",  200);
+		Supprimer.supprimerPixel2("ex1.pgm","feep22.pgm", 100);
+		Supprimer.supprimerPixelLine("ex1.pgm","ex1ligne.pgm",  100);
+		Supprimer.supprimerPixel("ex1.pgm","ex1colone.pgm",  100);
 	 }
 }

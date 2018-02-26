@@ -9,7 +9,8 @@ import sun.invoke.empty.Empty;
 //import sun.org.mozilla.javascript.ast.WithStatement;
 public class SeamCarving
 {
-
+	public static int[][] im;
+	
 	public static int[][] readpgm(String fn)
 	{		
 		try {
@@ -30,7 +31,7 @@ public class SeamCarving
 			line = d.readLine();
 			s = new Scanner(line);
 			int maxVal = s.nextInt();
-			int[][] im = new int[height][width];
+			im = new int[height][width];
 			s = new Scanner(d);
 			int count = 0;
 			while (count < height*width) {
@@ -85,10 +86,7 @@ public class SeamCarving
 		}
 	}
 	
-	public static void main (String[] args) {
 
-
-	}
 
 	public static void writepgm(int [][] image, String filename) {
 
@@ -121,609 +119,48 @@ public class SeamCarving
 
 	}
 	
-	public static int[][] interest(int[][] image){
-		int largeur = image[0].length;
-		int hauteur = image.length;
-		int [][] outTab = new int [hauteur][largeur];
-		
-		for(int i = 0; i < hauteur; i++){
-			for(int j = 1 ; j < largeur - 1; j++ ){
-				int moyen = (image[i][j-1] + image[i][j+1])/2;
-				outTab[i][j] = Math.abs(image[i][j] - moyen);
-			}
-		}
-		for(int j = 0 ; j < hauteur; j++ ){
-			outTab[j][0] = Math.abs(image[j][0] - image[j][1]);
-			outTab[j][largeur- 1] = Math.abs(image[j][largeur - 1]- image[j][largeur - 2] );
-		}
-		return outTab;
-	}
-	
-	
-	public static int[][] interestPPM(int[][][] image){
-		int largeur = image[0].length;
-		int hauteur = image.length;
-		int [][] outTab = new int [hauteur][largeur];
+	public static void writeppm(int [][][] image, String filename) {
 
-		/*
-		 * A B C
-		 * D E F
-		 * G H I
-		 */
-		int lum_a, lum_b, lum_c, lum_d, lum_f, lum_h, lum_g, lum_i, xEnergy, yEnergy;
-		
-		//parti normal sans les extremite ni coin
-		for(int i = 1; i < hauteur -1; i++){
-			for(int j = 1 ; j < largeur -1 ; j++ ){
-				lum_a = image[i-1][j-1][0] +  image[i-1][j-1][1] +  image[i-1][j-1][2];
-				lum_b = image[i-1][j][0] + image[i-1][j][1] + image[i-1][j][2];
-				lum_c = image[i-1][j+1][0] + image[i-1][j+1][1] + image[i-1][j+1][2];
-				lum_d = image[i][j-1][0] + image[i][j-1][1] + image[i][j-1][2];
-				lum_g = image[i+1][j-1][0] + image[i+1][j-1][1] + image[i+1][j-1][2];
-				lum_f = image[i][j+1][0] + image[i][j+1][1] + image[i][j+1][2];
-				lum_h = image[i+1][j][0] + image[i+1][j][1] + image[i+1][j][2];
-				lum_i = image[i+1][j+1][0] + image[i+1][j+1][1] + image[i+1][j+1][2];
-				
-				xEnergy = lum_a + 2 * lum_d + lum_g - lum_c - 2 * lum_f - lum_i;
-				yEnergy = lum_a + 2 * lum_b + lum_c - lum_g - 2 * lum_h - lum_i;
-				outTab[i][j] = (int)Math.sqrt(xEnergy * xEnergy  + yEnergy * yEnergy);
-			}
-		}
 
-		for(int i = 0 ; i < largeur; i++ ){
-			if(i == 0){
-				// coin en haute a gauche
-				lum_f = image[0][i + 1][0] +  image[0][i + 1][1] +  image[0][i + 1][2];
-				lum_h = image[1][i][0] + image[1][i][1] + image[1][i][2];
-				lum_i = image[1][i + 1][0] + image[1][i + 1][1] + image[1][i + 1][2];
-				xEnergy = 2 * lum_f - lum_i;
-				yEnergy = 2 * lum_h - lum_i;
-				outTab[0][0] = (int)Math.sqrt(xEnergy * xEnergy  + yEnergy * yEnergy);
-				
-				// coin en bas a gauche
-				lum_b = image[hauteur - 2][i][0] + image[hauteur - 2][i][1] + image[hauteur - 2][i][2];
-				lum_c = image[hauteur - 2][1][0] + image[hauteur - 2][1][1] + image[hauteur - 2][1][2];
-				lum_f = image[hauteur - 1][1][0] + image[hauteur - 1][1][1] + image[hauteur - 1][1][2];
-				
-				xEnergy = 0 - lum_c - 2 * lum_f ;
-				yEnergy = 2 * lum_b + lum_c;
-				outTab[hauteur - 1][0] = (int)Math.sqrt(xEnergy * xEnergy  + yEnergy * yEnergy);
-				
-			}
+		try{
+
+			int  width = image.length;
+			int height = image[0].length ;
+			//FileWriter fstream = new FileWriter("img/"+filename+".pgm");
+			FileWriter fstream = new FileWriter(filename);
+			//FileWriter fstream = new FileWriter("img/"+filename);
+			BufferedWriter out = new BufferedWriter(fstream);
+			//out.write("P2\n# CREATOR: MOI \n"+height+ " "+ width +"\n255\n");
 			
-			else if(i == largeur - 1){
-				// coin en haut a droit
-				lum_d = image[0][i-1][0] + image[0][i-1][1] + image[0][i-1][2];
-				lum_g = image[1][i-1][0] + image[1][i-1][1] + image[1][i-1][2];
-				lum_h = image[1][i][0] + image[1][i][1] + image[1][i][2];
-				
-				xEnergy =  2 * lum_d + lum_g;
-				yEnergy = 0 - lum_g - 2 * lum_h;
-				outTab[0][i] = (int)Math.sqrt(xEnergy * xEnergy  + yEnergy * yEnergy);
+			/*------------------GESTIOB COLOR-------------------------*/
+			out.write("P3\n# CREATOR: MOI \n"+height+ " "+ width +"\n255  #net en RGB\n");
 
-				// coin en bas a droit
-				lum_a = image[hauteur - 2][i-1][0] + image[hauteur - 2 ][i-1][1] + image[hauteur - 2][i-1][2];
-				lum_b = image[hauteur - 2][i][0] + image[hauteur - 2][i-1][1] + image[hauteur - 2][i-1][2];
-				lum_d = image[hauteur - 1][i - 1][0] + image[hauteur - 1][i -1][1] + image[hauteur - 1][i - 1][2];
-				
-
-				xEnergy = lum_a + 2 * lum_d ;
-				yEnergy = lum_a + 2 * lum_b ;
-				outTab[hauteur - 1][i] = (int)Math.sqrt(xEnergy * xEnergy  + yEnergy * yEnergy);
-			} else{
-				//line ou indice colonne = 0
-				lum_d = image[0][i-1][0] + image[0][i-1][1] + image[0][i-1][2];
-				lum_g = image[1][i - 1][0] + image[1][i - 1][1] + image[i - 1][1][2];
-				lum_h = image[1][i][0] + image[1][i][1] + image[i][largeur-2][2];
-				lum_i = image[1][i+1][0] + image[1][i+1][1] + image[1][i+1][2];
-				lum_f = image[0][i+1][0] + image[0][i+1][1] + image[0][i+1][2];
-				
-
-				xEnergy = 2 * lum_d + lum_g - 2 * lum_f - lum_i;
-				yEnergy =  lum_g - 2 * lum_h - lum_i;
-				outTab[0][i] = (int)Math.sqrt(xEnergy * xEnergy  + yEnergy * yEnergy);
-				
-				//ligne ou colone = max
-				lum_a = image[hauteur-2][i-1][0] + image[hauteur - 2][i-1][1] + image[hauteur - 2][i-1][2];
-				lum_b = image[hauteur-2][i][0] + image[hauteur - 2][i][1] + image[hauteur - 2][i][2];
-				lum_c = image[hauteur-2][i+1][0] + image[hauteur - 2][i+1][1] + image[hauteur - 2][i+1][2];
-				lum_d = image[hauteur-1][i-1][0] + image[hauteur - 1][i-1][1] + image[hauteur - 1][i-1][2];
-				lum_f = image[hauteur-1][i+1][0] + image[hauteur - 1][i+1][1] + image[hauteur - 1][i+1][2];
-				
-				xEnergy = lum_a + 2 * lum_d - lum_c - 2 * lum_f ;
-				yEnergy = lum_a + 2 * lum_b + lum_c;
-				outTab[hauteur - 1][i] = (int)Math.sqrt(xEnergy * xEnergy  + yEnergy * yEnergy);
-			}
-			
-		}
-		for(int i = 1; i < hauteur - 1; ++i){			
-			
-			//colonne ou largeur = 0
-			lum_b = image[i - 1][0][0] + image[i - 1][0][1] + image[i - 1][0][2];
-			lum_c = image[i - 1][1][0] + image[i - 1][1][1] + image[i - 1][1][2];
-			lum_f = image[i][1][0] + image[i][1][1] + image[i][1][2];
-			lum_h = image[i +  1][0][0] + image[i+1][0][1] + image[i+1][0][2];
-			lum_i = image[i+1][1][0] + image[i+1][1][1] + image[i+1][1][2];
-			
-			xEnergy = 0 - lum_c - 2 * lum_f - lum_i;
-			yEnergy =  2 * lum_b + lum_c - 2 * lum_h - lum_i;
-			outTab[i][0] = (int)Math.sqrt(xEnergy * xEnergy  + yEnergy * yEnergy);
-			
-			//colonne ou largeur max
-			lum_a = image[i-1][largeur - 2][0] + image[i-1][largeur - 2][1] + image[i-1][largeur-2][2];
-			lum_b = image[i-1][largeur - 1][0] + image[i-1][largeur - 1][1] + image[i-1][largeur-1][2];
-			lum_d = image[i][largeur - 2][0] + image[i][largeur - 2][1] + image[i][largeur-2][2];
-			lum_g = image[i+1][largeur - 2][0] + image[i+1][largeur - 2][1] + image[i+1][largeur-2][2];
-			lum_h = image[i+1][largeur - 1][0] + image[i+1][largeur - 1][1] + image[i+1][largeur-1][2];
-			
-
-			xEnergy = lum_a + 2 * lum_d + lum_g;
-			yEnergy = lum_a + 2 * lum_b - lum_g - 2 * lum_h ;
-			outTab[i][largeur - 1] = (int)Math.sqrt(xEnergy * xEnergy  + yEnergy * yEnergy);
-			
-			
-		}
-		
-		return outTab;
-	}
-	/*
-	public static int[][] interestEnergie(int[][] image){
-		int largeur = image[0].length;
-		int hauteur = image.length;
-		int [][] outTab = new int [hauteur][largeur*2 + 2];
-		
-		for(int i = 0; i < hauteur - 1; i++){
-			for(int j = 1 ; j < largeur - 1; j++ ){
-				int k = 0;
-				int res = (image[i][j+1] - image[i][j-1]);
-				int res1 = (image[i][j+1] - image[i+1][j]);
-				int res2 = (image[i][j-1] - image[i+1][j]);
-				outTab[i][j] = Math.abs(res);
-				outTab[i][j+1] = Math.abs(res1);
-				outTab[i][j-1] = Math.abs(res2);
-			}
-		}
-		for(int j = 0 ; j < hauteur; j++ ){
-			outTab[j][0] = Math.abs(0 - image[j][1]);
-			outTab[j][largeur- 1] = Math.abs(0- image[j][largeur - 2] );
-		}
-		return outTab;
-	}
-	*/
-	
-	public static Graph toGraph(int [][] itr) {
-		   
-		   int largeur = itr[0].length;
-		   int hauteur = itr.length;
-
-			//System.out.println("hauteur" + itr[hauteur -1][largeur -1]);
-		   Graph a = new Graph(largeur*hauteur +2);
-		   int compteur = 0;
-		   
-		   
-		   // relie le sommet initial 0 a la premiere ligne
-		   for (int i =0 ; i < largeur; i++) {
-			   a.addEdge( new Edge(compteur, i + 1, 0) ); 
-		   }
-		   
-		   
-		   // parcours du tableau entre la premiere et derniere ligne
-		   compteur = 1;
-		   for (int i = 1; i < hauteur; i++) {
-			   for (int j = 0; j < largeur; j++) {
-				   if (j == 0) {
-					   a.addEdge( new Edge(compteur, compteur + largeur, itr[i-1][j] ) );
-					   a.addEdge( new Edge(compteur, compteur + largeur + 1, itr[i-1][j] ) );
-						  
-				   }
-				   else if (j == largeur -1) {
-					   a.addEdge( new Edge(compteur, compteur + largeur - 1 , itr[i-1][j] ) );
-					   a.addEdge( new Edge(compteur, compteur + largeur , itr[i-1][j] ) );
-						  
-				   } 
-				   
-				   else {
-					   a.addEdge( new Edge(compteur, compteur + largeur - 1 , itr[i-1][j] ) );
-					   a.addEdge( new Edge(compteur, compteur + largeur , itr[i-1][j] ) );
-					   a.addEdge( new Edge(compteur, compteur + largeur + 1 , itr[i-1][j] ) );
-				   }
-				   compteur++;
-			   }
-		   }
-		   
-		   // derniere ligne qui rejoint le sommet fin
-		   for (int i = 0; i < largeur; i++ ) {
-			   a.addEdge( new Edge(compteur + i, largeur * hauteur + 1 , itr[hauteur-1][i]) );
-		   }
-		   
-		   return a;
-	   }
-	
-	
-	
-	public static Graph toGraph2(int [][] itr) {
-		   
-		   int largeur = itr[0].length;
-		   int hauteur = itr.length;
-			//System.out.println("hauteur" + itr[hauteur -1][largeur -1]);
-		   Graph a = new Graph(hauteur * largeur +2 + (  (hauteur - 2) * largeur ));
-		   
-		   int newhauteur =hauteur + hauteur - 2;
-		   
-		   int compteur = 0;
-		   
-		  
-		   // relie le sommet initial 0 a la premiere ligne
-		   for (int i =0 ; i < largeur; i++) {
-			   a.addEdge( new Edge(compteur, i + 1, 0) ); 
-		   }
-		   
-		   
-		   // creation des 2 ligne de sommets reliés par une arete de poids nul
-		   compteur = 1;
-		   for (int i = 1; i < 2; i++) {
-			   for (int j = 0; j < largeur; j++) {
-				   if (j == 0) {
-					   a.addEdge( new Edge(compteur, compteur + largeur, itr[i-1][j] ) );
-					   a.addEdge( new Edge(compteur, compteur + largeur + 1, itr[i-1][j] ) );
-						  
-				   }
-				   else if (j == largeur -1) {
-					   a.addEdge( new Edge(compteur, compteur + largeur - 1 , itr[i-1][j] ) );
-					   a.addEdge( new Edge(compteur, compteur + largeur , itr[i-1][j] ) );
-						  
-				   } 
-				   
-				   else {
-					   a.addEdge( new Edge(compteur, compteur + largeur - 1 , itr[i-1][j] ) );
-					   a.addEdge( new Edge(compteur, compteur + largeur , itr[i-1][j] ) );
-					   a.addEdge( new Edge(compteur, compteur + largeur + 1 , itr[i-1][j] ) );
-				   }
-				   compteur++;
-			   }
-		   }
-		   
-		   
-		   
-		   for (int i = 2; i < newhauteur - 1 ; i++) {
-			   for (int j = 0; j < largeur; j++) {
-					   a.addEdge( new Edge(compteur, compteur + largeur , 0 ) );
-					   compteur++;
-			   }
-				 
-		   }
-		   
-		   //---------------------------
-		   
-		   for (int i = hauteur - 1; i <  hauteur; i++) {
-			   for (int j = 0; j < largeur; j++) {
-				   if (j == 0) {
-					   a.addEdge( new Edge(compteur, compteur + largeur, itr[i-1][j] ) );
-					   a.addEdge( new Edge(compteur, compteur + largeur + 1, itr[i-1][j] ) );
-						  
-				   }
-				   else if (j == largeur -1) {
-					   a.addEdge( new Edge(compteur, compteur + largeur - 1 , itr[i-1][j] ) );
-					   a.addEdge( new Edge(compteur, compteur + largeur , itr[i-1][j] ) );
-						  
-				   } 
-				   
-				   else {
-					   a.addEdge( new Edge(compteur, compteur + largeur - 1 , itr[i-1][j] ) );
-					   a.addEdge( new Edge(compteur, compteur + largeur , itr[i-1][j] ) );
-					   a.addEdge( new Edge(compteur, compteur + largeur + 1 , itr[i-1][j] ) );
-				   }
-				   compteur++;
-			   }
-		   }
-		   
-		   
-		   // derniere ligne qui rejoint le sommet fin
-		   for (int i = 0; i < largeur; i++ ) {
-			   
-			   a.addEdge( new Edge(compteur + i, newhauteur * largeur + 1 , itr[hauteur-1][i]) );
-		   }
-		   return a;
-	   }
-	
-	
-	
-	// SUUUUUUUUUUUUUUUUUUUUUUUUURRRRRRRRRRRRRRRRRRRRRRRBBBBBBBBBBBBBBBAAAAAAAAAAAAAAALLLLLLLLLLLLLLEEEEE
-	public static Graph suurballe(int [][] itr){
-		  Graph g = SeamCarving.toGraph2(itr);
-		
-		  boolean bool = true;
-		  int largeur = itr[0].length;
-		  int hauteur = itr.length;
-		  // taille du graphe
-		  int newhauteur = hauteur*2 - 2;
-		  
-		  //System.out.println( "LARGEUR "+ largeur + "   hauteur " + hauteur);
-		
-		
-		//int sb[][] = new int [newhauteur][largeur];
-		int tab[] = new int [newhauteur*largeur + 2];
-		int compt = 1;
-		
-		
-		int somme = 0;
-		// Calcul de la somme des sommets avec leur chemin le plus court
-		
-		// point fictif debut vers la 1ere ligne tout est a 0
-		for (int i = 0; i < 1; i++) {
-			somme = 0;
-			for (int j = 0; j < largeur ; j++) {
-				tab[compt] = somme;
-				compt++;
-			}
-		}
-		
-
-		
-		
-		// parcours de la 1ere ligne a celle dapres ou on garde encore les liaisons
-		for (int i = 1; i < 2 ; i++) {
-			
-			for (int j = 0; j < largeur ; j++) {
-				/*System.out.println(" ALED " + i + " " + j);
-				somme = SeamCarving.coutDijkstra(g, 0, compt);
-				sb[i][j] = somme;
-				tab[compt] = somme;
-				compt++;*/
-				 if (j == 0) {
-					  //somme =  itr[hauteur - 2][j] + g.getEdge(compt - largeur, compt).cout() ;
-					  somme = tab[compt - largeur] + g.getEdge(compt - largeur, compt).cout() ;
-					  
-					   if  ( tab[compt - largeur +1]  + g.getEdge(compt - largeur + 1, compt).cout()  < somme) somme =  tab[compt - largeur + 1] +
-							   g.getEdge(compt - largeur + 1, compt).cout() ;
-				   }
-				   else if (j == largeur -1 ) {
-					   
-					   somme =  tab[compt - largeur] + g.getEdge(compt - largeur, compt).cout() ;
-					   if  ( tab[compt - largeur - 1] + g.getEdge(compt - largeur - 1, compt).cout()< somme) somme =  tab[compt - largeur - 1] + g.getEdge(compt - largeur - 1, compt).cout(); 
-					  
-						  
-				   } 
-				   
-				   else {
-					  // int ml = compt - largeur;
-					  //System.out.println(" precedent " + itr[hauteur - 1][j ]  +  " actuel " + compt );
-					   somme =  tab[compt - largeur] + g.getEdge(compt - largeur, compt).cout() ;
-					   if  ( tab[compt - largeur - 1] + g.getEdge(compt - largeur - 1, compt).cout() < somme) somme =  tab[compt - largeur - 1] + g.getEdge(compt - largeur - 1, compt).cout(); 
-					   if  ( tab[compt - largeur + 1] + g.getEdge(compt - largeur + 1, compt).cout() < somme) somme =  tab[compt - largeur + 1] + g.getEdge(compt - largeur + 1, compt).cout(); 
-				   }
-				tab[compt] = somme;
-				
-				
-				compt++;
-			
-				
-			}
-		}
-		
-	
-		
-		
-		// parcours du milieu ou tout est a 0
-		for (int i = 2; i <= newhauteur - 2 ; i++) {
-			
-			for (int j = 0; j < largeur ; j++) {
-				
-				
-				somme = tab[compt - largeur]+ g.getEdge(compt - largeur, compt).cout();
-				
-				//sb[i-1][j] = somme;
-				tab[compt] = somme;
-				compt++;
-			}
-		}
-		
-		
-		// parcours de lavant derniere ligne  vers la derniere ligne 
-		for (int i = newhauteur - 1; i < newhauteur; i++) {
-			
-			for (int j = 0; j < largeur ; j++) {
-				 if (j == 0) {
-					 
-					  //somme =  itr[hauteur - 2][j] + g.getEdge(compt - largeur, compt).cout() ;
-					  somme = tab[compt - largeur] + g.getEdge(compt - largeur, compt).cout() ;
-					  
-					   if  ( tab[compt - largeur +1]  + g.getEdge(compt - largeur + 1, compt).cout()  < somme) {
-						   somme =  tab[compt - largeur + 1] +g.getEdge(compt - largeur + 1, compt).cout() ;
-					   }
-				   }
-				 	else if (j == largeur -1 ) {
-					   
-					   somme =  tab[compt - largeur] + g.getEdge(compt - largeur, compt).cout() ;
-					   if  ( tab[compt - largeur - 1] + g.getEdge(compt - largeur - 1, compt).cout()< somme) {
-						   somme =  tab[compt - largeur - 1] + g.getEdge(compt - largeur - 1, compt).cout(); 
-					   }
-					  
-				   } 
-				   
-				   else {
-					  // int ml = compt - largeur;
-					  
-					   somme =  tab[compt - largeur] + g.getEdge(compt - largeur, compt).cout() ;
-					   
-					   if  ( (tab[compt - largeur - 1] + g.getEdge(compt - largeur - 1, compt).cout() )< somme) {
-						   somme =  tab[compt - largeur - 1] + g.getEdge(compt - largeur - 1, compt).cout(); 
-
-						  /*  
-						   if (compt == 272) {
-							   System.out.println( " aaaaaaaaaaaaaaaha "  + somme + "     " + compt) ;
-							   System.out.println(" precedent " + (compt - largeur + 1)  +  " somme  " + (tab[compt - largeur + 1] + g.getEdge(compt - largeur + 1, compt).cout() ) + " actuel " + compt );
-						   }*/
-					   }
-					   if  ( (tab[compt - largeur + 1] + g.getEdge(compt - largeur + 1, compt).cout() ) < somme) {
-						   somme =  tab[compt - largeur + 1] + g.getEdge(compt - largeur + 1, compt).cout(); 
-
-						   //System.out.println( " aaaaaaaaaaaaaaaha "  + somme + "     " + compt) ;
-						 }
-				   }
-				//sb[i][j] = somme;
-				tab[compt] = somme;
-				
-				
-				compt++;
-			}
-		}
-		
-	
-		
-
-		// derniere ligne vers le dernier point fictif
-		
-		somme = 500;
-		
-		for (int i = 0; i < largeur; i++ ) 
-		{
-			//int haut = hauteur * largeur + i + 1;
-			int add = tab[compt - largeur + i] + g.getEdge(compt - largeur + i, compt).cout();
-			if (somme > add) { 
-				tab[compt] = add; 
-				//System.out.println("   " +add );
-				somme = add;
-			}
-		}
-		
-		// 1er chemin le plus court
-		ArrayList<Integer> suurb = SeamCarving.Dijkstra(g, 0, newhauteur * largeur + 1 );
-		compt = 0;
-		
-		
-		// Inversion du chemin le plus court
-		
-		for (Edge e : g.edges()) {
-			e.setCout(  e.cout() + tab[e.depart()] - tab[e.arrive()]);
-			
-			if ( e.cout() == -2)System.out.println(" cout " + tab[e.depart()] + " depart " + e.depart() + " arrive " + e.arrive() + "  cout " + tab[e.arrive()] + "   length " + tab.length);
-				
-			if (compt < suurb.size()-1 && e.depart() == suurb.get(compt) && e.getTo() == suurb.get(compt+1) ) {
-				int dep = e.depart();
-				e.setDepart(e.getTo());
-				e.setTo(dep);
-				compt++;
-			}
-		}
-		//for (Edge e : g.edges()) System.out.println("  " + e.cout() + "  " + e.depart() + "  " + e.arrive());
-		
-		// Dijsktra pour chercher le 2eme chemin le plus court
-		
-		System.out.println(" ALED ");
-		
-		ArrayList<Integer> suurb2 = SeamCarving.Dijkstra(g, 0,  newhauteur * largeur + 1);
-		
-
-		// taille du chemin des" courts
-		int i = 0;
-		if (suurb.size() > 0) i = 1;
-
-
-
-		// Suppression des aretes jaunes
-
-		ArrayList<Integer>  areteJaune = new ArrayList<Integer>();
-		ArrayList<Integer>  saut = new ArrayList<Integer>();
-
-		while(i < suurb.size() - 1)  {
-			if (suurb2.contains(suurb.get(i) )   ) {
-
-				// recuperation de la position dans suurb2
-
-				int index = suurb2.indexOf(suurb.get(i));
-				
-				// On regarde si l'une des aretes du djikstra2 et aussi dans djisktra1
-				if ( suurb2.get(index +1) == suurb.get(i + 1 ) ){
-					areteJaune.add( suurb.get(i) );
-					areteJaune.add( suurb.get(i+1) );
-				}
-				if ( suurb2.get(index - 1) == suurb.get(i + 1 ) ){
-					areteJaune.add( suurb.get(i) );
-					areteJaune.add( suurb.get(i+1) );
+			for(int i = 0 ; i<width;i++) {
+				for(int j = 0 ; j<height;j++) {
+					if( j < height-1 ){
+						out.write(image[i][j][0]+" ");
+						out.write(image[i][j][1]+" ");
+						out.write(image[i][j][2]+" ");
+					}
+					else{
+						out.write(image[i][j][0]+" ");
+						out.write(image[i][j][1]+" ");
+						out.write(image[i][j][2]+"\n");
+					}
 					
 				}
+			}
+			out.close();
+		}
+		catch (Exception e){
+			System.err.println("Error : " + e.getMessage());
+		}
 
-			}
-			i++;
-		}
-		
-		// enlevage arete jaune
-		
-		for (i= 0; i < areteJaune.size() - 1 ; i+=2){
-			g.removeEdge(areteJaune.get(i), areteJaune.get(i+1));
-			g.removeEdge(areteJaune.get(i+1), areteJaune.get(i));
-			
-			for (int j = 0; j < suurb.size() - 1 ; j++) {
-				
-				if (suurb.get(j) == areteJaune.get(i) && suurb.get(j+1) == areteJaune.get(i+1)) {
-					// ajout des sommets à ne pas inverser avec leur precedent sommet
-					saut.add(j);
-				}
-			}
-			
-			
-			for (int j = 0; j < suurb2.size() - 1; j++) {
-			
-				if (suurb2.get(j) == areteJaune.get(i+1) && suurb2.get(j+1) == areteJaune.get(i)) {
-					//System.out.println(" TEST SUURBATIOOn " + suurb2.get(j) + "  " +  areteJaune.get(i+1)   +"     " + suurb2.get(j+1)  + "   " + areteJaune.get(i) );
-					
-					suurb2.remove(j+1); 
-					suurb2.remove(j);
-				}
-			}
-			
-		}
-		
-		
-		// re inversion des aretes
-		
-		// deplacement dans le djikstra du 1er chemin
-		compt = 1;
-		
-		// deplacement dans la liste de sommet a ne pas inverser car supprimer
-		i = 0;
-		
-		for (Edge e : g.edges()) {
-			
-			if (compt < suurb.size() && e.depart() == suurb.get(compt) && e.getTo() == suurb.get(compt-1) ) {
-				
-				if (i < saut.size() && compt == saut.get(i)) {
-					compt++; 
-					i++; 
-				}
-				int dep = e.depart();
-				e.setDepart(e.getTo());
-				e.setTo(dep);
-				compt++;
-				
-			}
-		}
-		
-		// transfert des bonnes aretes
-		for (int j = 1; j < suurb.size(); j++) {
-			int diff = Math.abs( suurb2.get(j-1) - suurb2.get(j) ) ;
-			boolean verif = diff > itr[0].length && suurb.get(j)% itr[0].length == 0 ;
-			boolean verif2 = diff > itr[0].length + 1 && suurb.get(j)% itr[0].length != 0 ;
-			if (verif || verif2 ) {
-				int echange = suurb.get(j);
-				suurb.set(j, suurb2.get(j));
-				suurb2.set(j, echange);
-			}
-		}
-		/*
-		System.out.print("\nCHEMIN 1 fefskedf :");
-		for (Integer p: suurb)  System.out.print("   " + p);
-		
-		 System.out.print("\nCHEMIN 2 dsiyfsfkudsf :");
-		for (Integer p: suurb2)  System.out.print("   " + p);
-		*/
-		
-		return g;
 	}
 	
 	
-	public static int[][] twopath(Graph g, int s, int t) {
+	
+ public static int[][] twopath(Graph g, int s, int t) {
 		
 		
 		ArrayList<Integer> dij1 = SeamCarving.Dijkstra(g, s, t);
@@ -735,34 +172,89 @@ public class SeamCarving
 			/*g.removeEdge(dij1.get(i), dij1.get(i+1));
 			System.out.println(" COUPLE EDGE : " + dij1.get(i)  +"    " + dij1.get(i+1));*/
 			
-			// modification du cout du 1er chemin le plus court � une tres grande valeur
+			// modification du cout du 1er chemin le plus court a une tres grande valeur
 			cout.add(g.getEdge(dij1.get(i),  dij1.get(i+1)).cout() ) ;
-			g.getEdge(dij1.get(i),  dij1.get(i+1)).setCout(500);
-		}
+			g.getEdge(dij1.get(i),  dij1.get(i+1)).setCout(50000);
+			}
+
 		
 		// calcul du 2eme chemin le plus court
 		ArrayList<Integer> dij2 = SeamCarving.Dijkstra(g, s, t);
 		
-		int[][] tab = new int[2][dij1.size()];
-		
-		// stocke les chemins des 2 dijkstra dans un tableau � 2 dimensions
-		for (int i = 0; i < 2; i++) {
-			for (int j =0; j < dij1.size(); j++)  {
-				if ( i == 0) tab[i][j] = dij1.get(j);
-				else tab[i][j] = dij2.get(j);
-			}
-		}
+
 		
 		for (int i= 0; i < cout.size(); i++){
 			
-			// remet les couts du 1er chemin � la normale
+			// remet les couts du 1er chemin a la normale
 			g.getEdge(dij1.get(i),  dij1.get(i+1)).setCout(cout.get(i));
 		}
-		/*
-		System.out.print("\nCHEMIN  1 twopath:");for (Integer p: dij1)  System.out.print("   " + p);
 		
-		System.out.print("\nCHEMIN 2 twopath:");for (Integer p: dij2)  System.out.print("   " + p);
-		*/
+		
+		
+		System.out.print("\nCHEMIN  1 twopath AVANT:");
+		for (Integer p: dij1) {
+			System.out.print("   " + p);
+		}
+		
+		System.out.print("\nCHEMIN 2 :");
+		for (Integer p: dij2) {
+			System.out.print("   " + p);
+		}
+		
+		
+		// transfert des bonnes aretes
+					for (int j = 1; j < dij2.size(); j++) {
+						int diff = Math.abs( dij2.get(j-1) - dij2.get(j) ) ;
+						
+						boolean verif = diff > g.getLargeur() && dij1.get(j)% g.getLargeur() == 0 ;
+						boolean verif2 = diff > g.getLargeur() + 1 && dij1.get(j)%g.getLargeur() != 0 ;
+
+						if (verif || verif2 ) {
+							int echange = dij1.get(j);
+							dij1.set(j, dij2.get(j));
+							dij2.set(j, echange);
+						}
+					}
+					
+					
+					System.out.print("\nCHEMIN  1 Twopath APRES:");
+					for (Integer p: dij1) {
+						System.out.print("   " + p);
+					}
+					
+					System.out.print("\nCHEMIN 2 :");
+					for (Integer p: dij2) {
+						System.out.print("   " + p);
+					}
+		
+		int[][] tab = new int[2][dij1.size()];
+		
+		// stocke les chemins des 2 dijkstra dans un tableau a 2 dimensions
+		for (int i = 0; i < 2; i++) {
+			for (int j =0; j < dij1.size(); j++)  {
+				if ( i == 0) tab[i][j] = dij1.get(j);
+				else {
+					System.out.print("\n VALEUR POS " +  dij2.get(j) + " VALEUR QUOTIENT " + (dij2.get(j) / g.getLargeur()) + " TEST " + ( dij2.get(j) - dij2.get(j)/ g.getLargeur() ) );
+					int diff = dij2.get(j)/g.getLargeur();
+					if (  dij2.get(j) != 0) {
+						 diff = dij2.get(j)/g.getLargeur() ;
+					}
+					System.out.println("\n RES "+ diff +  " res " + dij2.get(j));
+					tab[i][j] = dij2.get(j) - diff ;
+				}
+			}
+		}
+		
+		System.out.print("\ntest " );
+		for (int i = 0; i < 2; i++) {
+			for (int j =0; j < dij1.size(); j++)  {
+				System.out.print(" " + tab[i][j] );
+				}
+		}
+		
+		
+		
+		
 		return tab;
 	}
 	
@@ -775,20 +267,20 @@ public class SeamCarving
 		heap.decreaseKey(s, 0);
 		while(!heap.isEmpty()){
 			int elem = heap.pop();
-			
 			for(Edge edge: graph.adj(elem)){
-				
+
 				if(heap.priority(elem) + edge.cout() < heap.priority(edge.arrive())){
 					int costtemp = heap.priority(elem) + edge.cout();
-					if ( costtemp == -2) System.out.println(" couuuut " + edge.cout());
 					heap.decreaseKey(edge.arrive(),costtemp);
 					precedent[edge.arrive()] = elem;  
 				}
 				
 			}
-			
 		}
+
 		//t = arrive
+
+
 		while( s != t){
 			list.add(0, t);
 			t = precedent[t];
@@ -799,243 +291,8 @@ public class SeamCarving
 		return list ;
 	}
 	
-	public static int coutDijkstra(Graph graph, int s , int  t){
-		
-		int cout =  0;
-		
-		Heap heap = new Heap(graph.vertices());
-		ArrayList<Integer> list = new ArrayList<>();
-		int[] precedent = new int[graph.vertices()+1];
-		int [] p = new int[graph.vertices()+1];
-		heap.decreaseKey(s, 0);
-		while(!heap.isEmpty()){
-			int elem = heap.pop();
+	public static void main (String[] args) {
 
-			for(Edge edge: graph.adj(elem)){
-				
-				if(heap.priority(elem) + edge.cout() < heap.priority(edge.arrive())){
-					int costtemp = heap.priority(elem) + edge.cout();
-					heap.decreaseKey(edge.arrive(),costtemp);
-					precedent[edge.arrive()] = elem;  
-					p[edge.arrive()] = edge.cout();
-				}
-				
-			}
-		}
-		//t = arrive
-		int s1 = 0;
-		while( s != t){
-			s1 = p[t];
-			list.add(0, s1);
-			t = precedent[t];
-		}
-		
-		for(Integer k : list) {
-			cout += k;
-			
-		}
-		
-		return cout;
+
 	}
-	
-	
-	
-	public static void supprimerPixel2(String filename,String outfile, int iteration) {
-		
-		//filename += "2";
-		
-		//int[][] fin = SeamCarving.readpgm(filename+".pgm");	
-		int[][] fin = SeamCarving.readpgm(filename);	
-		int[][] outTAb = SeamCarving.interest(fin);
-		Graph g = SeamCarving.suurballe(outTAb);
-		
-		int newhau = outTAb.length*2 - 2;
-		int largeur = outTAb[0].length;
-		int [][] test = SeamCarving.twopath(g, 0, newhau*largeur + 1);
-		ArrayList<Integer> list = new ArrayList<>(), list2 = new ArrayList<>();
-		
-		for (int i = 0; i < test.length; i++) {
-			for (int j = 0; j < test[0].length; j++) {
-				if (i == 0) list.add(test[i][j]);
-				else list2.add(test[i][j]);
-			}
-		}
-		
-		
-		System.out.print("\nCHEMIN  1 :");for (Integer p: list)  System.out.print("   " + p);
-		
-		System.out.print("\nCHEMIN 2 :");for (Integer p: list2)  System.out.print("   " + p);
-		
-		int  width = outTAb[0].length;
-		int height = outTAb.length;
-		
-		int[][] tab = new int[fin.length][fin[0].length-2] ;
-		
-		int indicePixelASuppr = 1;
-		
-		int indicePixelASuppr2 = 1;
-		
-		
-		// 1ere boucle
-		
-		for(int i = 0 ; i<tab.length;i++) {
-			int z = 0;
-			for(int j = 0 ; j<tab[0].length ;j++) {
-				
-				int longu = j+1;
-				
-				if (list.get(indicePixelASuppr) == (  (i* outTAb[0].length )  + longu)  )  {
-					indicePixelASuppr++;
-					z++; tab[i][j] = fin[i][z]; 
-				} else if ( list2.get(indicePixelASuppr2) == (  (i* outTAb[0].length )  + longu) ) {
-					indicePixelASuppr2++;
-					z++; tab[i][j] = fin[i][z]; 
-				}
-				else tab[i][j] = fin[i][z];
-				
-				z++;
-			}
-		}
-		
-		
-		// reste des iterations
-		
-		for (int k = 0; k < (iteration/2 - 1) ; k++) {
-			indicePixelASuppr = 1;
-
-			indicePixelASuppr2 = 1;
-			
-			System.out.println("ite" +  k);
-			
-			fin = tab;
-			outTAb = SeamCarving.interest(fin);
-			newhau = outTAb.length*2 - 2;
-			largeur = outTAb[0].length;
-			//g = SeamCarving.toGraph(outTAb);
-			
-			list.clear();
-			list2.clear();
-			g = SeamCarving.suurballe(outTAb);
-			test = SeamCarving.twopath(g, 0, newhau*largeur + 1);
-			
-			for (int i = 0; i < test.length; i++) {
-				for (int j = 0; j < test[0].length; j++) {
-					if (i == 0) list.add(test[i][j]);
-					else list2.add(test[i][j]);
-				}
-			}
-			
-			System.out.print("\nCHEMIN  1 :");for (Integer p: list)  System.out.print("   " + p);
-			
-			System.out.print("\nCHEMIN 2 :");for (Integer p: list2)  System.out.print("   " + p);
-			
-			tab = new int[fin.length][fin[0].length-2] ;
-
-			for(int i = 0 ; i<tab.length;i++) {
-				int z = 0;
-				for(int j = 0 ; j<tab[0].length ;j++) {
-					
-					
-					int longu = j+1;
-					
-					if (list.get(indicePixelASuppr) == (  (i* outTAb[0].length )  + longu)  )  {
-						indicePixelASuppr++;
-						 z++; tab[i][j] = fin[i][z]; 
-					} else if ( list2.get(indicePixelASuppr2) == (  (i* outTAb[0].length )  + longu) ) {
-						indicePixelASuppr2++;
-						z++; tab[i][j] = fin[i][z]; 
-					}
-					else tab[i][j] = fin[i][z];
-					z++;
-				}
-			}
-			
-			
-		}
-		//outfile = "reduction_"+outfile;
-		SeamCarving.writepgm(tab, outfile);
-		System.out.println("DONE!!!!");
-		
-	}
-	
-public static void supprimerPixel(String filename,String outfile, int iteration) {
-		
-		//filename += "2";
-		
-		//int[][] fin = SeamCarving.readpgm(filename+".pgm");	
-		int[][] fin = SeamCarving.readpgm(filename);	
-		int[][] outTAb = SeamCarving.interest(fin);
-		Graph g = SeamCarving.toGraph(outTAb);
-		ArrayList<Integer> list = SeamCarving.Dijkstra(g, 0, fin.length*fin[0].length + 1);
-		
-		 System.out.print("\nCHEMIN :");	for (Integer p: list)  System.out.print("   " + p);
-		
-		
-		int  width = outTAb[0].length;
-		int height = outTAb.length;
-		
-		int[][] tab = new int[fin.length][fin[0].length-1] ;
-		
-		int indicePixelASuppr = 1;
-		
-		
-		
-		for(int i = 0 ; i<tab.length;i++) {
-			int z = 0;
-			for(int j = 0 ; j<tab[0].length ;j++) {
-				
-				
-				int longu = j+1;
-				
-				if (list.get(indicePixelASuppr) == (  (i* outTAb[0].length )  + longu)  )  {
-					indicePixelASuppr++;
-					z++; tab[i][j] = fin[i][z]; 
-				} 
-				else tab[i][j] = fin[i][z];
-				
-				z++;
-			}
-		}
-		
-		
-		for (int k = 0; k < iteration - 1; k++) {
-			indicePixelASuppr = 1;
-			
-			fin = tab;
-			outTAb = SeamCarving.interest(fin);
-			g = SeamCarving.toGraph(outTAb);
-			list = SeamCarving.Dijkstra(g, 0, fin.length*fin[0].length + 1);
-			
-			 System.out.print("\nCHEMIN :"); for (Integer p: list)  System.out.print("   " + p);
-			 
-			tab = new int[fin.length][fin[0].length-1] ;
-
-			for(int i = 0 ; i<tab.length;i++) {
-				int z = 0;
-				for(int j = 0 ; j<tab[0].length ;j++) {
-					
-					
-					int longu = j+1;
-					
-					if (list.get(indicePixelASuppr) == (  (i* outTAb[0].length )  + longu)  )  {
-						indicePixelASuppr++;
-						 z++; tab[i][j] = fin[i][z]; 
-					} 
-					else tab[i][j] = fin[i][z];
-					
-					z++;
-				}
-			}
-			
-		}
-		//outfile = "reduction_"+outfile;
-		SeamCarving.writepgm(tab, outfile);
-		System.out.println("DONE!!!!");
-		
-	}
-
-	
-	
-	
-	
 }

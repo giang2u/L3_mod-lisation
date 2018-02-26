@@ -7,6 +7,7 @@ public class Graph
    private ArrayList<Edge>[] adj;
    private final int V;
    int E;
+   private int largeur;
 @SuppressWarnings("unchecked")
    public Graph(int N)
 	 {
@@ -97,6 +98,14 @@ public ArrayList<Edge>[] getAdj() {
 
 public void setAdj(ArrayList<Edge>[] adj) {
 	this.adj = adj;
+}
+
+public void setLargeur(int t) {
+	this.largeur = t;
+}
+
+public int getLargeur() {
+	return this.largeur;
 }
 
    

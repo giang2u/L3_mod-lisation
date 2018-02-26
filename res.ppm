@@ -1,0 +1,6 @@
+P3
+# CREATOR: MOI 
+2 2
+ 255  #net en RGB
+[I@682a0b20 [I@3d075dc0
+[I@214c265e [I@448139f0
