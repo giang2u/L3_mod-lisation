@@ -114,7 +114,7 @@ public class Modeli extends JFrame{
 		
 
 
-		Graph g = GraphTraitement.toGraph(outTAb);
+		Graph g = GraphTraitement.toGraph2(outTAb);
 		//g.writeFile("graph.dot");
 		
 		
@@ -128,7 +128,7 @@ public class Modeli extends JFrame{
 			}
 		}*/
 		
-		g.writeFile("graph2.dot");
+		g.writeFile("graph22.dot");
 		//gg.writeFile("graph.dot");
 		
 		
@@ -137,13 +137,13 @@ public class Modeli extends JFrame{
 
 		//SeamCarving.supprimerPixel(args[0],args[0],  50);
 		//SeamCarving.supprimerPixelPPM("poivron.ppm","poivronOut.ppm", 100);
-		Supprimer.supprimerPixelPPM("pbmlib.ppm","pbmlibout.ppm", 50);
+		//Supprimer.supprimerPixelPPM("pbmlib.ppm","pbmlibout.ppm", 50);
 
 		
 		//int [][] tab = SeamCarving.twopath(gg, 0, gg.vertices() - 1);
-		//Supprimer.supprimerPixel("ex1.pgm","feep23.pgm",  200);
-		Supprimer.supprimerPixel2("ex1.pgm","feep22.pgm", 100);
-		Supprimer.supprimerPixelLine("ex1.pgm","ex1ligne.pgm",  100);
-		Supprimer.supprimerPixel("ex1.pgm","ex1colone.pgm",  100);
+		Supprimer.supprimerPixel("test.pgm","feep23.pgm",  2);
+		//Supprimer.supprimerPixel2("test.pgm","feep22.pgm", 1);
+		//Supprimer.supprimerPixelLine("ex1.pgm","ex1ligne.pgm",  100);
+		//Supprimer.supprimerPixel("ex1.pgm","ex1colone.pgm",  100);
 	 }
 }
