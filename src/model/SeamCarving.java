@@ -163,97 +163,142 @@ public class SeamCarving
  public static int[][] twopath(Graph g, int s, int t) {
 		
 		
-		ArrayList<Integer> dij1 = SeamCarving.Dijkstra(g, s, t);
+		ArrayList<Integer> suurb = SeamCarving.Dijkstra(g, s, t);
 		
 		ArrayList<Integer> cout = new ArrayList<Integer>();
 		
 	
-		for (int i= 0; i < dij1.size() - 1; i++){
-			/*g.removeEdge(dij1.get(i), dij1.get(i+1));
-			System.out.println(" COUPLE EDGE : " + dij1.get(i)  +"    " + dij1.get(i+1));*/
+		for (int i= 0; i < suurb.size() - 1; i++){
+			
 			
 			// modification du cout du 1er chemin le plus court a une tres grande valeur
-			cout.add(g.getEdge(dij1.get(i),  dij1.get(i+1)).cout() ) ;
-			g.getEdge(dij1.get(i),  dij1.get(i+1)).setCout(50000);
+			cout.add(g.getEdge(suurb.get(i),  suurb.get(i+1)).cout() ) ;
+			g.getEdge(suurb.get(i),  suurb.get(i+1)).setCout(50000);
 			}
 
+		for (int i= 0; i < suurb.size() - 1; i++){
+			
+			//inversion
+			
+			Edge e = g.getEdge(suurb.get(i),  suurb.get(i+1));
+			
+			int dep = e.depart();
+			e.setDepart(e.getTo());
+			e.setTo(dep);
+			
+			}
+		
 		
 		// calcul du 2eme chemin le plus court
-		ArrayList<Integer> dij2 = SeamCarving.Dijkstra(g, s, t);
+		ArrayList<Integer> suurb2 = SeamCarving.Dijkstra(g, s, t);
 		
+		for (int i= 0; i < suurb.size() - 1; i++){
+			
+			//rinversion
+			Edge e = g.getEdge(suurb.get(i+1),  suurb.get(i));
+			
+			int dep = e.depart();
+			e.setDepart(e.getTo());
+			e.setTo(dep);
+		}
 
 		
 		for (int i= 0; i < cout.size(); i++){
 			
 			// remet les couts du 1er chemin a la normale
-			g.getEdge(dij1.get(i),  dij1.get(i+1)).setCout(cout.get(i));
+			g.getEdge(suurb.get(i),  suurb.get(i+1)).setCout(cout.get(i));
 		}
 		
 		
 		
 		System.out.print("\nCHEMIN  1 twopath AVANT:");
-		for (Integer p: dij1) {
+		for (Integer p: suurb) {
 			System.out.print("   " + p);
 		}
 		
 		System.out.print("\nCHEMIN 2 :");
-		for (Integer p: dij2) {
+		for (Integer p: suurb2) {
 			System.out.print("   " + p);
 		}
-		
+		/*
 		
 		// transfert des bonnes aretes
-					for (int j = 1; j < dij2.size(); j++) {
-						int diff = Math.abs( dij2.get(j-1) - dij2.get(j) ) ;
+					for (int j = 2; j < suurb2.size() - 1; j++) {
+						int diff = Math.abs( suurb2.get(j-1) - suurb2.get(j) ) ;
+						int diff2 = Math.abs( suurb.get(j-1) - suurb.get(j) ) ;
 						
-						boolean verif = diff > g.getLargeur() && dij1.get(j)% g.getLargeur() == 0 ;
-						boolean verif2 = diff > g.getLargeur() + 1 && dij1.get(j)%g.getLargeur() != 0 ;
-
+						boolean verif = diff > g.getLargeur() && suurb2.get(j)% g.getLargeur() == 0 ;
+						boolean verif2 = diff > g.getLargeur() + 1 && suurb2.get(j)%g.getLargeur() != 0 ;
+						//boolean verif3 = ( diff2 != g.getLargeur() ) && ( diff != g.getLargeur() );
+						
 						if (verif || verif2 ) {
-							int echange = dij1.get(j);
-							dij1.set(j, dij2.get(j));
-							dij2.set(j, echange);
+							int echange = suurb.get(j);
+							suurb.set(j, suurb2.get(j));
+							suurb2.set(j, echange);
 						}
 					}
 					
 					
 					System.out.print("\nCHEMIN  1 Twopath APRES:");
-					for (Integer p: dij1) {
+					for (Integer p: suurb) {
 						System.out.print("   " + p);
 					}
 					
 					System.out.print("\nCHEMIN 2 :");
-					for (Integer p: dij2) {
+					for (Integer p: suurb2) {
 						System.out.print("   " + p);
-					}
+					}*/
 		
-		int[][] tab = new int[2][dij1.size()];
+		int[][] tab = new int[2][suurb.size()];
 		
 		// stocke les chemins des 2 dijkstra dans un tableau a 2 dimensions
 		for (int i = 0; i < 2; i++) {
-			for (int j =0; j < dij1.size(); j++)  {
-				if ( i == 0) tab[i][j] = dij1.get(j);
+			for (int j =0; j < suurb.size(); j++)  {
+				if ( i == 0) tab[i][j] = suurb.get(j);
 				else {
-					System.out.print("\n VALEUR POS " +  dij2.get(j) + " VALEUR QUOTIENT " + (dij2.get(j) / g.getLargeur()) + " TEST " + ( dij2.get(j) - dij2.get(j)/ g.getLargeur() ) );
-					int diff = dij2.get(j)/g.getLargeur();
-					if (  dij2.get(j) != 0) {
-						 diff = dij2.get(j)/g.getLargeur() ;
+					
+					//System.out.print("\n VALEUR POS " +  suurb2.get(j) + " VALEUR QUOTIENT " + (suurb2.get(j) / largeur) + " TEST " + ( suurb2.get(j) - suurb2.get(j)/ largeur ) );
+					int diff = 0;
+					/*if (suurb2.get(j) == 0) {
+					}else if (  suurb2.get(j) < g.getLargeur()) {
+						 diff = 1;
+					} else if (suurb2.get(j)%g.getLargeur() == 1) {
+						diff = suurb2.get(j)/g.getLargeur()-1;
+					}else if (suurb2.get(j)%g.getLargeur() == 2) {
+						diff = suurb2.get(j)/g.getLargeur();
+					} else {
+						diff = suurb2.get(j)/g.getLargeur()+1;
 					}
-					System.out.println("\n RES "+ diff +  " res " + dij2.get(j));
-					tab[i][j] = dij2.get(j) - diff ;
+					//System.out.println("\n RES "+ diff +  " res " + suurb2.get(j));
+					tab[i][j] = suurb2.get(j) - diff ;*/
+					
+					int ligneCour = suurb2.get(j)/g.getLargeur();
+					if ( ligneCour == 0 && suurb2.get(j) != 0 ) {
+						diff = 1;
+					} else if ( suurb2.get(j) != 0){
+					diff = (ligneCour/2*g.getLargeur());
+					}
+					System.out.println(" Ligne cour " + ligneCour + " DIFF "  + diff + "  valeur " + suurb2.get(j));
+					
+					tab[i][j] = suurb2.get(j) - diff;
+					
 				}
 			}
 		}
-		
+		/*
 		System.out.print("\ntest " );
 		for (int i = 0; i < 2; i++) {
-			for (int j =0; j < dij1.size(); j++)  {
+			for (int j =0; j < suurb.size(); j++)  {
 				System.out.print(" " + tab[i][j] );
+				
+					/*System.out.print("\n VALEUR POS " +  suurb2.get(j) + " VALEUR QUOTIENT " + (suurb2.get(j) / g.getLargeur()) + " TEST " + ( suurb2.get(j) - suurb2.get(j)/ g.getLargeur() ) );
+					int diff = suurb2.get(j)/g.getLargeur();
+					if (  suurb2.get(j) != 0) {
+						 diff = suurb2.get(j)/g.getLargeur() ;
+					}
+					System.out.println("\n RES "+ diff +  " res " + suurb2.get(j));
 				}
-		}
-		
-		
-		
+		}*/
 		
 		return tab;
 	}

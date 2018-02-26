@@ -61,7 +61,7 @@ public class GraphTraitement {
 			//System.out.println("hauteur" + itr[hauteur -1][largeur -1]);
 		   Graph a = new Graph(hauteur * largeur +2 + (  (hauteur - 2) * largeur ));
 		   
-		   int newhauteur =hauteur + hauteur - 2;
+		   int newhauteur = hauteur + hauteur - 2;
 		   
 		   int compteur = 0;
 		   
@@ -79,7 +79,6 @@ public class GraphTraitement {
 				   if (j == 0) {
 					   a.addEdge( new Edge(compteur, compteur + largeur, itr[i-1][j] ) );
 					   a.addEdge( new Edge(compteur, compteur + largeur + 1, itr[i-1][j] ) );
-						  
 				   }
 				   else if (j == largeur -1) {
 					   a.addEdge( new Edge(compteur, compteur + largeur - 1 , itr[i-1][j] ) );
@@ -98,16 +97,36 @@ public class GraphTraitement {
 		   
 		   
 		   
-		   for (int i = 2; i < newhauteur - 1 ; i++) {
+		   for (int i = 2; i < newhauteur; i++) {
 			   for (int j = 0; j < largeur; j++) {
+				   	if (i%2 == 0) {
 					   a.addEdge( new Edge(compteur, compteur + largeur , 0 ) );
-					   compteur++;
+					   
+				   	} else {
+				   		if (j == 0) {
+							   a.addEdge( new Edge(compteur, compteur + largeur, itr[i-2][j] ) );
+							   a.addEdge( new Edge(compteur, compteur + largeur + 1, itr[i-2][j] ) );
+								  
+						   }
+						   else if (j == largeur -1) {
+							   a.addEdge( new Edge(compteur, compteur + largeur - 1 , itr[i-2][j] ) );
+							   a.addEdge( new Edge(compteur, compteur + largeur , itr[i-2][j] ) );
+								  
+						   } 
+						   
+						   else {
+							   a.addEdge( new Edge(compteur, compteur + largeur - 1 , itr[i-2][j] ) );
+							   a.addEdge( new Edge(compteur, compteur + largeur , itr[i-2][j] ) );
+							   a.addEdge( new Edge(compteur, compteur + largeur + 1 , itr[i-2][j] ) );
+						   }
+				   	}
+				   	compteur++;
 			   }
 				 
 		   }
 		   
 		   //---------------------------
-		   
+		   /*
 		   for (int i = hauteur - 1; i <  hauteur; i++) {
 			   for (int j = 0; j < largeur; j++) {
 				   if (j == 0) {
@@ -128,12 +147,11 @@ public class GraphTraitement {
 				   }
 				   compteur++;
 			   }
-		   }
+		   }*/
 		   
 		   
 		   // derniere ligne qui rejoint le sommet fin
 		   for (int i = 0; i < largeur; i++ ) {
-			   
 			   a.addEdge( new Edge(compteur + i, newhauteur * largeur + 1 , itr[hauteur-1][i]) );
 		   }
 		  // System.out.println(" hauteur " + hauteur + " largeur  " + largeur);
@@ -143,7 +161,7 @@ public class GraphTraitement {
 	
 	
 	// SUUUUUUUUUUUUUUUUUUUUUUUUURRRRRRRRRRRRRRRRRRRRRRRBBBBBBBBBBBBBBBAAAAAAAAAAAAAAALLLLLLLLLLLLLLEEEEE
-		public static int[][] suurballe(int [][] itr){
+		public static Graph suurballe(int [][] itr){
 			  Graph g = GraphTraitement.toGraph2(itr);
 			
 			  boolean bool = true;
@@ -215,8 +233,6 @@ public class GraphTraitement {
 				}
 			}
 			
-		
-			
 			
 			// parcours du milieu ou tout est a 0
 			for (int i = 2; i <= newhauteur - 2 ; i++) {
@@ -231,7 +247,6 @@ public class GraphTraitement {
 					compt++;
 				}
 			}
-			
 			
 			// parcours de lavant derniere ligne  vers la derniere ligne 
 			for (int i = newhauteur - 1; i < newhauteur; i++) {
@@ -283,9 +298,6 @@ public class GraphTraitement {
 				}
 			}
 			
-		
-			
-
 			// derniere ligne vers le dernier point fictif
 			
 			somme = 500000;
@@ -335,7 +347,6 @@ public class GraphTraitement {
 			if (suurb.size() > 0) i = 1;
 
 
-
 			// Suppression des aretes jaunes
 
 			ArrayList<Integer>  areteJaune = new ArrayList<Integer>();
@@ -377,7 +388,6 @@ public class GraphTraitement {
 					}
 				}
 				
-				
 				for (int j = 0; j < suurb2.size() - 1; j++) {
 				
 					if (suurb2.get(j) == areteJaune.get(i+1) && suurb2.get(j+1) == areteJaune.get(i)) {
@@ -389,7 +399,6 @@ public class GraphTraitement {
 				}
 				
 			}
-			
 			
 			// re inversion des aretes
 			
@@ -414,13 +423,49 @@ public class GraphTraitement {
 					
 				}
 			}
+			
+			
 			/*
+			suurb = SeamCarving.Dijkstra(g, 0,  newhauteur * largeur + 1);
+			
+			ArrayList<Integer> cout = new ArrayList<Integer>();
+			
+			for (i= 0; i < suurb.size() - 1; i++){
+				
+				//inversion
+				
+				Edge e = g.getEdge(suurb.get(i),  suurb.get(i+1));
+				
+				int dep = e.depart();
+				e.setDepart(e.getTo());
+				e.setTo(dep);
+				
+				}
+			
+			
+			
+			suurb2 = SeamCarving.Dijkstra(g, 0,  newhauteur * largeur + 1);
+			
+			for (i= 0; i < suurb.size() - 1; i++){
+				
+				//rinversion
+				Edge e = g.getEdge(suurb.get(i+1),  suurb.get(i));
+				
+				int dep = e.depart();
+				e.setDepart(e.getTo());
+				e.setTo(dep);
+			}
+			
+			
+			
 			System.out.print("\nCHEMIN 1 SUrb AV fefskedf :");
 			for (Integer p: suurb)  System.out.print("   " + p);
 			
 			 System.out.print("\nCHEMIN 2 dsiyfsfkudsf :");
 			for (Integer p: suurb2)  System.out.print("   " + p);
-			*/
+			
+			
+			/*
 			// transfert des bonnes aretes
 			for (int j = 1; j < suurb.size(); j++) {
 				int diff = Math.abs( suurb2.get(j-1) - suurb2.get(j) ) ;
@@ -434,7 +479,7 @@ public class GraphTraitement {
 					suurb2.set(j, echange);
 				}
 			}
-			/*
+			
 			System.out.print("\nCHEMIN 1 SUrb AP fefskedf :");
 			for (Integer p: suurb)  System.out.print("   " + p);
 			
@@ -443,31 +488,8 @@ public class GraphTraitement {
 			*/
 			
 			
-			int[][] tabi = new int[2][suurb.size()];
-			
-			// stocke les chemins des 2 dijkstra dans un tableau a 2 dimensions
-			for (i = 0; i < 2; i++) {
-				for (int j =0; j < suurb.size(); j++)  {
-					if ( i == 0) tabi[i][j] = suurb.get(j);
-					else {
-						//System.out.print("\n VALEUR POS " +  suurb2.get(j) + " VALEUR QUOTIENT " + (suurb2.get(j) / largeur) + " TEST " + ( suurb2.get(j) - suurb2.get(j)/ largeur ) );
-						int diff = 0;
-						if (suurb2.get(j) == 0) {
-						}else if (  suurb2.get(j) < largeur) {
-							 diff = 1;
-						} else if (suurb2.get(j)%largeur == 1) {
-							diff = suurb2.get(j)/largeur-1;
-						}else if (suurb2.get(j)%largeur == 2) {
-							diff = suurb2.get(j)/largeur;
-						} else {
-							diff = suurb2.get(j)/largeur+1;
-						}
-						//System.out.println("\n RES "+ diff +  " res " + suurb2.get(j));
-						tabi[i][j] = suurb2.get(j) - diff ;
-					}
-				}
-			}
-			return tabi;
+			g.setLargeur(largeur);
+			return g;
 		}
 	
 }
