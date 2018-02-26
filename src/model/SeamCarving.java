@@ -210,7 +210,7 @@ public class SeamCarving
 		}
 		
 		
-		
+		/*
 		System.out.print("\nCHEMIN  1 twopath AVANT:");
 		for (Integer p: suurb) {
 			System.out.print("   " + p);
@@ -248,13 +248,32 @@ public class SeamCarving
 					for (Integer p: suurb2) {
 						System.out.print("   " + p);
 					}*/
+			
+		int[][] tab = new int[2][suurb2.size()];
 		
-		int[][] tab = new int[2][suurb.size()];
-		
+		int m = 0;
 		// stocke les chemins des 2 dijkstra dans un tableau a 2 dimensions
 		for (int i = 0; i < 2; i++) {
 			for (int j =0; j < suurb.size(); j++)  {
-				if ( i == 0) tab[i][j] = suurb.get(j);
+				if ( i == 0) {
+					tab[i][j] = suurb.get(j);
+				}
+				else {
+					tab[i][j] = suurb2.get(j);
+				}
+			}
+		}
+		
+		/*
+		int[][] tab = new int[2][ 4 + ( (suurb2.size() - 4) / 2)];
+		
+		int m = 0;
+		// stocke les chemins des 2 dijkstra dans un tableau a 2 dimensions
+		for (int i = 0; i < 2; i++) {
+			for (int j =0; j < 2; j++)  {
+				if ( i == 0) {
+					tab[i][j] = suurb.get(j);
+				}
 				else {
 					
 					//System.out.print("\n VALEUR POS " +  suurb2.get(j) + " VALEUR QUOTIENT " + (suurb2.get(j) / largeur) + " TEST " + ( suurb2.get(j) - suurb2.get(j)/ largeur ) );
@@ -270,35 +289,40 @@ public class SeamCarving
 						diff = suurb2.get(j)/g.getLargeur()+1;
 					}
 					//System.out.println("\n RES "+ diff +  " res " + suurb2.get(j));
-					tab[i][j] = suurb2.get(j) - diff ;*/
+					tab[i][j] = suurb2.get(j) - diff ;
 					
-					int ligneCour = suurb2.get(j)/g.getLargeur();
+					int ligneCour = suurb2.get(j)/g.getLargeur() ;
 					if ( ligneCour == 0 && suurb2.get(j) != 0 ) {
 						diff = 1;
 					} else if ( suurb2.get(j) != 0){
-					diff = (ligneCour/2*g.getLargeur());
-					}
-					System.out.println(" Ligne cour " + ligneCour + " DIFF "  + diff + "  valeur " + suurb2.get(j));
-					
-					tab[i][j] = suurb2.get(j) - diff;
+					diff =   ( (int)(ligneCour/2+0.5)*g.getLargeur()) ;
+					}*/
+				/*	tab[i][j] = suurb2.get(j);
 					
 				}
 			}
 		}
-		/*
-		System.out.print("\ntest " );
-		for (int i = 0; i < 2; i++) {
-			for (int j =0; j < suurb.size(); j++)  {
-				System.out.print(" " + tab[i][j] );
+		
+		m = 2;
+		for (int p = 0; p < 2; p++) {
+			m = 2;
+			for (int k = 2 ; k < suurb2.size(); k+=2 ) {
+				if (p%2==0 ) tab[p][m] = suurb.get(k);
+				else tab[p][m] = suurb2.get(k);
+				m++;
+			}
+		}
+		tab[0][m] = suurb.get(suurb.size()-1);
+		tab[1][m] = suurb2.get(suurb2.size()-1);
+		*/
+		for (int p = 0; p < 2; p++) {
+			System.out.print(" \nVALEUR TABLEAU ");
+			for (int k = 1; k < tab[0].length; k++ ) {
 				
-					/*System.out.print("\n VALEUR POS " +  suurb2.get(j) + " VALEUR QUOTIENT " + (suurb2.get(j) / g.getLargeur()) + " TEST " + ( suurb2.get(j) - suurb2.get(j)/ g.getLargeur() ) );
-					int diff = suurb2.get(j)/g.getLargeur();
-					if (  suurb2.get(j) != 0) {
-						 diff = suurb2.get(j)/g.getLargeur() ;
-					}
-					System.out.println("\n RES "+ diff +  " res " + suurb2.get(j));
-				}
-		}*/
+				tab[p][k] = tab[p][k] -  ( g.getLargeur() * (tab[p][k]/g.getLargeur() )  )/2  ; 
+				System.out.print("  "+  tab[p][k] );
+			}
+		}
 		
 		return tab;
 	}
