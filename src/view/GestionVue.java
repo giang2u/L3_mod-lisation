@@ -3,17 +3,20 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.Checkbox;
 import java.awt.Dimension;
+import java.lang.reflect.InvocationTargetException;
 import java.text.NumberFormat;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 import control.EcouteurRun;
 
@@ -26,9 +29,7 @@ public class GestionVue extends JPanel implements Vue {
 	protected JButton valider;
 	protected Modele m;
 	protected String valueText;
-	protected JRadioButton colonnee;
-	protected JRadioButton ligne;
-	protected ButtonGroup group; 
+	protected JComboBox jc;
 	
 	
 	public GestionVue( Modele m){
@@ -38,19 +39,17 @@ public class GestionVue extends JPanel implements Vue {
 		
 		this.lapelpixel = new JTextField("50",10);
 		this.valider = new JButton("RUN!!!");
-		this.colonnee = new JRadioButton("Supression Colone");
-		this.ligne = new JRadioButton("Supression Ligne");
-		this.valider.addActionListener(new EcouteurRun(m,this.lapelpixel));
+		String[] elements = new String[]{"Supression Colonne","Supression Ligne"};
+
+		jc = new JComboBox<String>(elements);
+		
+		this.valider.addActionListener(new EcouteurRun(m,this.lapelpixel,jc.getSelectedItem().toString()));
 		
 		this.add(this.lapelpixel, BorderLayout.WEST);
 		this.add(this.valider, BorderLayout.CENTER);
 		JPanel panel = new JPanel();
-		group = new ButtonGroup();
-		panel.add(this.colonnee);
-		panel.add(this.ligne);
+		panel.add(this.jc);
 		
-		group.add(this.ligne);
-		group.add(this.colonnee);
 		this.add(panel,BorderLayout.EAST);
 		this.m.ajouterVue(this);
 		
@@ -60,20 +59,31 @@ public class GestionVue extends JPanel implements Vue {
 	
 	@Override
 	public void maj() {
-		if(this.m.getInFileName().contains("pgm")){
-			this.ligne.setEnabled(true);
-			if(this.colonnee.isSelected()){
-				this.m.supprimeColone(true);
-				this.m.supprimeLine(false);
+		Runnable code = new Runnable() {
+			public void run() {
+			    Object obj = jc.getSelectedItem(); 
+			    
+			    if(obj.toString().equals("Supression Colonne")){
+			    	m.supprimeColone(true);
+			    	m.supprimeLine(false);
+			    }
+
+			    if(obj.toString().equals("Supression Ligne")){
+			    	m.supprimeLine(true);
+			    	m.supprimeColone(false);
+			    }
 			}
-			else{
-				this.m.supprimeLine(true);
-				this.m.supprimeColone(false);
+		} ;
+		if (SwingUtilities.isEventDispatchThread())
+			code.run() ;
+		else
+			try {
+				SwingUtilities.invokeAndWait(code) ;
+			} catch (InvocationTargetException e) {
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
-		}
-		else{
-			this.ligne.setEnabled(false);
-		}
 	}
 
 }
