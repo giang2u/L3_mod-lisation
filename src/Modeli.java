@@ -97,17 +97,30 @@ public class Modeli extends JFrame{
    
    public static void main(String[] args)
 	 {
-	   /*
-	   	int[][][] fin = SeamCarving.readppm("img/sines.ppm");
-		
-		TraitementLine l = new TraitementLine();
-		int [][][] test = l.inverseTabColor(fin);
-		//SeamCarving.writeppm(test, "sines1.ppm");
-           
-		Supprimer.supprimerPixelLinePPM("img/sines.ppm","sinesLine.ppm",  100);
-		//Supprimer.supprimerPixelPPM("img/LenaColor.ppm","LenaColone.ppm",  100);
-		//Supprimer.supprimerPixel2("ex1.pgm","feep22.pgm", 100);*/
-	   
+
+   
+
 	   new Modeli();
+	   	/*int[][] fin = SeamCarving.readpgm("feep.pgm");		
+		SeamCarving.writepgm(fin, "test1");
+		int[][] outTAb = Interest.interest(fin);
+		int largeur = outTAb[0].length;
+		int hauteur = outTAb.length;
+		
+
+
+		Graph g = GraphTraitement.toGraph2(outTAb);
+		
+		
+		Graph gg= GraphTraitement.suurballe(outTAb);
+		
+
+		
+		gg.writeFile("graph23.dot");
+		
+		int newhau = outTAb.length*2 - 2;
+		int largeurr = outTAb[0].length;*/
+		//Supprimer.supprimerPixel("ex1.pgm","feep23.pgm",  200);
+		//Supprimer.supprimerPixel2("ex1.pgm","feep22.pgm", 100);
 	 }
 }

@@ -25,6 +25,7 @@ public class Modele extends Observable {
 		outFilePath = "";
 	}
 
+
 	public void ajouterVue(Vue v){
 		this.vues.add(v);
 	}
