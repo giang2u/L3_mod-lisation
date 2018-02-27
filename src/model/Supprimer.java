@@ -13,11 +13,11 @@ public static void supprimerPixel2(String filename,String outfile, int iteration
 		//int[][] fin = SeamCarving.readpgm(filename+".pgm");	
 		int[][] fin = SeamCarving.readpgm(filename);	
 		int[][] outTAb = Interest.interest(fin);
-		Graph g = GraphTraitement.suurballe(outTAb);
+		//Graph g = GraphTraitement.suurballe(outTAb);
 
 		int newhau = outTAb.length*2 - 2;
 		int largeur = outTAb[0].length;
-		int [][] test = SeamCarving.twopath(g, 0, newhau*largeur + 1);
+		int [][] test = GraphTraitement.suurballe(outTAb);//SeamCarving.twopath(g, 0, newhau*largeur + 1);
 		ArrayList<Integer> list = new ArrayList<>(), list2 = new ArrayList<>();
 		
 		for (int i = 0; i < test.length; ++i) {
@@ -41,18 +41,19 @@ public static void supprimerPixel2(String filename,String outfile, int iteration
 		int  width = outTAb[0].length;
 		int height = outTAb.length;
 		
-		int[][] tab = new int[fin.length][fin[0].length-2] ;
+		int[][] tab = new int[fin.length][fin[0].length-1] ;
 		
 		int indicePixelASuppr = 1;
 		
 		int indicePixelASuppr2 = 1;
-		
 		
 		// 1ere boucle
 		
 		for(int i = 0 ; i<tab.length;i++) {
 			int z = 0;
 			for(int j = 0 ; j<tab[0].length ;++j) {
+
+
 				
 				int longu = j+1;
 				
@@ -89,8 +90,8 @@ public static void supprimerPixel2(String filename,String outfile, int iteration
 			
 			list.clear();
 			list2.clear();
-			g = GraphTraitement.suurballe(outTAb);
-			test = SeamCarving.twopath(g, 0, newhau*largeur + 1);
+			//g = GraphTraitement.suurballe(outTAb);
+			test = GraphTraitement.suurballe(outTAb); //SeamCarving.twopath(g, 0, newhau*largeur + 1);
 			
 			for (int i = 0; i < test.length; ++i) {
 				for (int j = 0; j < test[0].length; ++j) {
@@ -115,10 +116,10 @@ public static void supprimerPixel2(String filename,String outfile, int iteration
 					if (list.get(indicePixelASuppr) == (  (i* outTAb[0].length )  + longu)  )  {
 						indicePixelASuppr++;
 						 ++z; tab[i][j] = fin[i][z]; 
-					} else if ( list2.get(indicePixelASuppr2) == (  (i* outTAb[0].length )  + longu) ) {
+					}/* else if ( list2.get(indicePixelASuppr2) == (  (i* outTAb[0].length )  + longu) ) {
 						++indicePixelASuppr2;
 						++z; tab[i][j] = fin[i][z]; 
-					}
+					}*/
 					else tab[i][j] = fin[i][z];
 					++z;
 				}

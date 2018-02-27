@@ -150,13 +150,14 @@ public class GraphTraitement {
 			a.addEdge( new Edge(compteur + i, newhauteur * largeur + 1 , itr[hauteur-1][i]) );
 		}
 		// System.out.println(" hauteur " + hauteur + " largeur  " + largeur);
+		a.setLargeur(largeur);
 		return a;
 	}
 
 
 
 	// SUUUUUUUUUUUUUUUUUUUUUUUUURRRRRRRRRRRRRRRRRRRRRRRBBBBBBBBBBBBBBBAAAAAAAAAAAAAAALLLLLLLLLLLLLLEEEEE
-	public static Graph suurballe(int [][] itr){
+	public static int[][] suurballe(int [][] itr){
 		Graph g = GraphTraitement.toGraph2(itr);
 
 		boolean bool = true;
@@ -484,15 +485,15 @@ public class GraphTraitement {
 			}
 
 
-
+*/
 			System.out.print("\nCHEMIN 1 SUrb AV fefskedf :");
 			for (Integer p: suurb)  System.out.print("   " + p);
-
+/*
 			 System.out.print("\nCHEMIN 2 dsiyfsfkudsf :");
 			for (Integer p: suurb2)  System.out.print("   " + p);
+		 		*/
 
-
-			/*
+			
 			// transfert des bonnes aretes
 			for (int j = 1; j < suurb.size(); j++) {
 				int diff = Math.abs( suurb2.get(j-1) - suurb2.get(j) ) ;
@@ -506,17 +507,83 @@ public class GraphTraitement {
 					suurb2.set(j, echange);
 				}
 			}
-
+			
+			/*
 			System.out.print("\nCHEMIN 1 SUrb AP fefskedf :");
 			for (Integer p: suurb)  System.out.print("   " + p);
 
 			 System.out.print("\nCHEMIN 2 dsiyfsfkudsf :");
 			for (Integer p: suurb2)  System.out.print("   " + p);
 		 */
+			
+			//int[][] tabi = new int[2][suurb2.size() ];
+			
+			int[][] tabi = new int[2][ 4 + ( (suurb2.size() - 4) / 2)];
+			
+			//System.out.println( "\n TABI " + ( 4 + ( (suurb2.size() - 4) / 2)));
+			
+			// stocke les chemins des 2 dijkstra dans un tableau a 2 dimensions
+			for (i = 0; i < 2; i++) {
+				for (int j =0; j < 3; j++)  {
+					if ( i == 0) {
+						tabi[i][j] = suurb.get(j);
+					}
+					else {
+						tabi[i][j] = suurb2.get(j);
+					}
+				}
+			}
+			
+			
+
+			int m = 0;
+
+			for (int p = 0; p < 2; p++) {
+				m = 3;
+				for (int k = 4; k < (suurb.size()); k+=2 ) {
+					if (p == 0) tabi[p][m] = suurb.get(k);
+					else tabi[p][m] = suurb2.get(k);
+					m++;
+				}
+			}
+			
+			tabi[0][tabi[0].length - 1] = suurb.get(suurb.size()-1);
+			tabi[1][tabi[0].length - 1] = suurb2.get(suurb2.size()-1);
+			
+/*
+			for (int p = 0; p < 2; p++) {
+				System.out.print("\n INIT  ");
+				for (int k = 0; k < tabi[0].length; k++ ) {
+					System.out.print("   " + tabi[p][k]);
+				}
+			}*/
+			
+			// calcul des bonnes positions pour le chemin 2
+						for (int p = 0; p < 2; p++) {
+							//System.out.print(" \nVALEUR TABLEAU ");
+							for (int k = 1; k < tabi[0].length; k++ ) {
+
+								//if ( p == 1) {
+									if ( tabi[p][k] > g.getLargeur()*2 ) { 
+										int nbLigneDuplique = 0;
+										if (k == tabi[0].length - 1) {
+											nbLigneDuplique =  (int) (g.getLargeur() *   (  (int)Math.ceil((double)tabi[p][k]/(double)g.getLargeur()-2.0)/2 ) );
+										} else {
+											nbLigneDuplique =  (int) (g.getLargeur() *   (  (int)Math.ceil((double)tabi[p][k]/(double)g.getLargeur()-1.0)/2 ) );
+										}
+										if (tabi[p][k]%g.getLargeur() == 1) {
+											//nbDePixelSupprAvant = ((tab[p][k]/g.getLargeur()) -1 )/2 - 1;
+										}
+										tabi[p][k] = tabi[p][k] -  nbLigneDuplique;// - nbDePixelSupprAvant; 
+									}
+								//}
+								//System.out.print("  "+  tabi[p][k] );
+							}
+						}
 
 
 		g.setLargeur(largeur);
-		return g;
+		return tabi;
 	}
 
 }
