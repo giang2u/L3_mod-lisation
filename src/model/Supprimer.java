@@ -27,7 +27,7 @@ public static void supprimerPixel2(String filename,String outfile, int iteration
 			}
 		}
 		
-		
+		/*
 		System.out.print("\nCHEMIN  1 Pixel2 :");
 		for (Integer p: list) {
 			System.out.print("   " + p);
@@ -36,7 +36,7 @@ public static void supprimerPixel2(String filename,String outfile, int iteration
 		System.out.print("\nCHEMIN 2 :");
 		for (Integer p: list2) {
 			System.out.print("   " + p);
-		}
+		}*/
 		
 		int  width = outTAb[0].length;
 		int height = outTAb.length;
@@ -63,8 +63,9 @@ public static void supprimerPixel2(String filename,String outfile, int iteration
 					++indicePixelASuppr2;
 					++z; tab[i][j] = fin[i][z]; 
 				}
-				else tab[i][j] = fin[i][z];
-				
+				else { 
+					tab[i][j] = fin[i][z];
+				}
 				++z;
 			}
 		}
@@ -140,11 +141,11 @@ public static void supprimerPixel(String filename,String outfile, int iteration)
 		int[][] outTAb = Interest.interest(fin);
 		Graph g = GraphTraitement.toGraph(outTAb);
 		ArrayList<Integer> list = SeamCarving.Dijkstra(g, 0, fin.length*fin[0].length + 1);
-		
+		/*
 		System.out.print("\nChemin normal ");
 		for (Integer p : list) {
 		System.out.print("   " + p);
-		}
+		}*/
 		
 		int  width = outTAb[0].length;
 		int height = outTAb.length;
@@ -183,11 +184,11 @@ public static void supprimerPixel(String filename,String outfile, int iteration)
 			g = GraphTraitement.toGraph(outTAb);
 			list = SeamCarving.Dijkstra(g, 0, fin.length*fin[0].length + 1);
 			 
-			
+			/*
 			System.out.print("\nChemin normal ");
 			for (int i = 0; i < list.size(); i++) {
 			System.out.print("  " +list.get(i) );
-			}
+			}*/
 			
 			
 			tab = new int[fin.length][fin[0].length-1] ;
