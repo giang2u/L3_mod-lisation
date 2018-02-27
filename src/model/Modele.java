@@ -11,20 +11,18 @@ import view.Vue;
 
 
 public class Modele extends Observable {
-	
-	protected SeamCarving sc;
-	protected Supprimer sp;
 	protected ArrayList<Vue> vues;
 	protected String inFileName,inFilePath, outFilePath;
 	protected int nb_pixel = 50;
+	protected boolean supL = true;
+	protected boolean supC = true;
 	
 
-	public Modele(SeamCarving sc){
-		this.sc = sc ;
+	public Modele(){
 		this.vues = new ArrayList<>();
 		inFileName = "";
-		inFilePath="";
-		outFilePath="";
+		inFilePath = "";
+		outFilePath = "";
 	}
 
 	public void ajouterVue(Vue v){
@@ -43,9 +41,17 @@ public class Modele extends Observable {
 	}
 	
 	public void setInFileName(String s){
-		String[] parts = s.split(".pgm");
-		String part1 = parts[0]+ "_remove.pgm" ;
-		this.inFileName = part1;
+		if(s.contains("pgm")){
+			String[] parts = s.split(".pgm");
+			String part1 = parts[0]+ "_remove.pgm" ;
+			this.inFileName = part1;
+			
+		}
+		else{
+			String[] parts = s.split(".ppm");
+			String part1 = parts[0]+ "_remove.ppm" ;
+			this.inFileName = part1;
+		}
 		majVue();
 	}
 	
@@ -65,22 +71,56 @@ public class Modele extends Observable {
 		this.nb_pixel = nb_pixel;
 	}
 	
-	public SeamCarving getSeamCarving(){
-		return this.sc;
-	}
-	
+
 	public String getoutFilePath(){
 		return this.outFilePath;
 	}
 	
-	public void setoutFilePath(String s){
-		String[] parts = s.split(".pgm");
-		String part1 = parts[0]+ "_remove.pgm" ;
+	public void setoutFilePath(String s){	
+		String part1 ="";
+		if(s.contains("pgm")){
+			String[] parts = s.split(".pgm");
+			if(supC){
+				part1 = parts[0]+ "_removeColonne.pgm" ;
+			}
+			if(supL){
+				part1 = parts[0]+ "_removeLigne.pgm" ;
+			}
+			this.outFilePath = part1;
+		
+		}
+	else{
+		String[] parts = s.split(".ppm");
+			part1 = parts[0]+ "_remove.ppm" ;
 		this.outFilePath = part1;
+		}
 		
 	}
 	
 	public void start(String pathFile, String fileOutName, int nombre_pixel){
-		this.sp.supprimerPixel(pathFile, fileOutName, nombre_pixel);
+		if(pathFile.contains("pgm")){
+			if(this.supC){
+				System.out.println("colone");
+				//Supprimer.supprimerPixel(pathFile, fileOutName, nombre_pixel);
+			}
+			else{
+				System.out.println("ligne");
+				//Supprimer.supprimerPixelLine(pathFile, fileOutName, nombre_pixel);
+			}
+		}
+		else{
+			//Supprimer.supprimerPixelPPM(pathFile, fileOutName, nombre_pixel);
+		}
+		majVue();
+	}
+
+	public void supprimeLine(boolean b) {
+		this.supL = b;
+		
+	}
+
+	public void supprimeColone(boolean b) {
+		this.supC = b;
+		
 	}
 }

@@ -198,10 +198,6 @@ public static void supprimerPixel(String filename,String outfile, int iteration)
 	
 	
 public static void supprimerPixelPPM(String filename,String outfile, int iteration) {
-		
-		//filename += "2";
-		
-		//int[][] fin = SeamCarving.readpgm(filename+".pgm");	
 		int[][][] fin = SeamCarving.readppm(filename);	
 		int[][] outTAb = Interest.interestPPM(fin);
 		Graph g = GraphTraitement.toGraph(outTAb);
@@ -235,9 +231,6 @@ public static void supprimerPixelPPM(String filename,String outfile, int iterati
 					 tab[i][j][2] = fin[i][z][2];
 					 
 				}
-				System.out.println(tab[i][j][0] + 
-					 tab[i][j][1]+
-					 tab[i][j][2] + "\n" );
 				z++;
 			}
 		}
@@ -289,7 +282,7 @@ public static void supprimerPixelLine(String filename,String outfile, int iterat
 	//int[][] fin = SeamCarving.readpgm(filename+".pgm");	
 	int[][] fin = SeamCarving.readpgm(filename);	
 			
-	int [][] inverseTab = TraitementLine.inverseTab(fin);
+	int [][] inverseTab = TraitementLine.inverseTabNormal(fin);
 
 	int[][] outTAb = Interest.interest(inverseTab);
 	Graph g = GraphTraitement.toGraph(outTAb);
@@ -352,8 +345,93 @@ public static void supprimerPixelLine(String filename,String outfile, int iterat
 		
 	}
 	//outfile = "reduction_"+outfile;
-	int [][] normal = TraitementLine.inverseTab(tab);
+	int [][] normal = TraitementLine.inverseTabNormal(tab);
 	SeamCarving.writepgm(normal, outfile);
 	System.out.println("DONE!!!!");
 }
+
+
+public static void supprimerPixelLinePPM(String filename,String outfile, int iteration) {
+	int[][][] fin = SeamCarving.readppm(filename);
+	
+	int [][][] inverseTab = TraitementLine.inverseTabColor(fin);
+	System.out.println(inverseTab[0].length + "***" + inverseTab.length);
+	int[][] outTAb = Interest.interestPPM(inverseTab);
+	System.out.println(outTAb[0].length + "***" + outTAb.length);
+	Graph g = GraphTraitement.toGraph(outTAb);
+	ArrayList<Integer> list = SeamCarving.Dijkstra(g, 0, inverseTab.length*inverseTab[0].length + 1);
+	
+	
+	
+	int[][][] tab = new int[inverseTab.length][inverseTab[0].length-1][3] ;
+	
+	int indicePixelASuppr = 1;
+		
+	for(int i = 0 ; i<tab.length;i++) {
+		int z = 0;
+		for(int j = 0 ; j<tab[0].length ;j++) {
+			
+			
+			int longu = j+1;
+			
+			if (list.get(indicePixelASuppr) == (  (i* outTAb[0].length )  + longu)  )  {
+				indicePixelASuppr++;
+				z++; 
+				 tab[i][j][0] = inverseTab[i][z][0]; 
+				 tab[i][j][1] = inverseTab[i][z][1]; 
+				 tab[i][j][2] = inverseTab[i][z][2]; 
+			} 
+			else {
+				 tab[i][j][0] = inverseTab[i][z][0]; 
+				 tab[i][j][1] = inverseTab[i][z][1]; 
+				 tab[i][j][2] = inverseTab[i][z][2];
+			}
+
+			z++;
+		}
+	}
+	
+	
+	for (int k = 0; k < iteration - 1; k++) {
+		indicePixelASuppr = 1;
+		
+		fin = tab;
+		outTAb = Interest.interestPPM(fin);
+		g = GraphTraitement.toGraph(outTAb);
+		list = SeamCarving.Dijkstra(g, 0, fin.length*fin[0].length + 1);
+		 
+		tab = new int[fin.length][fin[0].length-1][3] ;
+
+		for(int i = 0 ; i<tab.length;i++) {
+			int z = 0;
+			for(int j = 0 ; j<tab[0].length ;j++) {
+				int longu = j+1;
+				if (list.get(indicePixelASuppr)==((i*outTAb[0].length)+longu)){
+					indicePixelASuppr++;
+					 z++; 
+					 tab[i][j][0] = fin[i][z][0]; 
+					 tab[i][j][1] = fin[i][z][1]; 
+					 tab[i][j][2] = fin[i][z][2]; 
+				} 
+				else {
+					 tab[i][j][0] = fin[i][z][0]; 
+					 tab[i][j][1] = fin[i][z][1]; 
+					 tab[i][j][2] = fin[i][z][2]; 
+				}
+				z++;
+				
+			}
+		}
+		
+	}
+	//outfile = "reduction_"+outfile;
+	SeamCarving.writeppm(tab, outfile);
+	System.out.println("DONE!!!!");
+	
 }
+
+
+}
+
+
+

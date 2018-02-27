@@ -24,13 +24,12 @@ public class Modeli extends JFrame{
 	static boolean visite[];
 	public Modeli(){
 		super("Projet Modelisation - Gestion Image PMG");
-		this.setPreferredSize(new Dimension(750, 500)) ;
+		this.setPreferredSize(new Dimension(900, 600)) ;
 		this.setLayout(new BorderLayout());
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JPanel jp = new JPanel();
-		SeamCarving sc = new SeamCarving();
-		Modele m = new Modele(sc);
+		Modele m = new Modele();
 		GestionImageLink fi = new GestionImageLink(m);
 		GestionVue fo = new GestionVue(m);
 		jp.add(fi,BorderLayout.WEST);
@@ -98,9 +97,17 @@ public class Modeli extends JFrame{
    
    public static void main(String[] args)
 	 {
+	   /*
+	   	int[][][] fin = SeamCarving.readppm("img/sines.ppm");
+		
+		TraitementLine l = new TraitementLine();
+		int [][][] test = l.inverseTabColor(fin);
+		//SeamCarving.writeppm(test, "sines1.ppm");
+           
+		Supprimer.supprimerPixelLinePPM("img/sines.ppm","sinesLine.ppm",  100);
+		//Supprimer.supprimerPixelPPM("img/LenaColor.ppm","LenaColone.ppm",  100);
+		//Supprimer.supprimerPixel2("ex1.pgm","feep22.pgm", 100);*/
 	   
-		Supprimer.supprimerPixelLine("ex1.pgm","ex1ligne.pgm",  100);
-		Supprimer.supprimerPixel("ex1.pgm","ex1colone.pgm",  100);
-		//Supprimer.supprimerPixel2("ex1.pgm","feep22.pgm", 100);
+	   new Modeli();
 	 }
 }
