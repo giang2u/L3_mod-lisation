@@ -5,8 +5,6 @@ import java.util.List;
 import java.io.*;
 import java.util.*;
 
-import sun.invoke.empty.Empty;
-//import sun.org.mozilla.javascript.ast.WithStatement;
 public class SeamCarving
 {
 	public static int[][] im;
@@ -15,11 +13,11 @@ public class SeamCarving
 	{		
 		try {
 			System.out.println("NOM FICHIER " + fn);
-			InputStream f = ClassLoader.getSystemClassLoader().getResourceAsStream(fn);
-			BufferedReader d = new BufferedReader(new InputStreamReader(f));
+			//InputStream f = ClassLoader.getSystemClassLoader().getResourceAsStream(fn);
+			//BufferedReader d = new BufferedReader(new InputStreamReader(f));
 
-			//FileReader flot = new FileReader(fn);
-			//BufferedReader d = new BufferedReader(flot);
+			FileReader flot = new FileReader(fn);
+			BufferedReader d = new BufferedReader(flot);
 			String magic = d.readLine();
 			String line = d.readLine();
 			while (line.startsWith("#")) {
@@ -51,11 +49,11 @@ public class SeamCarving
 	{		
 		try {
 			System.out.println("NOM FICHIER " + fn);
-			InputStream f = ClassLoader.getSystemClassLoader().getResourceAsStream(fn);
-			BufferedReader d = new BufferedReader(new InputStreamReader(f));
+			//InputStream f = ClassLoader.getSystemClassLoader().getResourceAsStream(fn);
+			//BufferedReader d = new BufferedReader(new InputStreamReader(f));
 
-			//FileReader flot = new FileReader(fn);
-			//BufferedReader d = new BufferedReader(flot);
+			FileReader flot = new FileReader(fn);
+			BufferedReader d = new BufferedReader(flot);
 			String magic = d.readLine();
 			String line = d.readLine();
 			while (line.startsWith("#")) {
@@ -208,7 +206,6 @@ public class SeamCarving
 			// remet les couts du 1er chemin a la normale
 			g.getEdge(suurb.get(i),  suurb.get(i+1)).setCout(cout.get(i));
 		}
-		
 		
 		/*
 		System.out.print("\nCHEMIN  1 twopath AVANT:");

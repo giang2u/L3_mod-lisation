@@ -20,12 +20,12 @@ public class EcouteurRun implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		System.out.println(this.valeur.getText());
 		try{
 			int number = Integer.parseInt(this.valeur.getText());
 			this.m.setNb_pixel(number);
-			if(this.m.getoutFilePath() != null){
+			if(this.m.getoutFilePath() != ""){
 				this.m.start(this.m.getInFilePath(), this.m.getoutFilePath() ,this.m.getNb_pixel());
+				JOptionPane.showMessageDialog(null,"Supression Reussir","Correct",JOptionPane.INFORMATION_MESSAGE);
 			}
 			else{
 				JOptionPane.showMessageDialog(null,"Select un fichier","Erreur saisir",JOptionPane.ERROR_MESSAGE);
@@ -34,5 +34,6 @@ public class EcouteurRun implements ActionListener {
 		catch (Exception e){
 			JOptionPane.showMessageDialog(null,"SVP enter un nombre","Erreur saisir",JOptionPane.ERROR_MESSAGE);
 		}
+		
 	}
 }

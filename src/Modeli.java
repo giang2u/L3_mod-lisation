@@ -24,13 +24,12 @@ public class Modeli extends JFrame{
 	static boolean visite[];
 	public Modeli(){
 		super("Projet Modelisation - Gestion Image PMG");
-		this.setPreferredSize(new Dimension(750, 500)) ;
+		this.setPreferredSize(new Dimension(900, 600)) ;
 		this.setLayout(new BorderLayout());
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JPanel jp = new JPanel();
-		SeamCarving sc = new SeamCarving();
-		Modele m = new Modele(sc);
+		Modele m = new Modele();
 		GestionImageLink fi = new GestionImageLink(m);
 		GestionVue fo = new GestionVue(m);
 		jp.add(fi,BorderLayout.WEST);
@@ -99,35 +98,27 @@ public class Modeli extends JFrame{
    public static void main(String[] args)
 	 {
 	   
-	   	int[][] fin = SeamCarving.readpgm("test.pgm");		
+	   	//int[][] fin = SeamCarving.readpgm("test.pgm");		
+
+   
+
+	   //new Modeli();
+	   	/*int[][] fin = SeamCarving.readpgm("feep.pgm");	
 		SeamCarving.writepgm(fin, "test1");
 		int[][] outTAb = Interest.interest(fin);
 		int largeur = outTAb[0].length;
 		int hauteur = outTAb.length;
-		/*for(int i = 0 ; i < hauteur; i ++){
-			for(int j = 0 ; j < largeur; j++ ){
-				if (j < largeur - 1 ) System.out.print(outTAb[i][j]+ " ");
-				else System.out.println(outTAb[i][j]);
-				
-			}
-		}*/
 		
 
 
 		//Graph g = GraphTraitement.toGraph2(outTAb);
-		//g.writeFile("graph.dot");
+		//g.writeFile("graph.dot"
+		Graph g = GraphTraitement.toGraph2(outTAb);
 		
 		
 		//Graph gg= GraphTraitement.suurballe(outTAb);
 		
-		
-		/*for (int i = 0; i < tab.length; i++) {
-			System.out.println("");
-			for (int j =0; j < tab[0].length; j++)  {
-				System.out.print("   QUESTION 2    " + tab[i][j] ) ;
-			}
-		}*/
-		
+
 		//gg.writeFile("graph23.dot");
 		//gg.writeFile("graph.dot");
 		
@@ -148,5 +139,6 @@ public class Modeli extends JFrame{
 		Supprimer.supprimerPixel2("test.pgm","feep22.pgm", 1);
 		//Supprimer.supprimerPixelLine("ex1.pgm","ex1ligne.pgm",  100);
 		//Supprimer.supprimerPixel("ex1.pgm","ex1colone.pgm",  100);
+		*/
 	 }
 }
