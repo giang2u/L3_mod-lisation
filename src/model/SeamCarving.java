@@ -13,11 +13,11 @@ public class SeamCarving
 	{		
 		try {
 			System.out.println("NOM FICHIER " + fn);
-			InputStream f = ClassLoader.getSystemClassLoader().getResourceAsStream(fn);
-			BufferedReader d = new BufferedReader(new InputStreamReader(f));
+			//InputStream f = ClassLoader.getSystemClassLoader().getResourceAsStream(fn);
+			//BufferedReader d = new BufferedReader(new InputStreamReader(f));
 
-			//FileReader flot = new FileReader(fn);
-			//BufferedReader d = new BufferedReader(flot);
+			FileReader flot = new FileReader(fn);
+			BufferedReader d = new BufferedReader(flot);
 			String magic = d.readLine();
 			String line = d.readLine();
 			while (line.startsWith("#")) {
