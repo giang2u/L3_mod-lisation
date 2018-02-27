@@ -8,6 +8,7 @@ public class Graph
    private final int V;
    int E;
    private int largeur;
+   private int hauteur;
 @SuppressWarnings("unchecked")
    public Graph(int N)
 	 {
@@ -108,7 +109,13 @@ public int getLargeur() {
 	return this.largeur;
 }
 
+public void setHauteur(int h) {
+	this.hauteur = h;
+}
    
+public int getHauteur() {
+	return this.hauteur;
+}
    
    
    

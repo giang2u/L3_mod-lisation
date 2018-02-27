@@ -98,7 +98,5 @@ public class Modeli extends JFrame{
    public static void main(String[] args)
 	 {
 	   new Modeli();
-		//Supprimer.supprimerPixelLine("ex1.pgm","ex1ligne.pgm",  100);
-		//Supprimer.supprimerPixel("ex1.pgm","ex1colone.pgm",  100);
 	 }
 }
