@@ -134,11 +134,11 @@ public class Modeli extends JFrame{
 		//Supprimer.supprimerPixelPPM("pbmlib.ppm","pbmlibout.ppm", 50);
 
 		
-		//int [][] tab = SeamCarving.twopath(gg, 0, gg.vertices() - 1);
-		Supprimer.supprimerPixel("test.pgm","feep23.pgm",  1);
-		Supprimer.supprimerPixel2("test.pgm","feep22.pgm", 1);
+		//int [][] tab = SeamCarving.twopath(gg, 0, gg.vertices() - 1);*/
+		Supprimer.supprimerPixel("ex1.pgm","feep23.pgm",  200);
+		Supprimer.supprimerPixel2("ex1.pgm","feep22.pgm", 100);
 		//Supprimer.supprimerPixelLine("ex1.pgm","ex1ligne.pgm",  100);
 		//Supprimer.supprimerPixel("ex1.pgm","ex1colone.pgm",  100);
-		*/
+		
 	 }
 }

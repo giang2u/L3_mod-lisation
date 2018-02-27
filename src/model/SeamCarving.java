@@ -13,11 +13,11 @@ public class SeamCarving
 	{		
 		try {
 			System.out.println("NOM FICHIER " + fn);
-			//InputStream f = ClassLoader.getSystemClassLoader().getResourceAsStream(fn);
-			//BufferedReader d = new BufferedReader(new InputStreamReader(f));
+			InputStream f = ClassLoader.getSystemClassLoader().getResourceAsStream(fn);
+			BufferedReader d = new BufferedReader(new InputStreamReader(f));
 
-			FileReader flot = new FileReader(fn);
-			BufferedReader d = new BufferedReader(flot);
+			//FileReader flot = new FileReader(fn);
+			//BufferedReader d = new BufferedReader(flot);
 			String magic = d.readLine();
 			String line = d.readLine();
 			while (line.startsWith("#")) {
@@ -158,195 +158,335 @@ public class SeamCarving
 	
 	
 	
- public static int[][] twopath(Graph g, int s, int t) {
-		
-		
-		ArrayList<Integer> suurb = SeamCarving.Dijkstra(g, s, t);
-		
-		ArrayList<Integer> cout = new ArrayList<Integer>();
-		
-	
-		for (int i= 0; i < suurb.size() - 1; i++){
+	// SUUUUUUUUUUUUUUUUUUUUUUUUURRRRRRRRRRRRRRRRRRRRRRRBBBBBBBBBBBBBBBAAAAAAAAAAAAAAALLLLLLLLLLLLLLEEEEE
+		public static int[][] twopath(Graph g, int s, int t) {
+
+			int largeur = g.getLargeur();
+			int hauteur = g.getHauteur();
+			// taille du graphe
+			int newhauteur = hauteur*2 - 2;
+
 			
-			
-			// modification du cout du 1er chemin le plus court a une tres grande valeur
-			cout.add(g.getEdge(suurb.get(i),  suurb.get(i+1)).cout() ) ;
-			g.getEdge(suurb.get(i),  suurb.get(i+1)).setCout(50000);
+			int tab[] = new int [newhauteur*largeur + 2];
+			int compt = 1;
+
+
+			int somme = 0;
+			// Calcul de la somme des sommets avec leur chemin le plus court
+
+			// point fictif debut vers la 1ere ligne tout est a 0
+			for (int i = 0; i < 1; i++) {
+				somme = 0;
+				for (int j = 0; j < largeur ; j++) {
+					tab[compt] = somme;
+					compt++;
+				}
 			}
 
-		for (int i= 0; i < suurb.size() - 1; i++){
-			
-			//inversion
-			
-			Edge e = g.getEdge(suurb.get(i),  suurb.get(i+1));
-			
-			int dep = e.depart();
-			e.setDepart(e.getTo());
-			e.setTo(dep);
-			
-			}
-		
-		
-		// calcul du 2eme chemin le plus court
-		ArrayList<Integer> suurb2 = SeamCarving.Dijkstra(g, s, t);
-		
-		for (int i= 0; i < suurb.size() - 1; i++){
-			
-			//rinversion
-			Edge e = g.getEdge(suurb.get(i+1),  suurb.get(i));
-			
-			int dep = e.depart();
-			e.setDepart(e.getTo());
-			e.setTo(dep);
-		}
 
-		
-		for (int i= 0; i < cout.size(); i++){
-			
-			// remet les couts du 1er chemin a la normale
-			g.getEdge(suurb.get(i),  suurb.get(i+1)).setCout(cout.get(i));
-		}
-		
-		/*
-		System.out.print("\nCHEMIN  1 twopath AVANT:");
-		for (Integer p: suurb) {
-			System.out.print("   " + p);
-		}
-		
-		System.out.print("\nCHEMIN 2 :");
-		for (Integer p: suurb2) {
-			System.out.print("   " + p);
-		}*/
-		
-		/*
-		// transfert des bonnes aretes
-					for (int j = 2; j < suurb2.size() - 1; j++) {
-						int diff = Math.abs( suurb2.get(j-1) - suurb2.get(j) ) ;
-						int diff2 = Math.abs( suurb.get(j-1) - suurb.get(j) ) ;
+
+
+			// parcours de la 1ere ligne a celle dapres ou on garde encore les liaisons
+			for (int i = 1; i < 2 ; i++) {
+
+				for (int j = 0; j < largeur ; j++) {
+					if (j == 0) {
+						somme = tab[compt - largeur] + g.getEdge(compt - largeur, compt).cout() ;
+
+						if  ( tab[compt - largeur +1]  + g.getEdge(compt - largeur + 1, compt).cout()  < somme) somme =  tab[compt - largeur + 1] +
+								g.getEdge(compt - largeur + 1, compt).cout() ;
+					}
+					else if (j == largeur -1 ) {
+
+						somme =  tab[compt - largeur] + g.getEdge(compt - largeur, compt).cout() ;
+						if  ( tab[compt - largeur - 1] + g.getEdge(compt - largeur - 1, compt).cout()< somme) somme =  tab[compt - largeur - 1] + g.getEdge(compt - largeur - 1, compt).cout(); 
+
+
+					} 
+
+					else {
+						somme =  tab[compt - largeur] + g.getEdge(compt - largeur, compt).cout() ;
+						if  ( tab[compt - largeur - 1] + g.getEdge(compt - largeur - 1, compt).cout() < somme) somme =  tab[compt - largeur - 1] + g.getEdge(compt - largeur - 1, compt).cout(); 
+						if  ( tab[compt - largeur + 1] + g.getEdge(compt - largeur + 1, compt).cout() < somme) somme =  tab[compt - largeur + 1] + g.getEdge(compt - largeur + 1, compt).cout(); 
+					}
+					tab[compt] = somme;
+
+
+					compt++;
+
+
+				}
+			}
+
+
+			// parcours du milieu ou tout est a 0
+			for (int i = 2; i <= newhauteur - 2 ; i++) {
+
+				for (int j = 0; j < largeur ; j++) {
+
+					if ( i%2 == 1) {
+						if (j == 0) {
+							somme = tab[compt - largeur] + g.getEdge(compt - largeur, compt).cout() ;
+
+							if  ( tab[compt - largeur +1]  + g.getEdge(compt - largeur + 1, compt).cout()  < somme) {
+								somme =  tab[compt - largeur + 1] + g.getEdge(compt - largeur + 1, compt).cout() ;
+							}
+						}
+						else if (j == largeur -1 ) {
+
+							somme =  tab[compt - largeur] + g.getEdge(compt - largeur, compt).cout() ;
+							if  ( tab[compt - largeur - 1] + g.getEdge(compt - largeur - 1, compt).cout()< somme) {
+								somme =  tab[compt - largeur - 1] + g.getEdge(compt - largeur - 1, compt).cout(); 		   
+							}
+						} 
+						else {
+							somme =  tab[compt - largeur] + g.getEdge(compt - largeur, compt).cout() ;
+							if  ( tab[compt - largeur - 1] + g.getEdge(compt - largeur - 1, compt).cout() < somme) {
+								somme =  tab[compt - largeur - 1] + g.getEdge(compt - largeur - 1, compt).cout(); 
+							}
+							if  ( tab[compt - largeur + 1] + g.getEdge(compt - largeur + 1, compt).cout() < somme) {
+								somme =  tab[compt - largeur + 1] + g.getEdge(compt - largeur + 1, compt).cout(); 
+							}
+						}
+						tab[compt] = somme;
+						compt++;
 						
-						boolean verif = diff > g.getLargeur() && suurb2.get(j)% g.getLargeur() == 0 ;
-						boolean verif2 = diff > g.getLargeur() + 1 && suurb2.get(j)%g.getLargeur() != 0 ;
-						//boolean verif3 = ( diff2 != g.getLargeur() ) && ( diff != g.getLargeur() );
-						
-						if (verif || verif2 ) {
-							int echange = suurb.get(j);
-							suurb.set(j, suurb2.get(j));
-							suurb2.set(j, echange);
+					}else {
+						somme = tab[compt - largeur]+ g.getEdge(compt - largeur, compt).cout();
+
+						tab[compt] = somme;
+						compt++;
+					}
+				} 
+			}
+
+			// parcours de lavant derniere ligne  vers la derniere ligne 
+			for (int i = newhauteur - 1; i < newhauteur; i++) {
+
+				for (int j = 0; j < largeur ; j++) {
+					if (j == 0) {
+
+						somme = tab[compt - largeur] + g.getEdge(compt - largeur, compt).cout() ;
+
+						if  ( tab[compt - largeur +1]  + g.getEdge(compt - largeur + 1, compt).cout()  < somme) {
+							somme =  tab[compt - largeur + 1] +g.getEdge(compt - largeur + 1, compt).cout() ;
 						}
 					}
-					
-					
-					System.out.print("\nCHEMIN  1 Twopath APRES:");
-					for (Integer p: suurb) {
-						System.out.print("   " + p);
-					}
-					
-					System.out.print("\nCHEMIN 2 :");
-					for (Integer p: suurb2) {
-						System.out.print("   " + p);
-					}
-			*/
-		int[][] tab = new int[2][suurb2.size()];
-		
-		int m = 0;
-		// stocke les chemins des 2 dijkstra dans un tableau a 2 dimensions
-		for (int i = 0; i < 2; i++) {
-			for (int j =0; j < suurb.size(); j++)  {
-				if ( i == 0) {
-					tab[i][j] = suurb.get(j);
-				}
-				else {
-					tab[i][j] = suurb2.get(j);
-				}
-			}
-		}
-		
-		/*
-		int[][] tab = new int[2][ 4 + ( (suurb2.size() - 4) / 2)];
-		
-		int m = 0;
-		// stocke les chemins des 2 dijkstra dans un tableau a 2 dimensions
-		for (int i = 0; i < 2; i++) {
-			for (int j =0; j < 2; j++)  {
-				if ( i == 0) {
-					tab[i][j] = suurb.get(j);
-				}
-				else {
-					
-					//System.out.print("\n VALEUR POS " +  suurb2.get(j) + " VALEUR QUOTIENT " + (suurb2.get(j) / largeur) + " TEST " + ( suurb2.get(j) - suurb2.get(j)/ largeur ) );
-					int diff = 0;
-					/*if (suurb2.get(j) == 0) {
-					}else if (  suurb2.get(j) < g.getLargeur()) {
-						 diff = 1;
-					} else if (suurb2.get(j)%g.getLargeur() == 1) {
-						diff = suurb2.get(j)/g.getLargeur()-1;
-					}else if (suurb2.get(j)%g.getLargeur() == 2) {
-						diff = suurb2.get(j)/g.getLargeur();
-					} else {
-						diff = suurb2.get(j)/g.getLargeur()+1;
-					}
-					//System.out.println("\n RES "+ diff +  " res " + suurb2.get(j));
-					tab[i][j] = suurb2.get(j) - diff ;
-					
-					int ligneCour = suurb2.get(j)/g.getLargeur() ;
-					if ( ligneCour == 0 && suurb2.get(j) != 0 ) {
-						diff = 1;
-					} else if ( suurb2.get(j) != 0){
-					diff =   ( (int)(ligneCour/2+0.5)*g.getLargeur()) ;
-					}
-					tab[i][j] = suurb2.get(j);
-					
-				}
-			}
-		}
-		*/
-		
-		// saut de recuperation pour le premier chemin
-		int j=1;
-		// saut de recuperation pour le 2eme chemin
-		m = 2;
-		
-		// remplissage du tableau avec les 2 chemins
-		for (int p = 0; p < 1; p++) {
-			for (j = 0; j < suurb2.size(); j++ ) {
-				tab[p][j] = suurb.get(j);
-			}
-		}
-		
-		
-		for (int p = 1; p < 2; p++) {
-			m = 2;
-			for (int k = 2 ; k < suurb2.size(); k++ ) {
-				if ( k%2 == 0) {
-				tab[p][m] = suurb2.get(k);
-				m++;
-				}
-			}
-		}
-		/*tab[0][suurb.size()-1] = suurb.get(suurb.size()-1);
-		tab[1][m] = suurb2.get(suurb2.size()-1);*/
+					else if (j == largeur -1 ) {
 
-		// calcul des bonnes positions pour le chemin 2
-		for (int p = 0; p < 2; p++) {
-			//System.out.print(" \nVALEUR TABLEAU ");
-			for (int k = 1; k < tab[0].length; k++ ) {
-
-				if ( p == 1) {
-					if ( tab[p][k] > g.getLargeur()*2 ) { 
-						//int nbDePixelSupprAvant = ((tab[p][k]/g.getLargeur()) -1 )/2;
-						int nbLigneDuplique =  (g.getLargeur() *   (  (tab[p][k]/g.getLargeur() -1 )/2) );
-						if (tab[p][k]%g.getLargeur() == 1) {
-							//nbDePixelSupprAvant = ((tab[p][k]/g.getLargeur()) -1 )/2 - 1;
+						somme =  tab[compt - largeur] + g.getEdge(compt - largeur, compt).cout() ;
+						if  ( tab[compt - largeur - 1] + g.getEdge(compt - largeur - 1, compt).cout()< somme) {
+							somme =  tab[compt - largeur - 1] + g.getEdge(compt - largeur - 1, compt).cout(); 
 						}
-						tab[p][k] = tab[p][k] -  nbLigneDuplique;// - nbDePixelSupprAvant; 
+
+					} 
+
+					else {
+						
+						somme =  tab[compt - largeur] + g.getEdge(compt - largeur, compt).cout() ;
+
+						if  ( (tab[compt - largeur - 1] + g.getEdge(compt - largeur - 1, compt).cout() )< somme) {
+							somme =  tab[compt - largeur - 1] + g.getEdge(compt - largeur - 1, compt).cout(); 
+
+						}
+						if  ( (tab[compt - largeur + 1] + g.getEdge(compt - largeur + 1, compt).cout() ) < somme) {
+							somme =  tab[compt - largeur + 1] + g.getEdge(compt - largeur + 1, compt).cout(); 
+
+							}
+					}
+					tab[compt] = somme;
+
+
+					compt++;
+				}
+			}
+
+			// derniere ligne vers le dernier point fictif
+
+			somme = 500000;
+
+			for (int i = 0; i < largeur; i++ ) 
+			{
+				int add = tab[compt - largeur + i] + g.getEdge(compt - largeur + i, compt).cout();
+				if (somme > add) { 
+					tab[compt] = add; 
+					somme = add;
+				}
+			}
+
+			// 1er chemin le plus court
+			ArrayList<Integer> suurb = SeamCarving.Dijkstra(g, s, t);
+			compt = 0;
+
+
+			// Inversion du chemin le plus court
+
+			for (Edge e : g.edges()) {
+				e.setCout(  e.cout() + tab[e.depart()] - tab[e.arrive()]);
+
+				if (compt < suurb.size()-1 && e.depart() == suurb.get(compt) && e.getTo() == suurb.get(compt+1) ) {
+					int dep = e.depart();
+					e.setDepart(e.getTo());
+					e.setTo(dep);
+					compt++;
+				}
+			}
+			// Dijsktra pour chercher le 2eme chemin le plus court
+
+
+			ArrayList<Integer> suurb2 = SeamCarving.Dijkstra(g, s, t);
+
+			// taille du chemin des" courts
+			int i = 0;
+			if (suurb.size() > 0) i = 1;
+
+
+			// Suppression des aretes jaunes
+
+			ArrayList<Integer>  areteJaune = new ArrayList<Integer>();
+			ArrayList<Integer>  saut = new ArrayList<Integer>();
+
+			while(i < suurb.size() - 1)  {
+				if (suurb2.contains(suurb.get(i) )   ) {
+
+					// recuperation de la position dans suurb2
+
+					int index = suurb2.indexOf(suurb.get(i));
+
+					// On regarde si l'une des aretes du djikstra2 et aussi dans djisktra1
+					if ( suurb2.get(index +1) == suurb.get(i + 1 ) ){
+						areteJaune.add( suurb.get(i) );
+						areteJaune.add( suurb.get(i+1) );
+					}
+					if ( suurb2.get(index - 1) == suurb.get(i + 1 ) ){
+						areteJaune.add( suurb.get(i) );
+						areteJaune.add( suurb.get(i+1) );
+
+					}
+
+				}
+				i++;
+			}
+
+			// enlevage arete jaune
+
+			for (i= 0; i < areteJaune.size() - 1 ; i+=2){
+				g.removeEdge(areteJaune.get(i), areteJaune.get(i+1));
+				g.removeEdge(areteJaune.get(i+1), areteJaune.get(i));
+
+				for (int j = 0; j < suurb.size() - 1 ; j++) {
+
+					if (suurb.get(j) == areteJaune.get(i) && suurb.get(j+1) == areteJaune.get(i+1)) {
+						// ajout des sommets à ne pas inverser avec leur precedent sommet
+						saut.add(j);
 					}
 				}
-				//System.out.print("  "+  tab[p][k] );
+
+				for (int j = 0; j < suurb2.size() - 1; j++) {
+
+					if (suurb2.get(j) == areteJaune.get(i+1) && suurb2.get(j+1) == areteJaune.get(i)) {
+						suurb2.remove(j+1); 
+						suurb2.remove(j);
+					}
+				}
+
 			}
+
+			// re inversion des aretes
+
+			// deplacement dans le djikstra du 1er chemin
+			compt = 1;
+
+			// deplacement dans la liste de sommet a ne pas inverser car supprimer
+			i = 0;
+
+			for (Edge e : g.edges()) {
+
+				if (compt < suurb.size() && e.depart() == suurb.get(compt) && e.getTo() == suurb.get(compt-1) ) {
+
+					if (i < saut.size() && compt == saut.get(i)) {
+						compt++; 
+						i++; 
+					}
+					int dep = e.depart();
+					e.setDepart(e.getTo());
+					e.setTo(dep);
+					compt++;
+
+				}
+			}
+
+				
+				// transfert des bonnes aretes
+				for (int j = 1; j < suurb.size(); j++) {
+					int diff = Math.abs( suurb2.get(j-1) - suurb2.get(j) ) ;
+
+					boolean verif = diff > g.getLargeur() && suurb.get(j)% g.getLargeur() == 0 ;
+					boolean verif2 = diff > g.getLargeur() + 1 && suurb.get(j)% g.getLargeur() != 0 ;
+					if (verif || verif2 ) {
+						int echange = suurb.get(j);
+						suurb.set(j, suurb2.get(j));
+						suurb2.set(j, echange);
+					}
+				}
+				
+				// tavleau qui stockera les bonnes positions sans les duplicata
+				int[][] tabi = new int[2][ 4 + ( (suurb2.size() - 4) / 2)];
+				
+				// stocke les chemins des 2 dijkstra dans un tableau a 2 dimensions
+				for (i = 0; i < 2; i++) {
+					for (int j =0; j < 3; j++)  {
+						if ( i == 0) {
+							tabi[i][j] = suurb.get(j);
+						}
+						else {
+							tabi[i][j] = suurb2.get(j);
+						}
+					}
+				}
+				
+				
+
+				int m = 0;
+
+				// stockage dans le tableau des bonnes positions
+				for (int p = 0; p < 2; p++) {
+					m = 3;
+					for (int k = 4; k < (suurb.size()); k+=2 ) {
+						if (p == 0) tabi[p][m] = suurb.get(k);
+						else tabi[p][m] = suurb2.get(k);
+						m++;
+					}
+				}
+				
+				
+				// on met dernier sommet fictif quon a cree
+				tabi[0][tabi[0].length - 1] = suurb.get(suurb.size()-1);
+				tabi[1][tabi[0].length - 1] = suurb2.get(suurb2.size()-1);
+				
+
+				
+				// calcul des bonnes positions pour le chemin 2
+							for (int p = 0; p < 2; p++) {
+								for (int k = 1; k < tabi[0].length; k++ ) {
+
+										if ( tabi[p][k] > g.getLargeur()*2 ) { 
+											int nbLigneDuplique = 0;
+											if (k == tabi[0].length - 1) {
+												nbLigneDuplique =  (int) (g.getLargeur() *   (  (int)Math.ceil((double)tabi[p][k]/(double)g.getLargeur()-2.0)/2 ) );
+											} else {
+												nbLigneDuplique =  (int) (g.getLargeur() *   (  (int)Math.ceil((double)tabi[p][k]/(double)g.getLargeur()-1.0)/2 ) );
+											}
+											tabi[p][k] = tabi[p][k] -  nbLigneDuplique;
+										}
+								}
+							}
+
+
+			g.setLargeur(largeur);
+			g.setHauteur(hauteur);
+			return tabi;
 		}
-		
-		return tab;
-	}
 	
 	
 	public static ArrayList<Integer> Dijkstra(Graph graph, int s , int  t){
