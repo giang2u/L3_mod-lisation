@@ -146,30 +146,6 @@ public class Interest {
 		}
 		
 		return outTab;
-	}
-	/*
-	public static int[][] interestEnergie(int[][] image){
-		int largeur = image[0].length;
-		int hauteur = image.length;
-		int [][] outTab = new int [hauteur][largeur*2 + 2];
-		
-		for(int i = 0; i < hauteur - 1; i++){
-			for(int j = 1 ; j < largeur - 1; j++ ){
-				int k = 0;
-				int res = (image[i][j+1] - image[i][j-1]);
-				int res1 = (image[i][j+1] - image[i+1][j]);
-				int res2 = (image[i][j-1] - image[i+1][j]);
-				outTab[i][j] = Math.abs(res);
-				outTab[i][j+1] = Math.abs(res1);
-				outTab[i][j-1] = Math.abs(res2);
-			}
-		}
-		for(int j = 0 ; j < hauteur; j++ ){
-			outTab[j][0] = Math.abs(0 - image[j][1]);
-			outTab[j][largeur- 1] = Math.abs(0- image[j][largeur - 2] );
-		}
-		return outTab;
-	}
-	*/
 
+	}
 }

@@ -43,7 +43,7 @@ public class GestionVue extends JPanel implements Vue {
 
 		jc = new JComboBox<String>(elements);
 		
-		this.valider.addActionListener(new EcouteurRun(m,this.lapelpixel,jc.getSelectedItem().toString()));
+		this.valider.addActionListener(new EcouteurRun(m,this.lapelpixel,jc));
 		
 		this.add(this.lapelpixel, BorderLayout.WEST);
 		this.add(this.valider, BorderLayout.CENTER);
@@ -59,31 +59,6 @@ public class GestionVue extends JPanel implements Vue {
 	
 	@Override
 	public void maj() {
-		Runnable code = new Runnable() {
-			public void run() {
-			    Object obj = jc.getSelectedItem(); 
-			    
-			    if(obj.toString().equals("Supression Colonne")){
-			    	m.supprimeColone(true);
-			    	m.supprimeLine(false);
-			    }
-
-			    if(obj.toString().equals("Supression Ligne")){
-			    	m.supprimeLine(true);
-			    	m.supprimeColone(false);
-			    }
-			}
-		} ;
-		if (SwingUtilities.isEventDispatchThread())
-			code.run() ;
-		else
-			try {
-				SwingUtilities.invokeAndWait(code) ;
-			} catch (InvocationTargetException e) {
-				e.printStackTrace();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
 	}
 
 }

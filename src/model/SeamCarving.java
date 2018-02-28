@@ -13,9 +13,6 @@ public class SeamCarving
 	{		
 		try {
 			System.out.println("NOM FICHIER " + fn);
-			//InputStream f = ClassLoader.getSystemClassLoader().getResourceAsStream(fn);
-			//BufferedReader d = new BufferedReader(new InputStreamReader(f));
-
 			FileReader flot = new FileReader(fn);
 			BufferedReader d = new BufferedReader(flot);
 			String magic = d.readLine();
@@ -93,15 +90,10 @@ public class SeamCarving
 
 			int  width = image.length;
 			int height = image[0].length ;
-			//FileWriter fstream = new FileWriter("img/"+filename+".pgm");
 			FileWriter fstream = new FileWriter(filename);
-			//FileWriter fstream = new FileWriter("img/"+filename);
 			BufferedWriter out = new BufferedWriter(fstream);
 			out.write("P2\n# CREATOR: MOI \n"+height+ " "+ width +"\n255\n");
 			
-			/*------------------GESTIOB COLOR-------------------------*/
-			//out.write("P3\n# CREATOR: MOI \n"+height+ " "+ width +"\n 255  #net en RGB\n");
-
 			for(int i = 0 ; i<width;i++) {
 				for(int j = 0 ; j<height;j++) {
 					if ( j < height-1 ) out.write(image[i][j]+" ");
@@ -118,21 +110,15 @@ public class SeamCarving
 	}
 	
 	public static void writeppm(int [][][] image, String filename) {
-
-
 		try{
 
 			int  width = image.length;
 			int height = image[0].length ;
-			//FileWriter fstream = new FileWriter("img/"+filename+".pgm");
 			FileWriter fstream = new FileWriter(filename);
-			//FileWriter fstream = new FileWriter("img/"+filename);
 			BufferedWriter out = new BufferedWriter(fstream);
-			//out.write("P2\n# CREATOR: MOI \n"+height+ " "+ width +"\n255\n");
 			
-			/*------------------GESTIOB COLOR-------------------------*/
+			/*------------------GESTIOn COLOR-------------------------*/
 			out.write("P3\n# CREATOR: MOI \n"+height+ " "+ width +"\n255  #net en RGB\n");
-
 			for(int i = 0 ; i<width;i++) {
 				for(int j = 0 ; j<height;j++) {
 					if( j < height-1 ){
@@ -155,8 +141,6 @@ public class SeamCarving
 		}
 
 	}
-	
-	
 	
 	// SUUUUUUUUUUUUUUUUUUUUUUUUURRRRRRRRRRRRRRRRRRRRRRRBBBBBBBBBBBBBBBAAAAAAAAAAAAAAALLLLLLLLLLLLLLEEEEE
 		public static int[][] twopath(Graph g, int s, int t) {

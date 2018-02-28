@@ -23,7 +23,7 @@ import model.SeamCarving;
 public class GestionImageLink extends JPanel implements Vue {
 	protected String pathImage, imageName;
 	protected Modele m;
-	protected JLabel inPathName, outPathName;
+	protected JLabel inFileName;
 	protected JButton ouvrir;
 	
 	
@@ -32,9 +32,7 @@ public class GestionImageLink extends JPanel implements Vue {
 		this.m = m;
 		this.setLayout(new BorderLayout());
 		
-		//traitement affichage  file
-		this.inPathName = new JLabel("In File Path: ");
-		this.outPathName = new JLabel("Out File Path: ");
+		this.inFileName = new JLabel("In File Path: ");
 		ouvrir = new JButton("Select image");
 		ouvrir.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
@@ -58,11 +56,8 @@ public class GestionImageLink extends JPanel implements Vue {
 		
 
 		JPanel panel  = new JPanel();
-		panel.setLayout(new GridLayout(2,1));
 		
-		panel.add(this.inPathName);
-		panel.add(this.outPathName);
-
+		panel.add(this.inFileName, BorderLayout.CENTER);
 		this.add(this.ouvrir, BorderLayout.WEST);
 		this.add(panel,BorderLayout.EAST);
 		this.m.ajouterVue(this);
@@ -73,9 +68,7 @@ public class GestionImageLink extends JPanel implements Vue {
 	@Override
 	public void maj() {
 		if(this.m.getInFilePath().contains("pgm") || this.m.getInFilePath().contains("ppm")){
-			this.m.setoutFilePath(this.m.getInFilePath());
-			inPathName.setText("In File Name: "+this.imageName);
-			outPathName.setText("Out File Name: "+this.m.getInFileName());
+			inFileName.setText("In File Name: "+this.imageName);
 		}
 		else{
 			JOptionPane.showMessageDialog(null,"Selection un fichier .pgm ou .ppm","Erreur select",JOptionPane.ERROR_MESSAGE);

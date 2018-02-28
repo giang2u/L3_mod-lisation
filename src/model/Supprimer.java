@@ -116,10 +116,7 @@ public static void supprimerPixel(String filename,String outfile, int iteration)
 		int[][] outTAb = Interest.interest(fin);
 		Graph g = GraphTraitement.toGraph(outTAb);
 		ArrayList<Integer> list = SeamCarving.Dijkstra(g, 0, fin.length*fin[0].length + 1);
-		
-		int  width = outTAb[0].length;
-		int height = outTAb.length;
-		
+
 		int[][] tab = new int[fin.length][fin[0].length-1] ;
 		
 		int indicePixelASuppr = 1;
@@ -178,6 +175,10 @@ public static void supprimerPixel(String filename,String outfile, int iteration)
 	
 	
 public static void supprimerPixelPPM(String filename,String outfile, int iteration) {
+		
+		//filename += "2";
+		
+		//int[][] fin = SeamCarving.readpgm(filename+".pgm");	
 		int[][][] fin = SeamCarving.readppm(filename);	
 		int[][] outTAb = Interest.interestPPM(fin);
 		Graph g = GraphTraitement.toGraph(outTAb);
@@ -211,9 +212,10 @@ public static void supprimerPixelPPM(String filename,String outfile, int iterati
 					 tab[i][j][2] = fin[i][z][2];
 					 
 				}
-				/*System.out.println(tab[i][j][0] + 
+				System.out.println(tab[i][j][0] + 
 					 tab[i][j][1]+
-					 tab[i][j][2] + "\n" );*/
+					 tab[i][j][2] + "\n" );
+				z++;
 			}
 		}
 		
@@ -259,9 +261,6 @@ public static void supprimerPixelPPM(String filename,String outfile, int iterati
 
 public static void supprimerPixelLine(String filename,String outfile, int iteration){
 
-	//filename += "2";
-	
-	//int[][] fin = SeamCarving.readpgm(filename+".pgm");	
 	int[][] fin = SeamCarving.readpgm(filename);	
 			
 	int [][] inverseTab = TraitementLine.inverseTabNormal(fin);
@@ -269,10 +268,6 @@ public static void supprimerPixelLine(String filename,String outfile, int iterat
 	int[][] outTAb = Interest.interest(inverseTab);
 	Graph g = GraphTraitement.toGraph(outTAb);
 	ArrayList<Integer> list = SeamCarving.Dijkstra(g, 0, inverseTab.length*inverseTab[0].length + 1);
-	
-	
-	int  width = outTAb[0].length;
-	int height = outTAb.length;
 	
 	int[][] tab = new int[inverseTab.length][inverseTab[0].length-1] ;
 	
@@ -332,7 +327,7 @@ public static void supprimerPixelLine(String filename,String outfile, int iterat
 	System.out.println("DONE!!!!");
 }
 
-
+/*
 public static void supprimerPixelLinePPM(String filename,String outfile, int iteration) {
 	int[][][] fin = SeamCarving.readppm(filename);
 	
@@ -410,7 +405,7 @@ public static void supprimerPixelLinePPM(String filename,String outfile, int ite
 	SeamCarving.writeppm(tab, outfile);
 	System.out.println("DONE!!!!");
 	
-}
+}*/
 
 
 }

@@ -13,32 +13,23 @@ import view.Vue;
 public class Modele extends Observable {
 	protected ArrayList<Vue> vues;
 	protected String inFileName,inFilePath, outFilePath;
-	protected int nb_pixel = 50;
+	protected int nb_pixel;
 	protected boolean supL = false;
 	protected boolean supC = true;
-	protected String col;
 
 	public Modele(){
 		this.vues = new ArrayList<>();
 		inFileName = "";
 		inFilePath = "";
 		outFilePath = "";
-		col = "colonne";
+		nb_pixel = 0;
 	}
 
 
 	public void ajouterVue(Vue v){
 		this.vues.add(v);
 	}
-	
-	public void setCol(String s){
-		this.col = s;
-	}
-	
-	public String getcol(){
-		return this.col;
-	}
-	
+		
 	public void majVue(){
 		for(Vue v : vues){
 			v.maj();
@@ -50,17 +41,6 @@ public class Modele extends Observable {
 	}
 	
 	public void setInFileName(String s){
-		if(s.contains("pgm")){
-			String[] parts = s.split(".pgm");
-			String part1 = parts[0]+ "_remove.pgm" ;
-			this.inFileName = part1;
-			
-		}
-		else{
-			String[] parts = s.split(".ppm");
-			String part1 = parts[0]+ "_remove.ppm" ;
-			this.inFileName = part1;
-		}
 		majVue();
 	}
 	
@@ -85,50 +65,13 @@ public class Modele extends Observable {
 		return this.outFilePath;
 	}
 	
-	public void setoutFilePath(String s){
-		String part1 ="";
-		if(s.contains("pgm")){
-			String[] parts = s.split(".pgm");
-			part1 = parts[0]+ "_remove.pgm" ;
-			this.outFilePath = part1;
-		
-		}
-		else{
-		String[] parts = s.split(".ppm");
-			part1 = parts[0]+ "_remove.ppm" ;
-			this.outFilePath = part1;
-		}
-		
-	}
 	
-	public void addType(String s){
-		String part1 ="";
-		if(this.outFilePath.contains("pgm")){
-			String[] parts = this.outFilePath.split(".pgm");
-			part1 = parts[0]+ s+ ".pgm" ;
-			this.outFilePath = part1;
-			System.out.println(this.outFilePath);
-		
-		}
-		else{
-			String[] parts = this.outFilePath.split(".ppm");
-			part1 = parts[0]+ s+ ".ppm" ;
-			this.outFilePath = part1;
-		}
-	}
-	
-	public void start(String pathFile, String fileOutName, int nombre_pixel){
-
-		majVue();
+	public void start(String pathFile, String fileOutName, int nombre_pixel, boolean estCol){
 		if(pathFile.contains("pgm")){
-			if(this.supC){
-				setCol("Supression Colonne");
-				System.out.println("colone");
+			if(estCol){
 				Supprimer.supprimerPixel(pathFile, fileOutName, nombre_pixel);
 			}
-			if(this.supL){
-				setCol("Supression Ligne");
-				System.out.println("ligne");
+			else{
 				Supprimer.supprimerPixelLine(pathFile, fileOutName, nombre_pixel);
 			}
 		}
@@ -137,20 +80,4 @@ public class Modele extends Observable {
 		}
 	}
 
-	public void supprimeLine(boolean b) {
-		this.supL = b;
-		
-	}
-
-	public void supprimeColone(boolean b) {
-		this.supC = b;
-		
-	}
-	
-	public boolean getSupL(){
-		return this.supL;
-	}
-	public boolean getSupC(){
-		return this.supC;
-	}
 }
