@@ -26,7 +26,7 @@ public class GestionVue extends JPanel implements Vue {
 
 	protected JLabel pixel;
 	protected JTextField lapelpixel;
-	protected JButton valider;
+	protected JButton valider, valider2;
 	protected Modele m;
 	protected String valueText;
 	protected JComboBox jc;
@@ -38,19 +38,21 @@ public class GestionVue extends JPanel implements Vue {
 		this.setLayout(new BorderLayout());
 		
 		this.lapelpixel = new JTextField("50",10);
-		this.valider = new JButton("RUN!!!");
+		this.valider = new JButton("RUN METHOD 1");
+		this.valider2 = new JButton("RUN METHOD 2");
 		String[] elements = new String[]{"Supression Colonne","Supression Ligne"};
 
 		jc = new JComboBox<String>(elements);
 		
-		this.valider.addActionListener(new EcouteurRun(m,this.lapelpixel,jc));
+		this.valider.addActionListener(new EcouteurRun(m,this.lapelpixel,jc, valider));
+		this.valider2.addActionListener(new EcouteurRun(m,this.lapelpixel,jc, valider2));
 		
 		this.add(this.lapelpixel, BorderLayout.WEST);
-		this.add(this.valider, BorderLayout.CENTER);
 		JPanel panel = new JPanel();
-		panel.add(this.jc);
-		
-		this.add(panel,BorderLayout.EAST);
+		panel.add(this.valider, BorderLayout.NORTH);
+		panel.add(this.valider2, BorderLayout.SOUTH);
+		this.add(panel,BorderLayout.CENTER);;
+		this.add(jc,BorderLayout.EAST);
 		this.m.ajouterVue(this);
 		
 	}

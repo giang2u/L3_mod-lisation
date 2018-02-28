@@ -66,7 +66,7 @@ public class Modele extends Observable {
 	}
 	
 	
-	public void start(String pathFile, String fileOutName, int nombre_pixel, boolean estCol){
+	public void start1(String pathFile, String fileOutName, int nombre_pixel, boolean estCol){
 		if(pathFile.contains("pgm")){
 			if(estCol){
 				Supprimer.supprimerPixel(pathFile, fileOutName, nombre_pixel);
@@ -77,6 +77,20 @@ public class Modele extends Observable {
 		}
 		else{
 			Supprimer.supprimerPixelPPM(pathFile, fileOutName, nombre_pixel);
+		}
+	}
+	
+	public void start2(String pathFile, String fileOutName, int nombre_pixel, boolean estCol){
+		if(pathFile.contains("pgm")){
+			if(estCol){
+				Supprimer.supprimerPixel2(pathFile, fileOutName, nombre_pixel);
+			}
+			else{
+				//Supprimer.supprimerPixelLine(pathFile, fileOutName, nombre_pixel);
+			}
+		}
+		else{
+			//Supprimer.supprimerPixelPPM(pathFile, fileOutName, nombre_pixel);
 		}
 	}
 

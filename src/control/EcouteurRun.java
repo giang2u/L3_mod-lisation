@@ -3,6 +3,7 @@ package control;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
@@ -14,11 +15,13 @@ public class EcouteurRun implements ActionListener {
 	protected Modele m;
 	protected JTextField valeur;
 	protected JComboBox s;
+	protected JButton valider;
 	
-	public EcouteurRun( Modele m, JTextField valeurZone, JComboBox s){
+	public EcouteurRun( Modele m, JTextField valeurZone, JComboBox s, JButton valider){
 		this.m = m;
 		this.valeur = valeurZone;
 		this.s = s;
+		this.valider = valider;
 	}
 	
 
@@ -52,7 +55,12 @@ public class EcouteurRun implements ActionListener {
 			}
 		}
 		if(this.m.getInFilePath() != ""){
-			this.m.start(this.m.getInFilePath(), cheminSortie ,this.m.getNb_pixel(), estCol);
+			if(this.valider.getText().equals("RUN METHOD 1")){
+				this.m.start1(this.m.getInFilePath(), cheminSortie ,this.m.getNb_pixel(), estCol);
+			}
+			if(this.valider.getText().equals("RUN METHOD 2")){
+				this.m.start2(this.m.getInFilePath(), cheminSortie ,this.m.getNb_pixel(), estCol);
+			}
 			JOptionPane.showMessageDialog(null,"Supression Reussir","Correct",JOptionPane.INFORMATION_MESSAGE);
 		}
 		else{
