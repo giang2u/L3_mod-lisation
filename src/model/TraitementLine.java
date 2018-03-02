@@ -21,8 +21,6 @@ public class TraitementLine {
 		int[][][] outTab = new int [refTab[0].length][refTab.length][3];
 		int colonne = refTab[0].length;
 		int ligne = refTab.length;
-		System.out.println("collone " + colonne);
-		System.out.println("Ligne " + ligne);
 
         for(int i=0; i<colonne; i++){
             for(int j=ligne - 1; j>=0; j--){

@@ -27,15 +27,18 @@ public class EcouteurRun implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
+		boolean isok = false;
 		try{
 			int number = Integer.parseInt(this.valeur.getText());
 			this.m.setNb_pixel(number);
+			isok = true;
 		}
 		catch (Exception e){
-			JOptionPane.showMessageDialog(null,"SVP enter un nombre","Erreur saisir",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null,"SVP enter un nombre Pixel a DEL","Erreur saisir",JOptionPane.ERROR_MESSAGE);
 		}
 		String cheminSortie ="";
 		boolean estCol = true;
+		if(isok){
 		if(s.getSelectedItem().toString().equals("Supression Colonne")){
 			if(this.m.getInFilePath().contains("pgm")){
 				String[] parts = this.m.getInFilePath().split(".pgm");
@@ -51,8 +54,12 @@ public class EcouteurRun implements ActionListener {
 			if(this.m.getInFilePath().contains("pgm")){
 				String[] parts = this.m.getInFilePath().split(".pgm");
 				cheminSortie = parts[0]+ "DelLig.pgm" ;
-				estCol = false;
 			}
+			else{
+				String[] parts = this.m.getInFilePath().split(".ppm");
+				cheminSortie = parts[0]+ "DelLine.ppm" ;
+			}
+			estCol = false;
 		}
 		if(this.m.getInFilePath() != ""){
 			if(this.valider.getText().equals("RUN METHOD 1")){
@@ -65,6 +72,7 @@ public class EcouteurRun implements ActionListener {
 		}
 		else{
 			JOptionPane.showMessageDialog(null,"Select un fichier","Erreur saisir",JOptionPane.ERROR_MESSAGE);
+		}
 		}
 		
 	}

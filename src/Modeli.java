@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import view.AffichageVue;
 import view.GestionImageLink;
 import view.GestionVue;
 
@@ -29,13 +30,16 @@ public class Modeli extends JFrame{
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JPanel jp = new JPanel();
+		JPanel iamge = new JPanel();
 		Modele m = new Modele();
 		GestionImageLink fi = new GestionImageLink(m);
 		GestionVue fo = new GestionVue(m);
+		AffichageVue affichage = new AffichageVue(m);
 		jp.add(fi,BorderLayout.WEST);
 		jp.add(fo,BorderLayout.EAST);
 		
 		this.add(jp,BorderLayout.NORTH);
+		this.add(affichage,BorderLayout.CENTER);
 		pack() ;
 		setVisible(true);
 	}
@@ -98,5 +102,6 @@ public class Modeli extends JFrame{
    public static void main(String[] args)
 	 {
 	   new Modeli();
+	   //Supprimer.supprimerPixelLine("ex1.pgm", "ex1Colout.pgm", 50);
 	 }
 }

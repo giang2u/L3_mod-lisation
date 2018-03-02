@@ -37,7 +37,7 @@ public class GestionVue extends JPanel implements Vue {
 		this.m = m;
 		this.setLayout(new BorderLayout());
 		
-		this.lapelpixel = new JTextField("50",10);
+		this.lapelpixel = new JTextField("Nb pixel a DEL",10);
 		this.valider = new JButton("RUN METHOD 1");
 		this.valider2 = new JButton("RUN METHOD 2");
 		String[] elements = new String[]{"Supression Colonne","Supression Ligne"};
