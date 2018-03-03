@@ -174,10 +174,7 @@ public class Supprimer {
 		}
 	
 	public static void supprimerPixelPPM(String filename,String outfile, int iteration) {
-			
-			//filename += "2";
-			
-			//int[][] fin = SeamCarving.readpgm(filename+".pgm");	
+				
 			int[][][] fin = SeamCarving.readppm(filename);	
 			int[][] outTAb = Interest.interestPPM(fin);
 			Graph g = GraphTraitement.toGraph(outTAb);
@@ -252,6 +249,127 @@ public class Supprimer {
 			System.out.println("DONE!!!!");
 			
 		}
+
+	public static void supprimerPixel2PPM(String filename,String outfile, int iteration){
+
+		int[][][] fin = SeamCarving.readppm(filename);	
+		int[][] outTAb = Interest.interestPPM(fin);
+		Graph g = GraphTraitement.toGraph2(outTAb);
+
+		int newhau = outTAb.length*2 - 2;
+		int largeur = outTAb[0].length;
+		
+		
+		int [][] test =  SeamCarving.twopath(g,0, newhau * largeur + 1 );
+		ArrayList<Integer> list = new ArrayList<>(), list2 = new ArrayList<>();
+		
+		for (int i = 0; i < test.length; ++i) {
+			for (int j = 0; j < test[0].length; ++j) {
+				if (i == 0) list.add(test[i][j]);
+				else list2.add(test[i][j]);
+			}
+		}
+		
+		
+		
+		int  width = outTAb[0].length;
+		int height = outTAb.length;
+		
+		int[][][] tab = new int[fin.length][fin[0].length-2][3] ;
+		
+		int indicePixelASuppr = 1;
+		
+		int indicePixelASuppr2 = 1;
+		
+		// 1ere boucle
+		
+		for(int i = 0 ; i<tab.length;i++) {
+			int z = 0;
+			for(int j = 0 ; j<tab[0].length ;++j) {
+				
+				int longu = j+1;
+				
+				if (list.get(indicePixelASuppr) == (  (i* outTAb[0].length )  + longu)  )  {
+					++indicePixelASuppr;
+					++z; 
+					tab[i][j][0] = fin[i][z][0]; 
+					tab[i][j][1] = fin[i][z][1]; 
+					tab[i][j][2] = fin[i][z][2]; 
+				} else if ( list2.get(indicePixelASuppr2) == (  (i* outTAb[0].length )  + longu) ) {
+					++indicePixelASuppr2;
+					++z; 
+					tab[i][j][0] = fin[i][z][0]; 
+					tab[i][j][1] = fin[i][z][1]; 
+					tab[i][j][2] = fin[i][z][2];
+				}
+				else { 
+					tab[i][j][0] = fin[i][z][0]; 
+					tab[i][j][1] = fin[i][z][1]; 
+					tab[i][j][2] = fin[i][z][2];
+				}
+				++z;
+			}
+		}
+		
+		
+		// reste des iterations
+		
+		
+		for (int k = 0; k < (iteration - 1) ; ++k) {
+			indicePixelASuppr = 1;
+
+			indicePixelASuppr2 = 1;
+			
+			fin = tab;
+			outTAb = Interest.interestPPM(fin);
+			newhau = outTAb.length*2 - 2;
+			largeur = outTAb[0].length;
+			g = GraphTraitement.toGraph2(outTAb);
+			
+			list.clear();
+			list2.clear();
+			test = SeamCarving.twopath(g,0, newhau * largeur + 1 );
+			
+			for (int i = 0; i < test.length; ++i) {
+				for (int j = 0; j < test[0].length; ++j) {
+					if (i == 0) list.add(test[i][j]);
+					else list2.add(test[i][j]);
+				}
+			}
+			tab = new int[fin.length][fin[0].length-2][3] ;
+
+			for(int i = 0 ; i<tab.length;i++) {
+				int z = 0;
+				for(int j = 0 ; j<tab[0].length ;++j) {
+					
+					
+					int longu = j+1;
+					
+					if (list.get(indicePixelASuppr) == (  (i* outTAb[0].length )  + longu)  )  {
+						indicePixelASuppr++;
+						 ++z;
+							tab[i][j][0] = fin[i][z][0]; 
+							tab[i][j][1] = fin[i][z][1]; 
+							tab[i][j][2] = fin[i][z][2];
+					} else if ( list2.get(indicePixelASuppr2) == (  (i* outTAb[0].length )  + longu) ) {
+						++indicePixelASuppr2;
+						++z;
+						tab[i][j][0] = fin[i][z][0]; 
+						tab[i][j][1] = fin[i][z][1]; 
+						tab[i][j][2] = fin[i][z][2];
+					}
+					else {
+						tab[i][j][0] = fin[i][z][0]; 
+						tab[i][j][1] = fin[i][z][1]; 
+						tab[i][j][2] = fin[i][z][2];
+					}
+					++z;
+				}
+			}
+		}
+		SeamCarving.writeppm(tab, outfile);
+		System.out.println("DONE!!!!");
+	}
 	
 	public static void supprimerPixelLine(String filename,String outfile, int iteration){
 	
@@ -504,6 +622,127 @@ public class Supprimer {
 		
 	}
 	
+	public static void supprimerPixel2LinePPM( String filename,String outfile, int iteration){
+		int[][][] fin = SeamCarving.readppm(filename);	
+		int [][][] inverseTab = TraitementLine.inverseTabColor(fin);
+		int[][] outTAb = Interest.interestPPM(inverseTab);
+		Graph g = GraphTraitement.toGraph2(outTAb);
+
+		int newhau = outTAb.length*2 - 2;
+		int largeur = outTAb[0].length;
+		
+		
+		int [][] test =  SeamCarving.twopath(g,0, newhau * largeur + 1 );
+		ArrayList<Integer> list = new ArrayList<>(), list2 = new ArrayList<>();
+		
+		for (int i = 0; i < test.length; ++i) {
+			for (int j = 0; j < test[0].length; ++j) {
+				if (i == 0) list.add(test[i][j]);
+				else list2.add(test[i][j]);
+			}
+		}
+		
+		
+		
+		int  width = outTAb[0].length;
+		int height = outTAb.length;
+		
+		int[][][] tab = new int[inverseTab.length][inverseTab[0].length-2][3] ;
+		
+		int indicePixelASuppr = 1;
+		
+		int indicePixelASuppr2 = 1;
+		
+		// 1ere boucle
+		
+		for(int i = 0 ; i<tab.length;i++) {
+			int z = 0;
+			for(int j = 0 ; j<tab[0].length ;++j) {
+				
+				int longu = j+1;
+				
+				if (list.get(indicePixelASuppr) == (  (i* outTAb[0].length )  + longu)  )  {
+					++indicePixelASuppr;
+					++z; 
+					tab[i][j][0] = inverseTab[i][z][0]; 
+					tab[i][j][1] = inverseTab[i][z][1]; 
+					tab[i][j][2] = inverseTab[i][z][2]; 
+				} else if ( list2.get(indicePixelASuppr2) == (  (i* outTAb[0].length )  + longu) ) {
+					++indicePixelASuppr2;
+					++z; 
+					tab[i][j][0] = inverseTab[i][z][0]; 
+					tab[i][j][1] = inverseTab[i][z][1]; 
+					tab[i][j][2] = inverseTab[i][z][2];
+				}
+				else { 
+					tab[i][j][0] = inverseTab[i][z][0]; 
+					tab[i][j][1] = inverseTab[i][z][1]; 
+					tab[i][j][2] = inverseTab[i][z][2];
+				}
+				++z;
+			}
+		}
+		
+		
+		// reste des iterations
+		
+		
+		for (int k = 0; k < (iteration - 1) ; ++k) {
+			indicePixelASuppr = 1;
+
+			indicePixelASuppr2 = 1;
+			
+			inverseTab = tab;
+			outTAb = Interest.interestPPM(inverseTab);
+			newhau = outTAb.length*2 - 2;
+			largeur = outTAb[0].length;
+			g = GraphTraitement.toGraph2(outTAb);
+			
+			list.clear();
+			list2.clear();
+			test = SeamCarving.twopath(g,0, newhau * largeur + 1 );
+			
+			for (int i = 0; i < test.length; ++i) {
+				for (int j = 0; j < test[0].length; ++j) {
+					if (i == 0) list.add(test[i][j]);
+					else list2.add(test[i][j]);
+				}
+			}
+			tab = new int[inverseTab.length][inverseTab[0].length-2][3] ;
+
+			for(int i = 0 ; i<tab.length;i++) {
+				int z = 0;
+				for(int j = 0 ; j<tab[0].length ;++j) {
+					
+					
+					int longu = j+1;
+					
+					if (list.get(indicePixelASuppr) == (  (i* outTAb[0].length )  + longu)  )  {
+						indicePixelASuppr++;
+						 ++z;
+							tab[i][j][0] = inverseTab[i][z][0]; 
+							tab[i][j][1] = inverseTab[i][z][1]; 
+							tab[i][j][2] = inverseTab[i][z][2];
+					} else if ( list2.get(indicePixelASuppr2) == (  (i* outTAb[0].length )  + longu) ) {
+						++indicePixelASuppr2;
+						++z;
+						tab[i][j][0] = inverseTab[i][z][0]; 
+						tab[i][j][1] = inverseTab[i][z][1]; 
+						tab[i][j][2] = inverseTab[i][z][2];
+					}
+					else {
+						tab[i][j][0] = inverseTab[i][z][0]; 
+						tab[i][j][1] = inverseTab[i][z][1]; 
+						tab[i][j][2] = inverseTab[i][z][2];
+					}
+					++z;
+				}
+			}
+		}
+		int [][][] normal = TraitementLine.inverseTabColor(tab);
+		SeamCarving.writeppm(normal, outfile);
+		System.out.println("DONE!!!!");
+	}
 
 }
 

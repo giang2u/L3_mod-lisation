@@ -39,41 +39,41 @@ public class EcouteurRun implements ActionListener {
 		String cheminSortie ="";
 		boolean estCol = true;
 		if(isok){
-		if(s.getSelectedItem().toString().equals("Supression Colonne")){
-			if(this.m.getInFilePath().contains("pgm")){
-				String[] parts = this.m.getInFilePath().split(".pgm");
-				cheminSortie = parts[0]+ "DelCol.pgm" ;
+			if(s.getSelectedItem().toString().equals("Supression Colonne")){
+				if(this.m.getInFilePath().contains("pgm")){
+					String[] parts = this.m.getInFilePath().split(".pgm");
+					cheminSortie = parts[0]+ "DelCol.pgm" ;
+				}
+				else{
+					String[] parts = this.m.getInFilePath().split(".ppm");
+					cheminSortie = parts[0]+ "DelCol.ppm" ;
+				}
+				estCol = true;
+			}
+			if(s.getSelectedItem().toString().equals("Supression Ligne")){
+				if(this.m.getInFilePath().contains("pgm")){
+					String[] parts = this.m.getInFilePath().split(".pgm");
+					cheminSortie = parts[0]+ "DelLine.pgm" ;
+				}
+				else{
+					String[] parts = this.m.getInFilePath().split(".ppm");
+					cheminSortie = parts[0]+ "DelLine.ppm" ;
+				}
+				estCol = false;
+			}
+			if(this.m.getInFilePath() != ""){
+				if(this.valider.getText().equals("RUN METHOD 1")){
+					this.m.start1(this.m.getInFilePath(), cheminSortie ,this.m.getNb_pixel(), estCol);
+				}
+				if(this.valider.getText().equals("RUN METHOD 2")){
+					this.m.start2(this.m.getInFilePath(), cheminSortie ,this.m.getNb_pixel(), estCol);
+				}
+				JOptionPane.showMessageDialog(null,"Supression Reussir","Correct",JOptionPane.INFORMATION_MESSAGE);
 			}
 			else{
-				String[] parts = this.m.getInFilePath().split(".ppm");
-				cheminSortie = parts[0]+ "DelCol.ppm" ;
+				JOptionPane.showMessageDialog(null,"Select un fichier","Erreur saisir",JOptionPane.ERROR_MESSAGE);
 			}
-			estCol = true;
-		}
-		if(s.getSelectedItem().toString().equals("Supression Ligne")){
-			if(this.m.getInFilePath().contains("pgm")){
-				String[] parts = this.m.getInFilePath().split(".pgm");
-				cheminSortie = parts[0]+ "DelLig.pgm" ;
-			}
-			else{
-				String[] parts = this.m.getInFilePath().split(".ppm");
-				cheminSortie = parts[0]+ "DelLine.ppm" ;
-			}
-			estCol = false;
-		}
-		if(this.m.getInFilePath() != ""){
-			if(this.valider.getText().equals("RUN METHOD 1")){
-				this.m.start1(this.m.getInFilePath(), cheminSortie ,this.m.getNb_pixel(), estCol);
-			}
-			if(this.valider.getText().equals("RUN METHOD 2")){
-				this.m.start2(this.m.getInFilePath(), cheminSortie ,this.m.getNb_pixel(), estCol);
-			}
-			JOptionPane.showMessageDialog(null,"Supression Reussir","Correct",JOptionPane.INFORMATION_MESSAGE);
-		}
-		else{
-			JOptionPane.showMessageDialog(null,"Select un fichier","Erreur saisir",JOptionPane.ERROR_MESSAGE);
-		}
-		}
-		
+			
+		}	
 	}
 }

@@ -95,7 +95,12 @@ public class Modele extends Observable {
 			}
 		}
 		else{
-			//Supprimer.supprimerPixelPPM(pathFile, fileOutName, nombre_pixel);
+			if(estCol){
+				Supprimer.supprimerPixel2PPM(pathFile, fileOutName, nombre_pixel);
+			}
+			else{
+				Supprimer.supprimerPixel2LinePPM(pathFile, fileOutName, nombre_pixel);
+			}
 		}
 	}
 
